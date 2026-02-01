@@ -1,4 +1,4 @@
-name = "ffi-filaments"
+name = "fdm-filament-info"
 compatibility_date = "2026-01-29"
 main = "src/worker.ts"
 

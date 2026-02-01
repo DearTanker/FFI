@@ -76,7 +76,6 @@ function FieldRow(props: { field: PresetField }) {
         {props.field.label !== props.field.key ? (
           <div className="mt-0.5 flex flex-col gap-0.5 font-mono text-[10px] text-zinc-500">
             <div className="truncate">{props.field.key}</div>
-            {props.field.pair?.rightKey && <div className="truncate">{props.field.pair.rightKey}</div>}
           </div>
         ) : null}
       </div>

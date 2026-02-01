@@ -1,10 +1,27 @@
-import { listSeries, listTypes, listVendors, toSegment } from "@/lib/filaments";
+"use client";
+
+import { useFilamentContext } from "@/context/FilamentContext";
+import { getVendors, getTypes, getSeries } from "@/lib/filaments-client";
+import { toSegment } from "@/lib/segments";
 import { StaticLink } from "@/components/StaticLink";
 
 export function FilamentNav(props: { vendor?: string; type?: string; series?: string }) {
-  const vendors = listVendors();
-  const types = props.vendor ? listTypes(props.vendor) : [];
-  const seriesList = props.vendor && props.type ? listSeries(props.vendor, props.type) : [];
+  const { index, loading } = useFilamentContext();
+  
+  if (loading || !index) {
+      return (
+        <aside className="h-full w-[320px] shrink-0 border-r border-zinc-800 bg-zinc-900/40">
+           <div className="sticky top-0 border-b border-zinc-800 bg-zinc-950/40 px-4 py-3 backdrop-blur">
+             <div className="text-sm font-semibold">耗材丝设置</div>
+             <div className="mt-1 text-xs text-zinc-400">正在加载...</div>
+           </div>
+        </aside>
+      );
+  }
+
+  const vendors = getVendors(index);
+  const types = props.vendor ? getTypes(index, props.vendor) : [];
+  const seriesList = props.vendor && props.type ? getSeries(index, props.vendor, props.type) : [];
 
   return (
     <aside className="h-full w-[320px] shrink-0 border-r border-zinc-800 bg-zinc-900/40">

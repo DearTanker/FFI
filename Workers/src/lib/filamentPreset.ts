@@ -286,9 +286,7 @@ function sectionForKnownKey(key: string): { tab: TabId; section: string; order: 
     filament_tower_ironing_area: { tab: "filament", section: filamentBasic, order: 180 },
     filament_tower_interface_purge_volume: { tab: "filament", section: filamentBasic, order: 190 },
     filament_tower_interface_print_temp: { tab: "filament", section: filamentBasic, order: 200 },
-    filament_prime_volume: { tab: "filament", section: filamentBasic, order: 210 },
     filament_change_length: { tab: "filament", section: filamentBasic, order: 220 },
-    filament_ramming_travel_time: { tab: "filament", section: filamentBasic, order: 230 },
     filament_pre_cooling_temperature: { tab: "filament", section: filamentBasic, order: 240 },
     nozzle_temperature_range_low: { tab: "filament", section: filamentBasic, order: 250 },
     nozzle_temperature_range_high: { tab: "filament", section: filamentBasic, order: 251 },
@@ -309,7 +307,6 @@ function sectionForKnownKey(key: string): { tab: TabId; section: string; order: 
 
     filament_adaptive_volumetric_speed: { tab: "filament", section: filamentSpeed, order: 10 },
     filament_max_volumetric_speed: { tab: "filament", section: filamentSpeed, order: 20 },
-    filament_ramming_volumetric_speed: { tab: "filament", section: filamentSpeed, order: 30 },
     filament_printable: { tab: "filament", section: filamentSpeed, order: 30 },
 
     filament_scarf_gap: { tab: "filament", section: filamentScarf, order: 10 },
@@ -491,7 +488,7 @@ export function buildPresetModel(json: Record<string, unknown>): {
     const pair = pairMap[key];
     if (pair && pair.rightKey in json) {
       const rightValue = formatValue(json[pair.rightKey]);
-      base.pair = { rightKey: pair.rightKey, leftLabel: pair.leftLabel, rightLabel: pair.rightLabel, rightValue };
+      base.pair = { leftLabel: pair.leftLabel, rightLabel: pair.rightLabel, rightValue };
       skip.add(pair.rightKey);
     }
 

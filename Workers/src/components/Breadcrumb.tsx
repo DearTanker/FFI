@@ -1,4 +1,4 @@
-import { toSegment } from "@/lib/filaments";
+import { toSegment } from "@/lib/segments";
 import { StaticLink } from "@/components/StaticLink";
 
 type Crumb = { label: string; href?: string };
