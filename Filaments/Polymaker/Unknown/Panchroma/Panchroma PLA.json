@@ -1,0 +1,13 @@
+{
+    "filament_density": [
+        "1.19"
+    ],
+    "filament_settings_id": [
+        "Panchroma PLA"
+    ],
+    "from": "User",
+    "inherits": "Polymaker PLA Panchroma Silk @Bambu Lab A1 0.4 nozzle",
+    "is_custom_defined": "0",
+    "name": "Panchroma PLA",
+    "version": "1.10.0.32"
+}

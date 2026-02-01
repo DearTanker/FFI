@@ -1,0 +1,11 @@
+import { FilamentNav } from "@/components/FilamentNav";
+
+export function FilamentsShell(props: { vendor?: string; type?: string; series?: string; children: React.ReactNode }) {
+  return (
+    <div className="flex min-h-screen">
+      <FilamentNav vendor={props.vendor} type={props.type} series={props.series} />
+      <main className="flex-1 p-6">{props.children}</main>
+    </div>
+  );
+}
+
