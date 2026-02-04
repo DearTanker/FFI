@@ -32,7 +32,19 @@ export async function fetchFilamentIndex(): Promise<ClientIndex> {
   const res = await fetch("/api/github/tree");
   if (!res.ok) {
       console.error("Failed to fetch tree:", res.status, res.statusText);
-      throw new Error("Failed to fetch tree");
+      const errBody = await res.json().catch(() => ({}));
+      if (errBody.details) {
+         try {
+            const detailsJson = JSON.parse(errBody.details);
+            if (detailsJson.message && detailsJson.message.includes("API rate limit exceeded")) {
+                throw new Error("GitHub API rate limit exceeded. Please try again later or configure a GITHUB_TOKEN.");
+            }
+            throw new Error(`GitHub API Error: ${detailsJson.message || errBody.details}`);
+         } catch (e) {
+            throw new Error(`Failed to fetch tree: ${errBody.details || res.statusText}`);
+         }
+      }
+      throw new Error(`Failed to fetch tree: ${res.statusText}`);
   }
   
   const treeData: GitHubTreeResponse = await res.json();

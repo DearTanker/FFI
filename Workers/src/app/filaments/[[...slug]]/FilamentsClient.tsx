@@ -11,7 +11,7 @@ import { toSegment, fromSegment } from "@/lib/segments";
 import { FilamentProfileSummary } from "@/lib/filaments";
 
 export default function FilamentsClient() {
-  const { index, loading } = useFilamentContext();
+  const { index, loading, error } = useFilamentContext();
   const params = useParams();
   const slug = (params.slug as string[]) || [];
   
@@ -43,6 +43,18 @@ export default function FilamentsClient() {
         }
     }
   }, [file, vendor, type, series, index]);
+
+  if (error) {
+    return (
+      <FilamentsShell>
+        <Breadcrumb />
+        <div className="mt-8 rounded-md bg-red-900/20 p-4 text-red-200 border border-red-900/50">
+          <h3 className="font-semibold">无法加载耗材数据</h3>
+          <p className="mt-1 text-sm text-red-300/80">{error.message}</p>
+        </div>
+      </FilamentsShell>
+    );
+  }
 
   if (loading || !index) {
       return (

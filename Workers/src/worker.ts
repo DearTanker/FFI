@@ -2,6 +2,7 @@ type Env = {
   ASSETS: {
     fetch: (request: Request) => Promise<Response>;
   };
+  GITHUB_TOKEN?: string;
 };
 
 const worker = {
@@ -18,15 +19,19 @@ const worker = {
 
       if (!response) {
         const ghUrl = "https://api.github.com/repos/DearTanker/FFI/git/trees/main?recursive=1";
-        const ghResp = await fetch(ghUrl, {
-          headers: {
+        const headers: Record<string, string> = {
             "User-Agent": "FDM-Filament-Info-Worker",
             "Accept": "application/vnd.github+json"
-          }
-        });
+        };
+        if (env.GITHUB_TOKEN) {
+            headers["Authorization"] = `Bearer ${env.GITHUB_TOKEN}`;
+        }
+
+        const ghResp = await fetch(ghUrl, { headers });
 
         if (!ghResp.ok) {
-           return new Response(JSON.stringify({ error: "Failed to fetch from GitHub", status: ghResp.status }), {
+           const errorText = await ghResp.text();
+           return new Response(JSON.stringify({ error: "Failed to fetch from GitHub", status: ghResp.status, details: errorText }), {
              status: ghResp.status,
              headers: { "Content-Type": "application/json" }
            });
