@@ -85,10 +85,17 @@ const worker = {
 
     if (response.status === 404) {
       if (url.pathname.startsWith("/filaments/")) {
-         const spaUrl = new URL("/filaments/", request.url);
+         // Try finding the SPA entry point at /filaments/index.html
+         const spaUrl = new URL("/filaments/index.html", request.url);
          const spaResponse = await env.ASSETS.fetch(new Request(spaUrl, request));
          if (spaResponse.status === 200) {
             return spaResponse;
+         }
+         // Fallback to root index.html if filaments/index.html is missing
+         const rootSpaUrl = new URL("/index.html", request.url);
+         const rootSpaResponse = await env.ASSETS.fetch(new Request(rootSpaUrl, request));
+         if (rootSpaResponse.status === 200) {
+            return rootSpaResponse;
          }
       }
     }
