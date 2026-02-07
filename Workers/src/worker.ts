@@ -81,6 +81,11 @@ const worker = {
       return Response.redirect(to.toString(), 308);
     }
 
+    if (isNavigate && url.pathname.startsWith("/filaments")) {
+      const spaUrl = new URL("/filaments/index.html", request.url);
+      return env.ASSETS.fetch(new Request(spaUrl, request));
+    }
+
     let response = await env.ASSETS.fetch(request);
 
     if (response.status === 404) {
