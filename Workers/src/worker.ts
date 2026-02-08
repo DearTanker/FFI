@@ -76,14 +76,16 @@ const worker = {
     const accept = request.headers.get("accept") ?? "";
     const isNavigate = request.headers.get("sec-fetch-mode") === "navigate" || accept.includes("text/html");
     const isInternalAsset = url.pathname.startsWith("/_next/");
-    if (isNavigate && !isInternalAsset && url.pathname !== "/" && !url.pathname.endsWith("/")) {
-      const to = new URL(url.pathname + "/" + url.search, url);
-      return Response.redirect(to.toString(), 308);
-    }
+    const isApi = url.pathname.startsWith("/api/");
 
-    if (isNavigate && url.pathname.startsWith("/filaments")) {
+    if (url.pathname === "/filaments" || url.pathname.startsWith("/filaments/")) {
       const spaUrl = new URL("/filaments/index.html", request.url);
       return env.ASSETS.fetch(new Request(spaUrl, request));
+    }
+
+    if (!isApi && isNavigate && !isInternalAsset && url.pathname !== "/" && !url.pathname.endsWith("/")) {
+      const to = new URL(url.pathname + "/" + url.search, url);
+      return Response.redirect(to.toString(), 308);
     }
 
     let response = await env.ASSETS.fetch(request);

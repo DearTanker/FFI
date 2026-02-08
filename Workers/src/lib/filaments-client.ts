@@ -25,29 +25,71 @@ type GitHubTreeResponse = {
   truncated: boolean;
 };
 
+async function fetchTreeViaWorker(): Promise<GitHubTreeResponse> {
+  const res = await fetch("/api/github/tree");
+  const contentType = res.headers.get("content-type") ?? "";
+
+  if (!res.ok) {
+    console.error("Failed to fetch tree via worker:", res.status, res.statusText);
+    const errBody = await res.json().catch(() => ({}));
+    if (errBody && (errBody as any).details) {
+      try {
+        const detailsJson = JSON.parse((errBody as any).details as string);
+        if (detailsJson.message && typeof detailsJson.message === "string") {
+          if (detailsJson.message.includes("API rate limit exceeded")) {
+            throw new Error("GitHub API rate limit exceeded. Please try again later or configure a GITHUB_TOKEN in the Worker.");
+          }
+          throw new Error(`GitHub API Error: ${detailsJson.message}`);
+        }
+      } catch {
+        throw new Error(`Failed to fetch tree via worker: ${(errBody as any).details || res.statusText}`);
+      }
+    }
+    throw new Error(`Failed to fetch tree via worker: ${res.statusText}`);
+  }
+
+  if (!contentType.includes("application/json")) {
+    throw new Error("Worker did not return JSON for /api/github/tree, falling back to GitHub API directly.");
+  }
+
+  return res.json();
+}
+
+async function fetchTreeDirectFromGitHub(): Promise<GitHubTreeResponse> {
+  const ghUrl = "https://api.github.com/repos/DearTanker/FFI/git/trees/main?recursive=1";
+  const res = await fetch(ghUrl, {
+    headers: {
+      "User-Agent": "FDM-Filament-Info-Frontend",
+      "Accept": "application/vnd.github+json"
+    }
+  });
+
+  if (!res.ok) {
+    let message = res.statusText;
+    try {
+      const body = await res.json();
+      if (body && typeof body.message === "string") {
+        message = body.message;
+      }
+    } catch {
+    }
+    throw new Error(`Failed to fetch tree directly from GitHub: ${message}`);
+  }
+
+  return res.json();
+}
+
 export async function fetchFilamentIndex(): Promise<ClientIndex> {
   if (indexCache) return indexCache;
 
-  // Fetch from our API proxy
-  const res = await fetch("/api/github/tree");
-  if (!res.ok) {
-      console.error("Failed to fetch tree:", res.status, res.statusText);
-      const errBody = await res.json().catch(() => ({}));
-      if (errBody.details) {
-         try {
-            const detailsJson = JSON.parse(errBody.details);
-            if (detailsJson.message && detailsJson.message.includes("API rate limit exceeded")) {
-                throw new Error("GitHub API rate limit exceeded. Please try again later or configure a GITHUB_TOKEN.");
-            }
-            throw new Error(`GitHub API Error: ${detailsJson.message || errBody.details}`);
-         } catch (e) {
-            throw new Error(`Failed to fetch tree: ${errBody.details || res.statusText}`);
-         }
-      }
-      throw new Error(`Failed to fetch tree: ${res.statusText}`);
+  let treeData: GitHubTreeResponse;
+
+  try {
+    treeData = await fetchTreeViaWorker();
+  } catch (e) {
+    console.error(e);
+    treeData = await fetchTreeDirectFromGitHub();
   }
-  
-  const treeData: GitHubTreeResponse = await res.json();
 
   const vendors = new Set<string>();
   const typesByVendor = new Map<string, Set<string>>();
