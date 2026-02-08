@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { FilamentsShell } from "@/components/FilamentsShell";
 import { StaticLink } from "@/components/StaticLink";
@@ -12,9 +12,13 @@ import { FilamentProfileSummary } from "@/lib/filaments";
 
 export default function FilamentsClient() {
   const { index, loading, error } = useFilamentContext();
-  const params = useParams();
-  const slug = (params.slug as string[]) || [];
-  
+  const pathname = usePathname();
+
+  let slug: string[] = [];
+  if (pathname && pathname.startsWith("/filaments")) {
+    slug = pathname.replace(/^\/filaments\/?/, "").split("/").filter(Boolean);
+  }
+
   const vendor = slug[0] ? fromSegment(slug[0]) : undefined;
   const type = slug[1] ? fromSegment(slug[1]) : undefined;
   const series = slug[2] ? fromSegment(slug[2]) : undefined;

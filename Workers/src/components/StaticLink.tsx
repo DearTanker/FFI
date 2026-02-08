@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { AnchorHTMLAttributes } from "react";
 
 function addTrailingSlash(href: string): string {
@@ -20,5 +19,5 @@ function addTrailingSlash(href: string): string {
 
 export function StaticLink(props: AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }) {
   const { href, ...rest } = props;
-  return <Link href={addTrailingSlash(href)} {...rest} />;
+  return <a href={addTrailingSlash(href)} {...rest} />;
 }
