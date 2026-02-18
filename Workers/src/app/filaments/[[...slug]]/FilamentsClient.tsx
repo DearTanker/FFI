@@ -9,6 +9,7 @@ import { useFilamentContext } from "@/context/FilamentContext";
 import { getVendors, getTypes, getSeries, getProfiles, fetchProfileContent } from "@/lib/filaments-client";
 import { toSegment, fromSegment } from "@/lib/segments";
 import { FilamentProfileSummary } from "@/lib/filaments";
+import { ProfileDetailsView } from "@/components/ProfileDetailsView";
 
 export default function FilamentsClient() {
   const { index, loading, error } = useFilamentContext();
@@ -73,9 +74,7 @@ export default function FilamentsClient() {
                   {profileLoading ? (
                       <div>Loading profile...</div>
                   ) : profileData ? (
-                      <pre className="overflow-auto rounded bg-zinc-900 p-4 text-xs text-zinc-300">
-                          {JSON.stringify(profileData, null, 2)}
-                      </pre>
+                      <ProfileDetailsView data={profileData} />
                   ) : (
                       <div>Profile not found</div>
                   )}
