@@ -5,12 +5,14 @@ import { usePathname } from "next/navigation";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { FilamentsShell } from "@/components/FilamentsShell";
 import { StaticLink } from "@/components/StaticLink";
+import { Icon } from "@/components/Icon";
 import { useFilamentContext } from "@/context/FilamentContext";
 import { getVendors, getTypes, getSeries, getProfiles, fetchProfileContent } from "@/lib/filaments-client";
 import { toSegment, fromSegment } from "@/lib/segments";
 import { FilamentProfileSummary } from "@/lib/filaments";
 import { PresetDetailsClient } from "@/components/PresetDetailsClient";
 import { ProfileSidebarClient } from "@/components/ProfileSidebarClient";
+import { OrcaFilamentDetails } from "@/components/OrcaFilamentDetails";
 import { buildPresetModel, jsonToRecord } from "@/lib/filamentPreset";
 
 type NavState = {
@@ -35,6 +37,7 @@ export default function FilamentsClient() {
 
   const [profileData, setProfileData] = useState<Record<string, unknown> | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
+  const [detailsView, setDetailsView] = useState<'orca' | 'legacy'>('orca'); // 选择显示视图
   const [navState, setNavState] = useState<NavState>({
     selectedVendor: vendor,
     selectedType: type,
@@ -257,11 +260,44 @@ export default function FilamentsClient() {
           <div className="md:col-span-2">
             {profileLoading ? (
               <div className="text-zinc-500">Loading profile...</div>
-            ) : presetModel ? (
-              <PresetDetailsClient
-                summary={presetModel.summary}
-                tabs={presetModel.tabs}
-              />
+            ) : profileData ? (
+              <>
+                {/* View Toggle Buttons */}
+                <div className="flex gap-2 mb-4">
+                  <button
+                    onClick={() => setDetailsView('orca')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      detailsView === 'orca'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
+                    }`}
+                  >
+                    🎯 OrcaSlicer 结构
+                  </button>
+                  <button
+                    onClick={() => setDetailsView('legacy')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      detailsView === 'legacy'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
+                    }`}
+                  >
+                    📋 原始视图
+                  </button>
+                </div>
+
+                {/* Display Contents Based on View */}
+                {detailsView === 'orca' ? (
+                  <OrcaFilamentDetails data={jsonToRecord(profileData)} />
+                ) : presetModel ? (
+                  <PresetDetailsClient
+                    summary={presetModel.summary}
+                    tabs={presetModel.tabs}
+                  />
+                ) : (
+                  <div className="text-zinc-500">Unable to parse preset</div>
+                )}
+              </>
             ) : (
               <div className="text-zinc-500">Profile not found</div>
             )}
@@ -289,7 +325,10 @@ export default function FilamentsClient() {
         <nav className="w-80 shrink-0 px-2 py-2 text-sm flex flex-col gap-6">
           {/* 类型选择菜单 */}
           <div className="sticky top-6">
-            <div className="px-2 py-1 text-xs font-medium text-zinc-400">类型</div>
+            <div className="px-2 py-1 text-xs font-medium text-zinc-400 flex items-center gap-2">
+              <Icon name="filament" size={14} alt="Material Type" />
+              <span>材料类型</span>
+            </div>
             <div className="space-y-1">
               {selectedVendor ? (
                 types.length > 0 ? (
@@ -325,7 +364,10 @@ export default function FilamentsClient() {
 
           {/* 系列选择菜单 */}
           <div>
-            <div className="px-2 py-1 text-xs font-medium text-zinc-400">系列</div>
+            <div className="px-2 py-1 text-xs font-medium text-zinc-400 flex items-center gap-2">
+              <Icon name="cooling" size={14} alt="Product Series" />
+              <span>产品系列</span>
+            </div>
             <div className="space-y-1">
               {selectedType ? (
                 seriesList.length > 0 ? (
