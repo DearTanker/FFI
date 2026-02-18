@@ -2,6 +2,7 @@ const isProd = process.env.NODE_ENV === "production";
 
 const nextConfig = {
   output: isProd ? "export" : undefined,
+  distDir: ".next-out",
   trailingSlash: true,
   images: {
     unoptimized: true

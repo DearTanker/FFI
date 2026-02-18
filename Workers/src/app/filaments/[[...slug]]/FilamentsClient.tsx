@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { FilamentsShell } from "@/components/FilamentsShell";
@@ -9,6 +9,9 @@ import { useFilamentContext } from "@/context/FilamentContext";
 import { getVendors, getTypes, getSeries, getProfiles, fetchProfileContent } from "@/lib/filaments-client";
 import { toSegment, fromSegment } from "@/lib/segments";
 import { FilamentProfileSummary } from "@/lib/filaments";
+import { PresetDetailsClient } from "@/components/PresetDetailsClient";
+import { ProfileSidebarClient } from "@/components/ProfileSidebarClient";
+import { buildPresetModel, jsonToRecord } from "@/lib/filamentPreset";
 
 type NavState = {
   selectedVendor?: string;
@@ -90,37 +93,43 @@ export default function FilamentsClient() {
 
   // 当显示profile详情时
   if (file && vendor && type && series) {
+    const profiles = getProfiles(index, vendor, type, series);
+    const currentProfile = profiles.find(p => p.displayName === file);
+    const presetModel = profileData ? buildPresetModel(jsonToRecord(profileData)) : null;
+    
     return (
       <FilamentsShell>
         <Breadcrumb vendor={vendor} type={type} series={series} profileLabel={file} />
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-4">
-          {/* 左侧导航菜单 */}
-          <LeftNavMenu 
-            index={index} 
-            navState={navState}
-            setNavState={setNavState}
-            currentVendor={vendor}
-            currentType={type}
-            currentSeries={series}
-          />
-          
+          {/* 左侧边栏 */}
+          <div className="lg:col-span-1">
+            {profileLoading || !presetModel ? (
+              <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4">
+                <div className="text-sm text-zinc-500">Loading...</div>
+              </div>
+            ) : (
+              <ProfileSidebarClient
+                vendor={vendor}
+                type={type}
+                series={series}
+                fileName={currentProfile?.fileName || file}
+                profiles={profiles}
+              />
+            )}
+          </div>
+
           {/* 右侧主内容 */}
           <div className="lg:col-span-3">
-            <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-6">
-              <h2 className="text-lg font-semibold text-zinc-50">{file}</h2>
-              <div className="mt-4 text-sm text-zinc-400">
-                {vendor} • {type} • {series}
-              </div>
-              <div className="mt-6">
-                {profileLoading ? (
-                  <div className="text-zinc-500">Loading profile...</div>
-                ) : profileData ? (
-                  <ProfileDetailsView data={profileData} />
-                ) : (
-                  <div className="text-zinc-500">Profile not found</div>
-                )}
-              </div>
-            </div>
+            {profileLoading ? (
+              <div className="text-zinc-500">Loading profile...</div>
+            ) : presetModel ? (
+              <PresetDetailsClient
+                summary={presetModel.summary}
+                tabs={presetModel.tabs}
+              />
+            ) : (
+              <div className="text-zinc-500">Profile not found</div>
+            )}
           </div>
         </div>
       </FilamentsShell>
