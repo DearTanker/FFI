@@ -38,7 +38,7 @@ export function FilamentNav(props: { vendor?: string; type?: string; series?: st
   return (
     <aside className="w-72 shrink-0 border-r border-zinc-800 bg-zinc-900/40 overflow-auto">
       <div className="sticky top-0 border-b border-zinc-800 bg-zinc-950/40 px-4 py-3 backdrop-blur z-10">
-        <div className="text-sm font-semibold">耗材丝设置</div>
+        <div className="text-sm font-semibold">FDM 3D 打印耗材品牌</div>
         <div className="mt-1 text-xs text-zinc-400">耗材 → 耗材类型 → 耗材系列 → 耗材丝设置</div>
       </div>
 

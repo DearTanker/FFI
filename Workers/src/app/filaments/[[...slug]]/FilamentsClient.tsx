@@ -94,12 +94,134 @@ export default function FilamentsClient() {
   // 当显示profile详情时
   // 显示品牌页面时（仅有品牌名，无类型、系列）
   if (vendor && !type && !series) {
+    const vendorTypes = getTypes(index, vendor);
+    const selectedType = navState.selectedType || vendorTypes[0];
+    const vendorSeriesList = selectedType ? getSeries(index, vendor, selectedType) : [];
+    const selectedSeries = navState.selectedSeries || vendorSeriesList[0];
+    const profiles = vendor && selectedType && selectedSeries 
+      ? getProfiles(index, vendor, selectedType, selectedSeries)
+      : [];
+
     return (
       <FilamentsShell vendor={vendor}>
         <Breadcrumb vendor={vendor} />
+        
         <div className="mt-8">
           <h1 className="text-3xl font-bold text-zinc-50">{vendor}</h1>
-          <p className="mt-2 text-zinc-400">选择类型查看该品牌的耗材配置</p>
+          <p className="mt-2 text-zinc-400">选择下方的类型和系列查看耗材配置</p>
+        </div>
+
+        <div className="mt-8 flex gap-6">
+          {/* 二级菜单（类型 + 系列选择）*/}
+          <nav className="w-80 shrink-0 px-2 py-2 text-sm flex flex-col gap-6">
+            {/* 类型选择菜单 */}
+            <div className="sticky top-6">
+              <div className="px-2 py-1 text-xs font-medium text-zinc-400">类型</div>
+              <div className="space-y-1">
+                {vendorTypes.length > 0 ? (
+                  vendorTypes.map(t => (
+                    <button
+                      key={t}
+                      onClick={() => {
+                        const newSeriesList = getSeries(index, vendor, t);
+                        const newSeries = newSeriesList[0];
+                        setNavState({
+                          selectedVendor: vendor,
+                          selectedType: t,
+                          selectedSeries: newSeries,
+                        });
+                      }}
+                      className={`flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-zinc-800/60 w-full text-left ${
+                        t === selectedType
+                          ? 'bg-zinc-800/80 text-zinc-50'
+                          : 'text-zinc-200'
+                      }`}
+                    >
+                      <span className="truncate">{t}</span>
+                    </button>
+                  ))
+                ) : (
+                  <div className="text-xs text-zinc-500 px-2 py-1.5">暂无可用类型</div>
+                )}
+              </div>
+            </div>
+
+            {/* 系列选择菜单 */}
+            <div>
+              <div className="px-2 py-1 text-xs font-medium text-zinc-400">系列</div>
+              <div className="space-y-1">
+                {selectedType ? (
+                  vendorSeriesList.length > 0 ? (
+                    vendorSeriesList.map(s => (
+                      <button
+                        key={s}
+                        onClick={() => {
+                          setNavState({
+                            selectedVendor: vendor,
+                            selectedType: selectedType,
+                            selectedSeries: s,
+                          });
+                        }}
+                        className={`flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-zinc-800/60 w-full text-left ${
+                          s === selectedSeries
+                            ? 'bg-zinc-800/80 text-zinc-50'
+                            : 'text-zinc-200'
+                        }`}
+                      >
+                        <span className="truncate">{s}</span>
+                      </button>
+                    ))
+                  ) : (
+                    <div className="text-xs text-zinc-500 px-2 py-1.5">暂无可用系列</div>
+                  )
+                ) : (
+                  <div className="text-xs text-zinc-500 px-2 py-1.5">请先选择类型</div>
+                )}
+              </div>
+            </div>
+          </nav>
+
+          {/* 内容区域 */}
+          <div className="flex-1 min-w-0">
+            {!selectedType ? (
+              <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-8 text-center">
+                <p className="text-zinc-400">请先选择耗材类型</p>
+              </div>
+            ) : !selectedSeries ? (
+              <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-8 text-center">
+                <p className="text-zinc-400">请选择耗材系列</p>
+              </div>
+            ) : profiles.length > 0 ? (
+              <>
+                <div className="mb-6">
+                  <h2 className="text-lg font-semibold text-zinc-50 mb-1">
+                    {vendor} • {selectedType} • {selectedSeries}
+                  </h2>
+                  <p className="text-xs text-zinc-400">共 {profiles.length} 个配置</p>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {profiles.map(p => (
+                    <StaticLink
+                      key={p.fileName}
+                      href={`/filaments/${toSegment(vendor)}/${toSegment(selectedType)}/${toSegment(selectedSeries)}/${toSegment(p.displayName)}`}
+                      className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors"
+                    >
+                      <div className="text-sm font-medium text-zinc-50">{p.displayName}</div>
+                      {p.compatiblePrinters.length > 0 && (
+                        <div className="mt-1 text-xs text-zinc-400">
+                          {p.compatiblePrinters.join(", ")}
+                        </div>
+                      )}
+                    </StaticLink>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-8 text-center">
+                <p className="text-zinc-400">暂无该系列的配置</p>
+              </div>
+            )}
+          </div>
         </div>
       </FilamentsShell>
     );
@@ -168,7 +290,7 @@ export default function FilamentsClient() {
           {/* 类型选择菜单 */}
           <div className="sticky top-6">
             <div className="px-2 py-1 text-xs font-medium text-zinc-400">类型</div>
-            <div className="space-y-1 max-h-64 overflow-y-auto">
+            <div className="space-y-1">
               {selectedVendor ? (
                 types.length > 0 ? (
                   types.map(t => (
@@ -204,7 +326,7 @@ export default function FilamentsClient() {
           {/* 系列选择菜单 */}
           <div>
             <div className="px-2 py-1 text-xs font-medium text-zinc-400">系列</div>
-            <div className="space-y-1 max-h-64 overflow-y-auto">
+            <div className="space-y-1">
               {selectedType ? (
                 seriesList.length > 0 ? (
                   seriesList.map(s => (
