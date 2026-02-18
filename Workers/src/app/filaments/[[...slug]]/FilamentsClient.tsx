@@ -113,7 +113,7 @@ export default function FilamentsClient() {
     return (
       <FilamentsShell vendor={vendor} type={type} series={series}>
         <Breadcrumb vendor={vendor} type={type} series={series} profileLabel={file} />
-        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3 md:ml-[320px]">
+        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
           {/* 左侧边栏 */}
           <div className="md:col-span-1">
             {profileLoading || !presetModel ? (
@@ -171,7 +171,7 @@ export default function FilamentsClient() {
       </div>
 
       {/* 二级菜单 + 内容区域 */}
-      <div className="mt-8 grid grid-cols-1 gap-6 md:gap-8 md:ml-[320px]">
+      <div className="mt-8 grid grid-cols-1 gap-6 md:gap-8">
         {/* 内容 */}
         <div className="w-full">
           {selectedSeries && profiles.length > 0 ? (
