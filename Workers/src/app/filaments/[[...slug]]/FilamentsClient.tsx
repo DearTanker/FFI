@@ -164,85 +164,77 @@ export default function FilamentsClient() {
     <FilamentsShell vendor={selectedVendor} type={selectedType} series={selectedSeries}>
       <div className="flex gap-6">
         {/* 第二列：导航菜单（类型选择 + 系列选择）*/}
-        <div className="w-80 shrink-0 flex flex-col gap-6">
+        <nav className="w-80 shrink-0 px-2 py-2 text-sm flex flex-col gap-6">
           {/* 类型选择菜单 */}
           <div className="sticky top-6">
-            <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4">
-              <h3 className="text-sm font-semibold text-zinc-200 mb-3">
-                {selectedVendor ? '选择类型' : '请先选择品牌'}
-              </h3>
-              <div className="space-y-1 max-h-64 overflow-y-auto">
-                {selectedVendor ? (
-                  types.length > 0 ? (
-                    types.map(t => (
-                      <button
-                        key={t}
-                        onClick={() => {
-                          const newSeriesList = getSeries(index, selectedVendor, t);
-                          const newSeries = newSeriesList[0];
-                          setNavState({
-                            selectedVendor: selectedVendor,
-                            selectedType: t,
-                            selectedSeries: newSeries,
-                          });
-                        }}
-                        className={`block w-full text-left px-3 py-2 rounded text-sm transition-colors ${
-                          t === selectedType
-                            ? 'bg-emerald-500/20 text-emerald-300 font-medium'
-                            : 'text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/50'
-                        }`}
-                      >
-                        {t}
-                      </button>
-                    ))
-                  ) : (
-                    <div className="text-xs text-zinc-500 px-3 py-2">暂无可用类型</div>
-                  )
+            <div className="px-2 py-1 text-xs font-medium text-zinc-400">类型</div>
+            <div className="space-y-1 max-h-64 overflow-y-auto">
+              {selectedVendor ? (
+                types.length > 0 ? (
+                  types.map(t => (
+                    <button
+                      key={t}
+                      onClick={() => {
+                        const newSeriesList = getSeries(index, selectedVendor, t);
+                        const newSeries = newSeriesList[0];
+                        setNavState({
+                          selectedVendor: selectedVendor,
+                          selectedType: t,
+                          selectedSeries: newSeries,
+                        });
+                      }}
+                      className={`flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-zinc-800/60 w-full text-left ${
+                        t === selectedType
+                          ? 'bg-zinc-800/80 text-zinc-50'
+                          : 'text-zinc-200'
+                      }`}
+                    >
+                      <span className="truncate">{t}</span>
+                    </button>
+                  ))
                 ) : (
-                  <div className="text-xs text-zinc-500 px-3 py-2">请先在侧菜单选择品牌</div>
-                )}
-              </div>
+                  <div className="text-xs text-zinc-500 px-2 py-1.5">暂无可用类型</div>
+                )
+              ) : (
+                <div className="text-xs text-zinc-500 px-2 py-1.5">请先选择品牌</div>
+              )}
             </div>
           </div>
 
           {/* 系列选择菜单 */}
           <div>
-            <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4">
-              <h3 className="text-sm font-semibold text-zinc-200 mb-3">
-                {selectedType ? '选择系列' : '请先选择类型'}
-              </h3>
-              <div className="space-y-1 max-h-64 overflow-y-auto">
-                {selectedType ? (
-                  seriesList.length > 0 ? (
-                    seriesList.map(s => (
-                      <button
-                        key={s}
-                        onClick={() => {
-                          setNavState({
-                            selectedVendor: selectedVendor,
-                            selectedType: selectedType,
-                            selectedSeries: s,
-                          });
-                        }}
-                        className={`block w-full text-left px-3 py-2 rounded text-sm transition-colors ${
-                          s === selectedSeries
-                            ? 'bg-emerald-500/20 text-emerald-300 font-medium'
-                            : 'text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/50'
-                        }`}
-                      >
-                        {s}
-                      </button>
-                    ))
-                  ) : (
-                    <div className="text-xs text-zinc-500 px-3 py-2">暂无可用系列</div>
-                  )
+            <div className="px-2 py-1 text-xs font-medium text-zinc-400">系列</div>
+            <div className="space-y-1 max-h-64 overflow-y-auto">
+              {selectedType ? (
+                seriesList.length > 0 ? (
+                  seriesList.map(s => (
+                    <button
+                      key={s}
+                      onClick={() => {
+                        setNavState({
+                          selectedVendor: selectedVendor,
+                          selectedType: selectedType,
+                          selectedSeries: s,
+                        });
+                      }}
+                      className={`flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-zinc-800/60 w-full text-left ${
+                        s === selectedSeries
+                          ? 'bg-zinc-800/80 text-zinc-50'
+                          : 'text-zinc-200'
+                      }`}
+                    >
+                      <span className="truncate">{s}</span>
+                    </button>
+                  ))
                 ) : (
-                  <div className="text-xs text-zinc-500 px-3 py-2">选择类型后显示</div>
-                )}
-              </div>
+                  <div className="text-xs text-zinc-500 px-2 py-1.5">暂无可用系列</div>
+                )
+              ) : (
+                <div className="text-xs text-zinc-500 px-2 py-1.5">请先选择类型</div>
+              )}
             </div>
           </div>
-        </div>
+        </nav>
 
         {/* 第三列：内容区域 */}
         <div className="flex-1 min-w-0">
