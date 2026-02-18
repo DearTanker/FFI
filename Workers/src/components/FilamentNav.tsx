@@ -10,8 +10,8 @@ export function FilamentNav(props: { vendor?: string; type?: string; series?: st
   
   if (error) {
     return (
-      <aside className="h-full w-[320px] shrink-0 border-r border-zinc-800 bg-zinc-900/40">
-         <div className="sticky top-0 border-b border-zinc-800 bg-zinc-950/40 px-4 py-3 backdrop-blur">
+      <aside className="fixed inset-y-0 left-0 w-[320px] shrink-0 border-r border-zinc-800 bg-zinc-900/40 hidden md:block overflow-auto">
+         <div className="sticky top-0 border-b border-zinc-800 bg-zinc-950/40 px-4 py-3 backdrop-blur z-10">
            <div className="text-sm font-semibold text-red-400">加载失败</div>
            <div className="mt-1 text-xs text-zinc-500">请检查网络或刷新重试</div>
          </div>
@@ -24,8 +24,8 @@ export function FilamentNav(props: { vendor?: string; type?: string; series?: st
 
   if (loading || !index) {
       return (
-        <aside className="h-full w-[320px] shrink-0 border-r border-zinc-800 bg-zinc-900/40">
-           <div className="sticky top-0 border-b border-zinc-800 bg-zinc-950/40 px-4 py-3 backdrop-blur">
+        <aside className="fixed inset-y-0 left-0 w-[320px] shrink-0 border-r border-zinc-800 bg-zinc-900/40 hidden md:block overflow-auto">
+           <div className="sticky top-0 border-b border-zinc-800 bg-zinc-950/40 px-4 py-3 backdrop-blur z-10">
              <div className="text-sm font-semibold">耗材丝设置</div>
              <div className="mt-1 text-xs text-zinc-400">正在加载...</div>
            </div>
@@ -38,8 +38,8 @@ export function FilamentNav(props: { vendor?: string; type?: string; series?: st
   const seriesList = props.vendor && props.type ? getSeries(index, props.vendor, props.type) : [];
 
   return (
-    <aside className="h-full w-[320px] shrink-0 border-r border-zinc-800 bg-zinc-900/40">
-      <div className="sticky top-0 border-b border-zinc-800 bg-zinc-950/40 px-4 py-3 backdrop-blur">
+    <aside className="fixed inset-y-0 left-0 w-[320px] shrink-0 border-r border-zinc-800 bg-zinc-900/40 hidden md:block overflow-auto">
+      <div className="sticky top-0 border-b border-zinc-800 bg-zinc-950/40 px-4 py-3 backdrop-blur z-10">
         <div className="text-sm font-semibold">耗材丝设置</div>
         <div className="mt-1 text-xs text-zinc-400">耗材 → 耗材类型 → 耗材系列 → 耗材丝设置</div>
       </div>
