@@ -21,7 +21,6 @@ export const FILAMENT_FIELD_MAP: Record<string, {
   filament_density: { pageId: 'filament-basic', groupId: 'information', label: '密度', unit: 'g/cm³' },
   filament_cost: { pageId: 'filament-basic', groupId: 'information', label: '成本', unit: '¥/kg' },
   default_filament_colour: { pageId: 'filament-basic', groupId: 'information', label: '默认颜色' },
-  filament_notes: { pageId: 'filament-basic', groupId: 'information', label: '备注' },
 
   // Filament Page - Flow Ratio and Pressure Advance Group
   filament_flow_ratio: { pageId: 'filament-basic', groupId: 'flow-ratio', label: '流量比例', unit: '%' },
