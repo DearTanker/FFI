@@ -1,0 +1,851 @@
+{
+  "pages": [
+    {
+      "id": "filament",
+      "name": "Filament",
+      "displayName": "耗材",
+      "description": "Basic filament properties and printing parameters",
+      "icon": "filament",
+      "groups": [
+        {
+          "id": "basic_info",
+          "name": "Basic Information",
+          "displayName": "基本信息",
+          "collapsible": false,
+          "fields": [
+            {
+              "id": "filament_type",
+              "name": "Filament Type",
+              "displayName": "耗材类型",
+              "type": "enum",
+              "options": ["PLA", "PETG", "ABS", "ASA", "TPU", "TPE", "PA", "PC", "PPS", "PPA", "PEEK", "ULTEM", "CARBON", "FIBER"],
+              "default": "PLA",
+              "tooltip": "Material type affects print settings"
+            },
+            {
+              "id": "filament_density",
+              "name": "Density",
+              "displayName": "密度",
+              "type": "float",
+              "default": 1.24,
+              "min": 0.5,
+              "max": 2.0,
+              "unit": "g/cm³",
+              "step": 0.01
+            },
+            {
+              "id": "filament_diameter",
+              "name": "Filament Diameter",
+              "displayName": "直径",
+              "type": "float",
+              "default": 1.75,
+              "min": 1.0,
+              "max": 4.0,
+              "unit": "mm",
+              "step": 0.01
+            },
+            {
+              "id": "filament_spool_weight",
+              "name": "Spool Weight",
+              "displayName": "整卷重量",
+              "type": "float",
+              "default": 1000,
+              "min": 0,
+              "max": 50000,
+              "unit": "g"
+            },
+            {
+              "id": "filament_cost",
+              "name": "Cost",
+              "displayName": "成本",
+              "type": "float",
+              "default": 20,
+              "min": 0,
+              "max": 10000,
+              "unit": "$/kg",
+              "precision": 2
+            },
+            {
+              "id": "filament_soluble",
+              "name": "Soluble",
+              "displayName": "可溶性",
+              "type": "bool",
+              "default": false
+            },
+            {
+              "id": "filament_brimless",
+              "name": "Brimless",
+              "displayName": "无边框打印",
+              "type": "bool",
+              "default": false
+            },
+            {
+              "id": "fuzzy_skin_support",
+              "name": "Fuzzy Skin Support",
+              "displayName": "毛皮效果",
+              "type": "bool",
+              "default": false
+            }
+          ]
+        },
+        {
+          "id": "flow_pa",
+          "name": "Flow & Pressure Advance",
+          "displayName": "流量和压力提前",
+          "collapsible": true,
+          "fields": [
+            {
+              "id": "filament_flow_ratio",
+              "name": "Flow Ratio",
+              "displayName": "流量系数",
+              "type": "float",
+              "default": 1.0,
+              "min": 0.5,
+              "max": 2.0,
+              "step": 0.01,
+              "unit": "%"
+            },
+            {
+              "id": "filament_volumetric_flow_max",
+              "name": "Max Volumetric Flow",
+              "displayName": "最大体积速度",
+              "type": "float",
+              "default": 0,
+              "min": 0,
+              "max": 100,
+              "unit": "mm³/s",
+              "tooltip": "0 = Unlimited"
+            },
+            {
+              "id": "pressure_advance_k",
+              "name": "PA K Value",
+              "displayName": "PA K值",
+              "type": "float",
+              "default": 0.0,
+              "min": 0.0,
+              "max": 1.0,
+              "step": 0.001,
+              "precision": 3
+            },
+            {
+              "id": "pressure_advance_n_coef",
+              "name": "PA N Coefficient",
+              "displayName": "PA N系数",
+              "type": "float",
+              "default": 0.0,
+              "min": 0.0,
+              "max": 2.0,
+              "step": 0.001,
+              "precision": 3
+            },
+            {
+              "id": "enable_pressure_advance_auto",
+              "name": "Enable Adaptive PA",
+              "displayName": "启用自适应PA",
+              "type": "bool",
+              "default": false,
+              "tooltip": "Automatically calculate PA based on speed"
+            },
+            {
+              "id": "pressure_advance_modulation",
+              "name": "PA Modulation",
+              "displayName": "PA调制",
+              "type": "float",
+              "default": 0.0,
+              "min": 0.0,
+              "max": 1.0,
+              "step": 0.01
+            }
+          ]
+        },
+        {
+          "id": "temperature",
+          "name": "Temperature Settings",
+          "displayName": "温度设置",
+          "collapsible": true,
+          "note": "Support for 6 bed types with initial/standard layer temperatures",
+          "bedTypes": [
+            {
+              "id": "cool_plate",
+              "name": "Cool Plate",
+              "displayName": "冷却板"
+            },
+            {
+              "id": "eng_plate",
+              "name": "Steel Plate (ENG)",
+              "displayName": "钢板 (ENG)"
+            },
+            {
+              "id": "high_temp",
+              "name": "High Temp Plate",
+              "displayName": "高温涂料"
+            },
+            {
+              "id": "glass",
+              "name": "Glass Plate",
+              "displayName": "玻璃板"
+            },
+            {
+              "id": "pei",
+              "name": "PEI Coated",
+              "displayName": "PEI涂料"
+            },
+            {
+              "id": "mag_steel",
+              "name": "Magnet Steel",
+              "displayName": "磁性钢铁"
+            }
+          ],
+          "subGroups": [
+            {
+              "id": "hotend_temps",
+              "name": "Hotend Temperature",
+              "displayName": "喷嘴温度",
+              "fields": [
+                {
+                  "id": "temperature",
+                  "name": "Standard Layer",
+                  "displayName": "标准层",
+                  "type": "int",
+                  "default": 210,
+                  "min": 150,
+                  "max": 300,
+                  "unit": "°C",
+                  "appliedTo": "all"
+                },
+                {
+                  "id": "first_layer_temperature_range_low",
+                  "name": "Initial Layer Range (Low)",
+                  "displayName": "初始层范围(低)",
+                  "type": "int",
+                  "default": 200,
+                  "min": 150,
+                  "max": 250,
+                  "unit": "°C",
+                  "appliedTo": "all"
+                },
+                {
+                  "id": "first_layer_temperature_range_high",
+                  "name": "Initial Layer Range (High)",
+                  "displayName": "初始层范围(高)",
+                  "type": "int",
+                  "default": 240,
+                  "min": 150,
+                  "max": 300,
+                  "unit": "°C",
+                  "appliedTo": "all"
+                },
+                {
+                  "id": "nozzle_temperature_range_low",
+                  "name": "Standard Layer Range (Low)",
+                  "displayName": "标准层范围(低)",
+                  "type": "int",
+                  "default": 200,
+                  "min": 150,
+                  "max": 250,
+                  "unit": "°C",
+                  "appliedTo": "all"
+                },
+                {
+                  "id": "nozzle_temperature_range_high",
+                  "name": "Standard Layer Range (High)",
+                  "displayName": "标准层范围(高)",
+                  "type": "int",
+                  "default": 240,
+                  "min": 150,
+                  "max": 300,
+                  "unit": "°C",
+                  "appliedTo": "all"
+                }
+              ]
+            },
+            {
+              "id": "bed_temps",
+              "name": "Bed Temperature",
+              "displayName": "热床温度",
+              "note": "Per bed type temperature and range",
+              "fields": [
+                {
+                  "id": "cool_plate_temp",
+                  "name": "Cool Plate",
+                  "displayName": "冷却板温度",
+                  "type": "int",
+                  "default": 35,
+                  "min": 0,
+                  "max": 100,
+                  "unit": "°C",
+                  "bedType": "cool_plate"
+                },
+                {
+                  "id": "cool_plate_temp_initial_layer",
+                  "name": "Cool Plate (Initial)",
+                  "displayName": "冷却板初始层",
+                  "type": "int",
+                  "default": 35,
+                  "min": 0,
+                  "max": 100,
+                  "unit": "°C",
+                  "bedType": "cool_plate"
+                },
+                {
+                  "id": "cool_plate_temp_range_low",
+                  "name": "Cool Plate Range (Low)",
+                  "displayName": "冷却板范围(低)",
+                  "type": "int",
+                  "default": 20,
+                  "min": 0,
+                  "max": 100,
+                  "unit": "°C",
+                  "bedType": "cool_plate"
+                },
+                {
+                  "id": "cool_plate_temp_range_high",
+                  "name": "Cool Plate Range (High)",
+                  "displayName": "冷却板范围(高)",
+                  "type": "int",
+                  "default": 50,
+                  "min": 0,
+                  "max": 100,
+                  "unit": "°C",
+                  "bedType": "cool_plate"
+                },
+                {
+                  "id": "eng_plate_temp",
+                  "name": "Steel Plate (ENG)",
+                  "displayName": "钢板(ENG)温度",
+                  "type": "int",
+                  "default": 70,
+                  "min": 0,
+                  "max": 100,
+                  "unit": "°C",
+                  "bedType": "eng_plate"
+                },
+                {
+                  "id": "eng_plate_temp_initial_layer",
+                  "name": "Steel Plate (ENG) (Initial)",
+                  "displayName": "钢板(ENG)初始层",
+                  "type": "int",
+                  "default": 70,
+                  "min": 0,
+                  "max": 100,
+                  "unit": "°C",
+                  "bedType": "eng_plate"
+                }
+              ]
+            },
+            {
+              "id": "chamber_temps",
+              "name": "Chamber Temperature",
+              "displayName": "腔室温度",
+              "fields": [
+                {
+                  "id": "chamber_temperature",
+                  "name": "Chamber Temp",
+                  "displayName": "腔室温度",
+                  "type": "int",
+                  "default": 0,
+                  "min": 0,
+                  "max": 100,
+                  "unit": "°C",
+                  "tooltip": "0 = Not applicable"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cooling_limits",
+          "name": "Cooling Limits",
+          "displayName": "冷却限制",
+          "collapsible": true,
+          "fields": [
+            {
+              "id": "cool_plate_temp_range_limit",
+              "name": "Cool Plate Range",
+              "displayName": "冷却板范围",
+              "type": "range",
+              "minField": "cool_plate_temp_range_low",
+              "maxField": "cool_plate_temp_range_high",
+              "unit": "°C"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cooling",
+      "name": "Cooling",
+      "displayName": "冷却",
+      "description": "Fan control and cooling strategies",
+      "icon": "fan",
+      "groups": [
+        {
+          "id": "part_cooling",
+          "name": "Part Cooling Fan",
+          "displayName": "零件冷却风扇",
+          "fields": [
+            {
+              "id": "fan_cooling_layer_time",
+              "name": "Layer Time Threshold",
+              "displayName": "启用冷却的最小层时间",
+              "type": "float",
+              "default": 30,
+              "min": 10,
+              "max": 1000,
+              "unit": "s",
+              "tooltip": "Minimum layer time to activate part cooling"
+            },
+            {
+              "id": "close_fan_the_first_x_layers",
+              "name": "Keep Fan Off for First Layers",
+              "displayName": "前N层关闭风扇",
+              "type": "int",
+              "default": 3,
+              "min": 0,
+              "max": 20,
+              "unit": "layers"
+            },
+            {
+              "id": "min_fan_speed",
+              "name": "Minimum Fan Speed",
+              "displayName": "最小风扇速度",
+              "type": "int",
+              "default": 0,
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            },
+            {
+              "id": "max_fan_speed",
+              "name": "Maximum Fan Speed",
+              "displayName": "最大风扇速度",
+              "type": "int",
+              "default": 100,
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            },
+            {
+              "id": "full_fan_speed_layer",
+              "name": "Reach Full Speed at Layer",
+              "displayName": "达到全速的层数",
+              "type": "int",
+              "default": 4,
+              "min": 0,
+              "max": 20,
+              "unit": "layers"
+            },
+            {
+              "id": "enable_overhang_bridge_fan",
+              "name": "Increase Fan for Overhangs/Bridges",
+              "displayName": "悬垂和桥接增加风扇",
+              "type": "bool",
+              "default": true
+            },
+            {
+              "id": "additional_cooling_fan_speed",
+              "name": "Additional Cooling Fan",
+              "displayName": "额外冷却风扇速度",
+              "type": "int",
+              "default": 0,
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            }
+          ]
+        },
+        {
+          "id": "exhaust_fans",
+          "name": "Exhaust & Auxiliary Fans",
+          "displayName": "排气和辅助风扇",
+          "fields": [
+            {
+              "id": "during_print_exhaust_fan_speed",
+              "name": "During Print",
+              "displayName": "打印中排气风扇速度",
+              "type": "int",
+              "default": 70,
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            },
+            {
+              "id": "complete_print_exhaust_fan_speed",
+              "name": "After Print Complete",
+              "displayName": "完成时排气风扇速度",
+              "type": "int",
+              "default": 100,
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            },
+            {
+              "id": "activate_air_filtration",
+              "name": "Activate Air Filtration",
+              "displayName": "启用空气过滤",
+              "type": "bool",
+              "default": false
+            }
+          ]
+        },
+        {
+          "id": "layer_wise_cooling",
+          "name": "Layer-wise Cooling",
+          "displayName": "分层冷却",
+          "collapsible": true,
+          "note": "Control fan speed for specific layers (1-12)",
+          "fields": [
+            {
+              "id": "layer_1_fan_speed",
+              "name": "Layer 1",
+              "displayName": "第1层",
+              "type": "int",
+              "default": 0,
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            },
+            {
+              "id": "layer_2_fan_speed",
+              "name": "Layer 2",
+              "displayName": "第2层",
+              "type": "int",
+              "default": 0,
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            },
+            {
+              "id": "layer_3_fan_speed",
+              "name": "Layer 3",
+              "displayName": "第3层",
+              "type": "int",
+              "default": 50,
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "overrides",
+      "name": "Setting Overrides",
+      "displayName": "设置覆盖",
+      "description": "Override print-level settings at filament level",
+      "icon": "settings",
+      "groups": [
+        {
+          "id": "retraction_overrides",
+          "name": "Retraction Overrides",
+          "displayName": "回抽覆盖",
+          "fields": [
+            {
+              "id": "retract_length_override",
+              "name": "Retract Length",
+              "displayName": "回抽长度",
+              "type": "float",
+              "default": null,
+              "min": 0,
+              "max": 200,
+              "unit": "mm",
+              "nullable": true,
+              "tooltip": "Override system setting for this filament"
+            },
+            {
+              "id": "retract_lift_override",
+              "name": "Retract Lift",
+              "displayName": "回抽提起",
+              "type": "float",
+              "default": null,
+              "min": 0,
+              "max": 10,
+              "unit": "mm",
+              "nullable": true
+            },
+            {
+              "id": "retract_speed_override",
+              "name": "Retract Speed",
+              "displayName": "回抽速度",
+              "type": "int",
+              "default": null,
+              "min": 20,
+              "max": 200,
+              "unit": "mm/s",
+              "nullable": true
+            }
+          ]
+        },
+        {
+          "id": "ironing_overrides",
+          "name": "Ironing Overrides",
+          "displayName": "烫平覆盖",
+          "fields": [
+            {
+              "id": "ironing_type_override",
+              "name": "Ironing Type",
+              "displayName": "烫平类型",
+              "type": "enum",
+              "options": ["None", "Top Surfaces", "All Surfaces"],
+              "default": null,
+              "nullable": true
+            },
+            {
+              "id": "ironing_density_override",
+              "name": "Ironing Density",
+              "displayName": "烫平密度",
+              "type": "float",
+              "default": null,
+              "min": 0.0,
+              "max": 100.0,
+              "unit": "%",
+              "nullable": true
+            },
+            {
+              "id": "ironing_line_spacing_override",
+              "name": "Ironing Line Spacing",
+              "displayName": "烫平线间距",
+              "type": "float",
+              "default": null,
+              "min": 0.1,
+              "max": 10.0,
+              "unit": "mm",
+              "nullable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "advanced",
+      "name": "Advanced",
+      "displayName": "高级",
+      "description": "G-code customization and advanced features",
+      "icon": "code",
+      "groups": [
+        {
+          "id": "gcode_scripting",
+          "name": "G-code Scripts",
+          "displayName": "G代码脚本",
+          "fields": [
+            {
+              "id": "filament_start_gcode",
+              "name": "Start G-code",
+              "displayName": "启动G代码",
+              "type": "code",
+              "language": "gcode",
+              "default": "",
+              "height": 100,
+              "tooltip": "Custom G-code to run when this filament is selected"
+            },
+            {
+              "id": "filament_end_gcode",
+              "name": "End G-code",
+              "displayName": "结束G代码",
+              "type": "code",
+              "language": "gcode",
+              "default": "",
+              "height": 100,
+              "tooltip": "Custom G-code to run when filament printing ends"
+            },
+            {
+              "id": "color_change_gcode",
+              "name": "Color Change G-code",
+              "displayName": "换色G代码",
+              "type": "code",
+              "language": "gcode",
+              "default": "",
+              "height": 80,
+              "tooltip": "G-code for filament change in multi-material prints"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "multimaterial",
+      "name": "Multimaterial",
+      "displayName": "多材料",
+      "description": "Multi-material printing settings",
+      "icon": "layers",
+      "groups": [
+        {
+          "id": "mm_properties",
+          "name": "Multi-Material Properties",
+          "displayName": "多材料属性",
+          "fields": [
+            {
+              "id": "filament_extruder_color",
+              "name": "Extruder Color",
+              "displayName": "挤出机颜色",
+              "type": "color",
+              "default": "#FF0000"
+            },
+            {
+              "id": "filament_change_length",
+              "name": "Filament Change Length",
+              "displayName": "换料长度",
+              "type": "float",
+              "default": 10,
+              "min": 0,
+              "max": 200,
+              "unit": "mm"
+            },
+            {
+              "id": "wipe_on_retract",
+              "name": "Wipe on Retract",
+              "displayName": "回抽时擦拭",
+              "type": "bool",
+              "default": false
+            },
+            {
+              "id": "compatible_printers",
+              "name": "Compatible Printers",
+              "displayName": "兼容打印机",
+              "type": "selector",
+              "selectionMode": "multiple",
+              "default": [],
+              "tooltip": "This preset is only available for selected printers"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dependencies",
+      "name": "Dependencies",
+      "displayName": "依赖",
+      "description": "Preset dependencies and compatibility",
+      "icon": "link",
+      "groups": [
+        {
+          "id": "compatibility",
+          "name": "Compatibility",
+          "displayName": "兼容性",
+          "fields": [
+            {
+              "id": "compatible_printers_condition",
+              "name": "Compatible Printers Condition",
+              "displayName": "打印机兼容条件",
+              "type": "code",
+              "language": "text",
+              "default": "",
+              "height": 80,
+              "tooltip": "Expression to determine printer compatibility"
+            },
+            {
+              "id": "compatible_print_profiles_condition",
+              "name": "Compatible Print Profiles",
+              "displayName": "工艺兼容条件",
+              "type": "text",
+              "default": "",
+              "tooltip": "Compatible print/process profiles"
+            },
+            {
+              "id": "inherits",
+              "name": "Inherits From",
+              "displayName": "继承自",
+              "type": "text",
+              "default": "",
+              "tooltip": "Preset ID to inherit settings from"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "notes",
+      "name": "Notes",
+      "displayName": "备注",
+      "description": "Filament notes and documentation",
+      "icon": "note",
+      "groups": [
+        {
+          "id": "user_notes",
+          "name": "User Notes",
+          "displayName": "用户备注",
+          "fields": [
+            {
+              "id": "filament_notes",
+              "name": "Notes",
+              "displayName": "备注",
+              "type": "textarea",
+              "default": "",
+              "height": 150,
+              "placeholder": "Add notes about this filament (storage, tips, etc.)"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "fieldTypes": [
+    {
+      "id": "float",
+      "name": "Floating Point Number",
+      "component": "NumberInput",
+      "attributes": ["min", "max", "step", "precision", "unit"]
+    },
+    {
+      "id": "int",
+      "name": "Integer",
+      "component": "NumberInput",
+      "attributes": ["min", "max", "unit"]
+    },
+    {
+      "id": "bool",
+      "name": "Boolean",
+      "component": "Checkbox"
+    },
+    {
+      "id": "enum",
+      "name": "Enumeration (Dropdown)",
+      "component": "Dropdown",
+      "attributes": ["options"]
+    },
+    {
+      "id": "color",
+      "name": "Color Picker",
+      "component": "ColorPicker"
+    },
+    {
+      "id": "code",
+      "name": "Code Editor",
+      "component": "CodeEditor",
+      "attributes": ["language", "height"]
+    },
+    {
+      "id": "text",
+      "name": "Single Line Text",
+      "component": "TextInput"
+    },
+    {
+      "id": "textarea",
+      "name": "Multi-line Text",
+      "component": "TextArea",
+      "attributes": ["height", "placeholder"]
+    },
+    {
+      "id": "selector",
+      "name": "Multi-select List",
+      "component": "ListSelector",
+      "attributes": ["selectionMode"]
+    },
+    {
+      "id": "range",
+      "name": "Range Pair (Min-Max)",
+      "component": "RangePair"
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2026-02-18",
+    "source": "OrcaSlicer",
+    "totalPages": 7,
+    "totalGroups": 25,
+    "totalFields": 200,
+    "supportedLanguages": ["en", "zh", "es", "fr", "de", "ja", "pt"],
+    "wikiUrl": "https://www.orcaslicer.com/wiki"
+  }
+}
