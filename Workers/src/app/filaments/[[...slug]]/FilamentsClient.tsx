@@ -170,10 +170,71 @@ export default function FilamentsClient() {
         </div>
       </div>
 
-      {/* 二级菜单 + 内容区域 */}
-      <div className="mt-8 grid grid-cols-1 gap-6 md:gap-8">
-        {/* 内容 */}
-        <div className="w-full">
+      {/* 二级菜单 */}
+      <div className="mt-8 rounded-lg border border-zinc-800 bg-zinc-900/40 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* 耗材类型菜单 */}
+          {selectedVendor && (
+            <div>
+              <div className="text-sm font-semibold text-zinc-200 mb-3">耗材类型</div>
+              <div className="space-y-1 max-h-96 overflow-y-auto">
+                {types.map(t => (
+                  <button
+                    key={t}
+                    onClick={() => {
+                      const newSeriesList = getSeries(index, selectedVendor, t);
+                      const newSeries = newSeriesList[0];
+                      setNavState({
+                        selectedVendor: selectedVendor,
+                        selectedType: t,
+                        selectedSeries: newSeries,
+                      });
+                    }}
+                    className={`block w-full text-left px-3 py-2 rounded text-xs transition-colors ${
+                      t === selectedType
+                        ? "bg-emerald-500/20 text-emerald-300 font-medium"
+                        : "text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/50"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 耗材系列菜单 */}
+          {selectedType && (
+            <div>
+              <div className="text-sm font-semibold text-zinc-200 mb-3">耗材系列</div>
+              <div className="space-y-1 max-h-96 overflow-y-auto">
+                {seriesList.map(s => (
+                  <button
+                    key={s}
+                    onClick={() => {
+                      setNavState({
+                        selectedVendor: selectedVendor,
+                        selectedType: selectedType,
+                        selectedSeries: s,
+                      });
+                    }}
+                    className={`block w-full text-left px-3 py-2 rounded text-xs transition-colors ${
+                      s === selectedSeries
+                        ? "bg-emerald-500/20 text-emerald-300 font-medium"
+                        : "text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/50"
+                    }`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 内容区域 */}
+      <div className="mt-8">
           {selectedSeries && profiles.length > 0 ? (
             <>
               <div className="mb-6">
@@ -199,7 +260,6 @@ export default function FilamentsClient() {
           ) : (
             <div className="text-zinc-500">选择品牌、类型和系列以查看耗材配置</div>
           )}
-        </div>
       </div>
     </FilamentsShell>
   );
