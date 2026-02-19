@@ -199,10 +199,9 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                         <div className="relative w-full">
                           <input
                             readOnly
-                            value={value}
+                            value={unit ? `${value} ${unit}` : value}
                             className="h-9 w-full rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 text-sm text-zinc-100 focus:outline-none focus:border-zinc-500"
                           />
-                          {unit && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 select-none pointer-events-none">{unit}</div>}
                           <button
                             onClick={onToggleRaw}
                             className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
