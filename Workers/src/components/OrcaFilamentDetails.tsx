@@ -128,49 +128,28 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
 
                     // 渲染 INPUT - 支持显示原始值或JSON格式
                     const renderInput = (value: string, kind: string, unit?: string, showRaw: boolean = false, onToggleRaw?: () => void) => {
-                      // 如果显示原始 JSON 代码
+                      // 如果显示原始 JSON 代码 - 所有类型都用 textarea 展开显示
                       if (showRaw) {
                         // 生成完整的 JSON 片段，包括字段名和值
                         const jsonSnippet = JSON.stringify({ [fieldKey]: rawValue }, null, 2);
-                        if (kind === 'multiline') {
-                          return (
-                            <div className="relative w-full">
-                              <textarea
-                                readOnly
-                                value={jsonSnippet}
-                                className="min-h-[80px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-blue-400 focus:outline-none"
-                              />
-                              <button
-                                onClick={onToggleRaw}
-                                className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
-                                title="返回数值"
-                              >
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                                </svg>
-                              </button>
-                            </div>
-                          );
-                        } else {
-                          return (
-                            <div className="relative flex h-9 w-full items-center rounded-md border border-zinc-700 bg-zinc-950/40 px-3 focus-within:border-zinc-500 overflow-hidden">
-                              <input
-                                readOnly
-                                value={jsonSnippet}
-                                className="h-full w-full bg-transparent text-xs text-blue-400 focus:outline-none font-mono overflow-hidden"
-                              />
-                              <button
-                                onClick={onToggleRaw}
-                                className="shrink-0 ml-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
-                                title="返回数值"
-                              >
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                                </svg>
-                              </button>
-                            </div>
-                          );
-                        }
+                        return (
+                          <div className="relative w-full">
+                            <textarea
+                              readOnly
+                              value={jsonSnippet}
+                              className="min-h-[120px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-blue-400 focus:outline-none"
+                            />
+                            <button
+                              onClick={onToggleRaw}
+                              className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                              title="返回数值"
+                            >
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                              </svg>
+                            </button>
+                          </div>
+                        );
                       }
 
                       // 原始显示模式
