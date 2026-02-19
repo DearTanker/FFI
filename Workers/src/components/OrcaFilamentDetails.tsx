@@ -341,12 +341,6 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
         )}
       </div>
 
-      {/* Info Footer */}
-      <div className="text-xs text-zinc-500 p-4 rounded-lg bg-zinc-900/30 border border-zinc-800">
-        <p>
-          📋 本界面按照 OrcaSlicer 的 UI 结构组织，Tab/Page/Group 顺序与官方应用完全一致。
-        </p>
-      </div>
     </div>
   );
 }

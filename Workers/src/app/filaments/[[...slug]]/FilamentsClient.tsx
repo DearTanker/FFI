@@ -10,10 +10,9 @@ import { useFilamentContext } from "@/context/FilamentContext";
 import { getVendors, getTypes, getSeries, getProfiles, fetchProfileContent } from "@/lib/filaments-client";
 import { toSegment, fromSegment } from "@/lib/segments";
 import { FilamentProfileSummary } from "@/lib/filaments";
-import { PresetDetailsClient } from "@/components/PresetDetailsClient";
 import { ProfileSidebarClient } from "@/components/ProfileSidebarClient";
 import { OrcaFilamentDetails } from "@/components/OrcaFilamentDetails";
-import { buildPresetModel, jsonToRecord } from "@/lib/filamentPreset";
+import { jsonToRecord } from "@/lib/filamentPreset";
 
 type NavState = {
   selectedVendor?: string;
@@ -37,7 +36,7 @@ export default function FilamentsClient() {
 
   const [profileData, setProfileData] = useState<Record<string, unknown> | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
-  const [detailsView, setDetailsView] = useState<'orca' | 'legacy'>('orca'); // 选择显示视图
+
   const [navState, setNavState] = useState<NavState>({
     selectedVendor: vendor,
     selectedType: type,
@@ -233,75 +232,37 @@ export default function FilamentsClient() {
   if (file && vendor && type && series) {
     const profiles = getProfiles(index, vendor, type, series);
     const currentProfile = profiles.find(p => p.displayName === file);
-    const presetModel = profileData ? buildPresetModel(jsonToRecord(profileData)) : null;
     
     return (
       <FilamentsShell vendor={vendor} type={type} series={series}>
         <Breadcrumb vendor={vendor} type={type} series={series} profileLabel={file} />
-        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {/* 左侧边栏 */}
-          <div className="md:col-span-1">
-            {profileLoading || !presetModel ? (
-              <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4">
-                <div className="text-sm text-zinc-500">Loading...</div>
-              </div>
-            ) : (
-              <ProfileSidebarClient
-                vendor={vendor}
-                type={type}
-                series={series}
-                fileName={currentProfile?.fileName || file}
-                profiles={profiles}
-              />
-            )}
-          </div>
 
-          {/* 右侧主内容 */}
-          <div className="md:col-span-2">
-            {profileLoading ? (
-              <div className="text-zinc-500">Loading profile...</div>
-            ) : profileData ? (
-              <>
-                {/* View Toggle Buttons */}
-                <div className="flex gap-2 mb-4">
-                  <button
-                    onClick={() => setDetailsView('orca')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      detailsView === 'orca'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
-                    }`}
-                  >
-                    🎯 OrcaSlicer 结构
-                  </button>
-                  <button
-                    onClick={() => setDetailsView('legacy')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      detailsView === 'legacy'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
-                    }`}
-                  >
-                    📋 原始视图
-                  </button>
-                </div>
+        {/* 顶部：耗材丝设置信息栏 */}
+        <div className="mt-4">
+          {profileLoading || !profileData ? (
+            <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4">
+              <div className="text-sm text-zinc-500">Loading...</div>
+            </div>
+          ) : (
+            <ProfileSidebarClient
+              vendor={vendor}
+              type={type}
+              series={series}
+              fileName={currentProfile?.fileName || file}
+              profiles={profiles}
+            />
+          )}
+        </div>
 
-                {/* Display Contents Based on View */}
-                {detailsView === 'orca' ? (
-                  <OrcaFilamentDetails data={jsonToRecord(profileData)} rawData={profileData} />
-                ) : presetModel ? (
-                  <PresetDetailsClient
-                    summary={presetModel.summary}
-                    tabs={presetModel.tabs}
-                  />
-                ) : (
-                  <div className="text-zinc-500">Unable to parse preset</div>
-                )}
-              </>
-            ) : (
-              <div className="text-zinc-500">Profile not found</div>
-            )}
-          </div>
+        {/* 下方：耗材丝设置详情 */}
+        <div className="mt-6">
+          {profileLoading ? (
+            <div className="text-zinc-500">Loading profile...</div>
+          ) : profileData ? (
+            <OrcaFilamentDetails data={jsonToRecord(profileData)} rawData={profileData} />
+          ) : (
+            <div className="text-zinc-500">Profile not found</div>
+          )}
         </div>
       </FilamentsShell>
     );
