@@ -9,10 +9,12 @@ import {
   GROUP_METADATA,
   getPageFields,
   getFieldMetadata,
+  FILAMENT_FIELD_MAP,
 } from '@/lib/filamentFieldMap';
 
 interface OrcaFilamentDetailsProps {
   data: Record<string, any>;
+  rawData?: Record<string, any>; // 原始 JSON 数据
   className?: string;
 }
 
@@ -20,13 +22,32 @@ interface OrcaFilamentDetailsProps {
  * 按 OrcaSlicer Tab/Page/Group 结构显示耗材详情
  * 与新的 orcaSlicerStructure 数据模型完全一致
  */
-export function OrcaFilamentDetails({ data, className = '' }: OrcaFilamentDetailsProps) {
+export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilamentDetailsProps) {
   const [activePage, setActivePage] = useState<string>(FILAMENT_PAGE_ORDER[0]);
+  const [expandedFields, setExpandedFields] = useState<Set<string>>(new Set());
 
   const pageFields = useMemo(() => getPageFields(data, activePage), [data, activePage]);
 
   const currentPageMeta = PAGE_METADATA[activePage];
   const groupOrder = GROUP_ORDER[activePage] || [];
+
+  const toggleFieldExpand = (fieldKey: string) => {
+    const newSet = new Set(expandedFields);
+    if (newSet.has(fieldKey)) {
+      newSet.delete(fieldKey);
+    } else {
+      newSet.add(fieldKey);
+    }
+    setExpandedFields(newSet);
+  };
+
+  // 格式化 JSON 值以显示
+  const formatJsonValue = (value: any): string => {
+    if (Array.isArray(value)) {
+      return value.length === 1 ? value[0] : JSON.stringify(value);
+    }
+    return String(value);
+  };
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -100,45 +121,72 @@ export function OrcaFilamentDetails({ data, className = '' }: OrcaFilamentDetail
 
                     const meta = getFieldMetadata(fieldKey);
                     const displayValue = String(field.value || '').trim();
+                    const isExpanded = expandedFields.has(fieldKey);
+                    const rawValue = rawData ? rawData[fieldKey] : field.value;
 
                     if (!displayValue) return null;
 
                     return (
-                      <div key={fieldKey} className="flex flex-col gap-1 text-sm">
-                        <label className="text-[11px] font-medium text-zinc-400">
-                          {field.label || meta?.label || fieldKey}
-                          {field.unit && <span className="ml-1 text-zinc-500">{field.unit}</span>}
-                        </label>
-                        {field.kind === 'multiline' ? (
-                          <pre className="bg-zinc-950/50 rounded px-2 py-1 text-xs text-zinc-300 overflow-x-auto whitespace-pre-wrap break-words font-mono">
-                            {displayValue}
-                          </pre>
-                        ) : field.kind === 'bool' ? (
-                          <div className="text-zinc-100">
-                            {displayValue === '1' || displayValue.toLowerCase() === 'true' ? (
-                              <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs">
-                                ✓ 启用
-                              </span>
-                            ) : (
-                              <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-zinc-700/20 text-zinc-400 text-xs">
-                                ○ 禁用
-                              </span>
-                            )}
+                      <div key={fieldKey} className="flex flex-col gap-2 text-sm border-l-2 border-zinc-700 pl-3">
+                        {/* Field Label and Value */}
+                        <div className="flex flex-col gap-1">
+                          <label className="text-[11px] font-medium text-zinc-400">
+                            {field.label || meta?.label || fieldKey}
+                            {field.unit && <span className="ml-1 text-zinc-500">{field.unit}</span>}
+                          </label>
+                          {field.kind === 'multiline' ? (
+                            <pre className="bg-zinc-950/50 rounded px-2 py-1 text-xs text-zinc-300 overflow-x-auto whitespace-pre-wrap break-words font-mono">
+                              {displayValue}
+                            </pre>
+                          ) : field.kind === 'bool' ? (
+                            <div className="text-zinc-100">
+                              {displayValue === '1' || displayValue.toLowerCase() === 'true' ? (
+                                <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs">
+                                  ✓ 启用
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-zinc-700/20 text-zinc-400 text-xs">
+                                  ○ 禁用
+                                </span>
+                              )}
+                            </div>
+                          ) : displayValue.split('\n').length > 1 ? (
+                            <textarea
+                              className="w-full px-2 py-1 rounded bg-zinc-950/50 text-zinc-100 text-xs border border-zinc-700 resize-none"
+                              readOnly
+                              rows={Math.min(displayValue.split('\n').length, 5)}
+                              value={displayValue}
+                            />
+                          ) : (
+                            <input
+                              type="text"
+                              className="w-full px-2 py-1 rounded bg-zinc-950/50 text-zinc-100 text-xs border border-zinc-700 focus:border-blue-500 focus:outline-none"
+                              readOnly
+                              value={displayValue}
+                            />
+                          )}
+                        </div>
+
+                        {/* JSON Source Code Toggle */}
+                        <button
+                          onClick={() => toggleFieldExpand(fieldKey)}
+                          className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors flex items-center gap-1"
+                        >
+                          <span>{isExpanded ? '▼' : '▶'}</span>
+                          <span>JSON 源代码</span>
+                        </button>
+
+                        {/* JSON Source Code Display */}
+                        {isExpanded && (
+                          <div className="bg-black/50 rounded p-2 border border-zinc-700/50">
+                            <div className="text-xs text-zinc-400 mb-1">
+                              <code className="text-blue-400">&quot;{fieldKey}&quot;</code>
+                              <code className="text-zinc-500">: </code>
+                            </div>
+                            <pre className="text-xs text-zinc-300 overflow-x-auto font-mono">
+                              {JSON.stringify(rawValue, null, 2)}
+                            </pre>
                           </div>
-                        ) : displayValue.split('\n').length > 1 ? (
-                          <textarea
-                            className="w-full px-2 py-1 rounded bg-zinc-950/50 text-zinc-100 text-xs border border-zinc-700 resize-none"
-                            readOnly
-                            rows={Math.min(displayValue.split('\n').length, 5)}
-                            value={displayValue}
-                          />
-                        ) : (
-                          <input
-                            type="text"
-                            className="w-full px-2 py-1 rounded bg-zinc-950/50 text-zinc-100 text-xs border border-zinc-700 focus:border-blue-500 focus:outline-none"
-                            readOnly
-                            value={displayValue}
-                          />
                         )}
                       </div>
                     );

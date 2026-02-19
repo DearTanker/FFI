@@ -288,7 +288,7 @@ export default function FilamentsClient() {
 
                 {/* Display Contents Based on View */}
                 {detailsView === 'orca' ? (
-                  <OrcaFilamentDetails data={jsonToRecord(profileData)} />
+                  <OrcaFilamentDetails data={jsonToRecord(profileData)} rawData={profileData} />
                 ) : presetModel ? (
                   <PresetDetailsClient
                     summary={presetModel.summary}
