@@ -196,13 +196,9 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                         );
                       }
                       return (
-                        <div className="relative flex items-center h-9 w-full rounded-md border border-zinc-700 bg-zinc-950/40 px-3 focus-within:border-zinc-500 pr-10">
-                          <input
-                            readOnly
-                            value={value}
-                            className="bg-transparent text-sm text-zinc-100 focus:outline-none p-0 w-auto"
-                          />
-                          {unit && <div className="text-xs text-zinc-500 select-none ml-1 shrink-0">{unit}</div>}
+                        <div className="relative flex items-center h-9 w-full rounded-md border border-zinc-700 bg-zinc-950/40 px-3 focus-within:border-zinc-500 pr-10 overflow-hidden">
+                          <span className="text-sm text-zinc-100 truncate">{value}</span>
+                          {unit && <span className="text-xs text-zinc-500 select-none ml-1 shrink-0">{unit}</span>}
                           <button
                             onClick={onToggleRaw}
                             className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
