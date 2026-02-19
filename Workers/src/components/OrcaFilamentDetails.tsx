@@ -126,28 +126,93 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
 
                     if (!displayValue) return null;
 
-                    // 렌더링 INPUT
-                    const renderInput = (value: string, kind: string, unit?: string) => {
+                    // 渲染 INPUT - 支持显示原始值或JSON格式
+                    const renderInput = (value: string, kind: string, unit?: string, showRaw: boolean = false, onToggleRaw?: () => void) => {
+                      // 如果显示原始 JSON 代码
+                      if (showRaw) {
+                        const jsonStr = JSON.stringify(rawValue, null, 2);
+                        if (kind === 'multiline') {
+                          return (
+                            <div className="relative w-full">
+                              <textarea
+                                readOnly
+                                value={jsonStr}
+                                className="min-h-[80px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-blue-400 focus:outline-none"
+                              />
+                              <button
+                                onClick={onToggleRaw}
+                                className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                                title="返回数值"
+                              >
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                </svg>
+                              </button>
+                            </div>
+                          );
+                        } else {
+                          return (
+                            <div className="relative flex h-9 w-full items-center rounded-md border border-zinc-700 bg-zinc-950/40 px-3 focus-within:border-zinc-500 overflow-hidden">
+                              <input
+                                readOnly
+                                value={jsonStr}
+                                className="h-full w-full bg-transparent text-xs text-blue-400 focus:outline-none font-mono overflow-hidden"
+                              />
+                              <button
+                                onClick={onToggleRaw}
+                                className="shrink-0 ml-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                                title="返回数值"
+                              >
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                </svg>
+                              </button>
+                            </div>
+                          );
+                        }
+                      }
+
+                      // 原始显示模式
                       if (kind === 'bool') {
                         const isChecked = value === '1' || value.toLowerCase() === 'true';
                         return (
-                          <div className="flex h-9 items-center">
+                          <div className="relative flex h-9 w-full items-center rounded-md border border-zinc-700 bg-zinc-950/40 px-3">
                             <input 
                               type="checkbox" 
                               disabled 
                               checked={isChecked} 
                               className="h-4 w-4 rounded border-zinc-700 bg-zinc-950/40 text-emerald-500 focus:ring-emerald-500/20" 
                             />
+                            <button
+                              onClick={onToggleRaw}
+                              className="absolute right-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                              title="查看源代码"
+                            >
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                              </svg>
+                            </button>
                           </div>
                         );
                       }
                       if (kind === 'multiline') {
                         return (
-                          <textarea
-                            readOnly
-                            value={value}
-                            className="min-h-[80px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 font-mono text-[12px] text-zinc-100 focus:outline-none"
-                          />
+                          <div className="relative w-full">
+                            <textarea
+                              readOnly
+                              value={value}
+                              className="min-h-[80px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-zinc-100 focus:outline-none"
+                            />
+                            <button
+                              onClick={onToggleRaw}
+                              className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                              title="查看源代码"
+                            >
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                              </svg>
+                            </button>
+                          </div>
                         );
                       }
                       return (
@@ -155,9 +220,18 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                           <input
                             readOnly
                             value={value}
-                            className="h-full w-full bg-transparent text-sm text-zinc-100 focus:outline-none"
+                            className="h-full flex-1 bg-transparent text-sm text-zinc-100 focus:outline-none"
                           />
-                          {unit && <div className="ml-2 shrink-0 text-xs text-zinc-500 select-none">{unit}</div>}
+                          {unit && <div className="shrink-0 text-xs text-zinc-500 select-none">{unit}</div>}
+                          <button
+                            onClick={onToggleRaw}
+                            className="shrink-0 ml-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                            title="查看源代码"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                          </button>
                         </div>
                       );
                     };
@@ -178,38 +252,11 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                             ) : null}
                           </div>
 
-                          {/* Right: Input and Code Icon */}
-                          <div className="flex min-w-0 items-start gap-2">
-                            {/* Input Field */}
-                            <div className="flex-1 min-w-0">
-                              {renderInput(displayValue, field.kind, field.unit)}
-                            </div>
-                            
-                            {/* Code Icon Button */}
-                            <button
-                              onClick={() => toggleFieldExpand(fieldKey)}
-                              className="shrink-0 text-zinc-500 hover:text-zinc-300 transition-colors p-1.5 rounded hover:bg-zinc-800/30 mt-0.5"
-                              title="查看源代码"
-                            >
-                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                              </svg>
-                            </button>
+                          {/* Right: Input with Code Icon inside */}
+                          <div className="min-w-0">
+                            {renderInput(displayValue, field.kind, field.unit, isExpanded, () => toggleFieldExpand(fieldKey))}
                           </div>
                         </div>
-
-                        {/* JSON Source Code Display (below, when expanded) */}
-                        {isExpanded && (
-                          <div className="mt-2 ml-[200px] bg-black/50 rounded p-2 border border-zinc-700/50">
-                            <div className="text-xs text-zinc-400 mb-1">
-                              <code className="text-blue-400">&quot;{fieldKey}&quot;</code>
-                              <code className="text-zinc-500">: </code>
-                            </div>
-                            <pre className="text-xs text-zinc-300 overflow-x-auto font-mono">
-                              {JSON.stringify(rawValue, null, 2)}
-                            </pre>
-                          </div>
-                        )}
                       </div>
                     );
                   })}
