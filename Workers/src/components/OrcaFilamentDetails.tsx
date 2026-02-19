@@ -130,13 +130,14 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                     const renderInput = (value: string, kind: string, unit?: string, showRaw: boolean = false, onToggleRaw?: () => void) => {
                       // 如果显示原始 JSON 代码
                       if (showRaw) {
-                        const jsonStr = JSON.stringify(rawValue, null, 2);
+                        // 生成完整的 JSON 片段，包括字段名和值
+                        const jsonSnippet = JSON.stringify({ [fieldKey]: rawValue }, null, 2);
                         if (kind === 'multiline') {
                           return (
                             <div className="relative w-full">
                               <textarea
                                 readOnly
-                                value={jsonStr}
+                                value={jsonSnippet}
                                 className="min-h-[80px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-blue-400 focus:outline-none"
                               />
                               <button
@@ -155,7 +156,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                             <div className="relative flex h-9 w-full items-center rounded-md border border-zinc-700 bg-zinc-950/40 px-3 focus-within:border-zinc-500 overflow-hidden">
                               <input
                                 readOnly
-                                value={jsonStr}
+                                value={jsonSnippet}
                                 className="h-full w-full bg-transparent text-xs text-blue-400 focus:outline-none font-mono overflow-hidden"
                               />
                               <button
