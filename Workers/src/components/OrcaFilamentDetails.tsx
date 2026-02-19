@@ -50,9 +50,11 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
   };
 
   // 格式化 JSON 值以显示
+  // OrcaSlicer 始终取数组 index 0 显示耗材参数
   const formatJsonValue = (value: any): string => {
+    if (value === undefined || value === null) return '';
     if (Array.isArray(value)) {
-      return value.length === 1 ? String(value[0]) : JSON.stringify(value);
+      return value.length > 0 ? String(value[0]) : '';
     }
     return String(value);
   };
@@ -62,13 +64,14 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
     if (kind === 'bool') {
       const isChecked = value === '1' || value.toLowerCase() === 'true';
       return (
-        <div className="flex h-8 items-center rounded-md border border-zinc-700 bg-zinc-950/40 px-3">
-          <input
-            type="checkbox"
-            disabled
-            checked={isChecked}
-            className="h-4 w-4 rounded border-zinc-700 bg-zinc-950/40 text-emerald-500 focus:ring-emerald-500/20"
-          />
+        <div className="flex h-8 items-center px-1">
+          <div className={`flex h-5 w-5 items-center justify-center rounded border ${isChecked ? 'border-emerald-500 bg-emerald-500' : 'border-zinc-600 bg-zinc-800/60'}`}>
+            {isChecked && (
+              <svg className="h-3.5 w-3.5 text-white" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2 6l3 3 5-5" />
+              </svg>
+            )}
+          </div>
         </div>
       );
     }
@@ -77,14 +80,16 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
         <textarea
           readOnly
           value={value}
-          className="min-h-[80px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 font-mono text-[12px] text-zinc-100 focus:outline-none"
+          rows={1}
+          style={{ fieldSizing: 'content' } as React.CSSProperties}
+          className="w-full resize-none rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 font-mono text-[12px] text-zinc-100 focus:outline-none overflow-hidden"
         />
       );
     }
     return (
-      <div className="flex items-center h-8 rounded-md border border-zinc-700 bg-zinc-950/40 px-3 overflow-hidden">
-        <span className="text-sm text-zinc-100 truncate">{value}</span>
-        {unit && <span className="text-xs text-zinc-500 select-none ml-1 shrink-0">{unit}</span>}
+      <div className="flex items-center h-8 rounded-md border border-zinc-700 bg-zinc-950/40 px-3 pr-8 overflow-hidden">
+        <span className={`text-sm truncate ${value ? 'text-zinc-100' : 'text-zinc-600'}`}>{value || '—'}</span>
+        {unit && value && <span className="text-xs text-zinc-500 select-none ml-1 shrink-0">{unit}</span>}
       </div>
     );
   };
@@ -97,11 +102,13 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
         <textarea
           readOnly
           value={jsonSnippet}
-          className="min-h-[80px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-blue-400 focus:outline-none"
+          rows={1}
+          style={{ fieldSizing: 'content' } as React.CSSProperties}
+          className="w-full resize-none rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-blue-400 focus:outline-none overflow-hidden"
         />
         <button
           onClick={onToggle}
-          className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+          className="absolute right-2 top-1 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
           title="返回数值"
         >
           <CodeIcon />
@@ -121,11 +128,13 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
         <textarea
           readOnly
           value={jsonSnippet}
-          className="min-h-[80px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-blue-400 focus:outline-none"
+          rows={1}
+          style={{ fieldSizing: 'content' } as React.CSSProperties}
+          className="w-full resize-none rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-blue-400 focus:outline-none overflow-hidden"
         />
         <button
           onClick={onToggle}
-          className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+          className="absolute right-2 top-1 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
           title="返回数值"
         >
           <CodeIcon />
@@ -154,9 +163,6 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
 
       const meta = getFieldMetadata(fieldKey);
       const displayValue = formatJsonValue(field.value);
-
-      // 跳过空值（但保留 '0' 和 false 等）
-      if (displayValue === '' || displayValue === 'undefined' || displayValue === 'null') continue;
 
       // 处理配对字段
       if (field.paired) {
@@ -188,19 +194,23 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
         elements.push(
           <div key={pairKey} className="py-1.5">
             {isExpanded ? (
-              <div className="grid grid-cols-[160px,1fr] items-start gap-4">
+              <div className="grid grid-cols-[200px,1fr] items-start gap-4">
                 <div className="min-w-0 pt-1">
-                  <div className="text-xs text-zinc-200">{field.paired.pairLabel}</div>
+                  <div className="text-xs text-zinc-200 break-words">{field.paired.pairLabel}</div>
+                  <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{leftKey}</div>
+                  <div className="font-mono text-[10px] text-zinc-500 break-all">{rightKey}</div>
                 </div>
                 <div className="min-w-0">
                   {renderPairedJsonCode(leftKey, rightKey, () => toggleFieldExpand(pairKey))}
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-[160px,auto,1fr,auto,1fr,auto] items-center gap-2">
+              <div className="grid grid-cols-[200px,auto,1fr,auto,1fr] items-center gap-2">
                 {/* 行标签 */}
                 <div className="min-w-0">
-                  <div className="truncate text-xs text-zinc-200">{field.paired.pairLabel}</div>
+                  <div className="text-xs text-zinc-200 break-words">{field.paired.pairLabel}</div>
+                  <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{leftKey}</div>
+                  <div className="font-mono text-[10px] text-zinc-500 break-all">{rightKey}</div>
                 </div>
                 {/* 左子标签 */}
                 <div className="text-xs text-zinc-500 shrink-0">{field.paired.pairLeftLabel}</div>
@@ -210,18 +220,17 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                 </div>
                 {/* 右子标签 */}
                 <div className="text-xs text-zinc-500 shrink-0">{field.paired.pairRightLabel}</div>
-                {/* 右值 */}
-                <div className="min-w-0">
+                {/* 右值 - 带代码按钮 */}
+                <div className="relative min-w-0">
                   {renderValueBox(rightValue, rightField.unit, rightField.kind)}
+                  <button
+                    onClick={() => toggleFieldExpand(pairKey)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                    title="查看源代码"
+                  >
+                    <CodeIcon />
+                  </button>
                 </div>
-                {/* 代码按钮 */}
-                <button
-                  onClick={() => toggleFieldExpand(pairKey)}
-                  className="text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30 shrink-0"
-                  title="查看源代码"
-                >
-                  <CodeIcon />
-                </button>
               </div>
             )}
           </div>
@@ -236,35 +245,33 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
       elements.push(
         <div key={fieldKey} className="py-1.5">
           {isExpanded ? (
-            <div className="grid grid-cols-[160px,1fr] items-start gap-4">
+            <div className="grid grid-cols-[200px,1fr] items-start gap-4">
               <div className="min-w-0 pt-1">
-                <div className="text-xs text-zinc-200">{field.label || meta?.label || fieldKey}</div>
-                {(field.label || meta?.label) && field.label !== fieldKey ? (
-                  <div className="mt-0.5 font-mono text-[10px] text-zinc-500 truncate">{fieldKey}</div>
-                ) : null}
+                <div className="text-xs text-zinc-200 break-words">{field.label || meta?.label || fieldKey}</div>
+                <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{fieldKey}</div>
               </div>
               <div className="min-w-0">
                 {renderJsonCode(fieldKey, rawValue, () => toggleFieldExpand(fieldKey))}
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-[160px,1fr,auto] items-center gap-4">
+            <div className="grid grid-cols-[200px,1fr] items-center gap-4">
               {/* 标签 */}
               <div className="min-w-0">
-                <div className="truncate text-xs text-zinc-200">{field.label || meta?.label || fieldKey}</div>
+                <div className="text-xs text-zinc-200 break-words">{field.label || meta?.label || fieldKey}</div>
+                <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{fieldKey}</div>
               </div>
-              {/* 值 */}
-              <div className="min-w-0">
+              {/* 值 - 带代码按钮 */}
+              <div className="relative min-w-0">
                 {renderValueBox(displayValue, field.unit, field.kind)}
+                <button
+                  onClick={() => toggleFieldExpand(fieldKey)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                  title="查看源代码"
+                >
+                  <CodeIcon />
+                </button>
               </div>
-              {/* 代码按钮 */}
-              <button
-                onClick={() => toggleFieldExpand(fieldKey)}
-                className="text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30 shrink-0"
-                title="查看源代码"
-              >
-                <CodeIcon />
-              </button>
             </div>
           )}
         </div>

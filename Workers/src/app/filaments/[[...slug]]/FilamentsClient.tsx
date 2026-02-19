@@ -320,7 +320,8 @@ export default function FilamentsClient() {
 
   return (
     <FilamentsShell vendor={selectedVendor} type={selectedType} series={selectedSeries}>
-      <div className="flex gap-6">
+      <Breadcrumb vendor={vendor} type={type} series={series} />
+      <div className="mt-4 flex gap-6">
         {/* 第二列：导航菜单（类型选择 + 系列选择）*/}
         <nav className="w-80 shrink-0 px-2 py-2 text-sm flex flex-col gap-6">
           {/* 类型选择菜单 */}
