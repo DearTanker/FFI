@@ -7,6 +7,11 @@ import { Option, OptionGroup, TabPage } from './orcaSlicerStructure';
 
 /**
  * 耗材 JSON 字段 → OrcaSlicer UI 结构的映射 (完整)
+ * paired: 标记配对字段，同一行显示两个值
+ *   - pairKey: 配对行的唯一标识
+ *   - pairLabel: 配对行的整行标签
+ *   - pairPosition: 'left' | 'right' 表示在该行的位置
+ *   - pairLeftLabel / pairRightLabel: 左右子标签
  */
 export const FILAMENT_FIELD_MAP: Record<string, {
   pageId: string;
@@ -14,55 +19,114 @@ export const FILAMENT_FIELD_MAP: Record<string, {
   label: string;
   kind?: string;
   unit?: string;
+  paired?: {
+    pairKey: string;
+    pairLabel: string;
+    pairPosition: 'left' | 'right';
+    pairLeftLabel: string;
+    pairRightLabel: string;
+  };
 }> = {
   // ============ FILAMENT PAGE ============
   
   // Basic Information Group
-  filament_type: { pageId: 'filament-basic', groupId: 'information', label: '耗材类型' },
+  filament_type: { pageId: 'filament-basic', groupId: 'information', label: '类型' },
   filament_vendor: { pageId: 'filament-basic', groupId: 'information', label: '供应商' },
   filament_soluble: { pageId: 'filament-basic', groupId: 'information', label: '可溶性材料', kind: 'bool' },
   filament_is_support: { pageId: 'filament-basic', groupId: 'information', label: '支撑材料', kind: 'bool' },
+  filament_change_length: { pageId: 'filament-basic', groupId: 'information', label: '耗材冲击长度', unit: 'mm' },
+  required_nozzle_HRC: { pageId: 'filament-basic', groupId: 'information', label: '喷嘴硬度要求' },
+  default_filament_colour: { pageId: 'filament-basic', groupId: 'information', label: '默认颜色' },
   filament_diameter: { pageId: 'filament-basic', groupId: 'information', label: '直径', unit: 'mm' },
-  required_nozzle_HRC: { pageId: 'filament-basic', groupId: 'information', label: '硬度要求' },
-  default_filament_colour: { pageId: 'filament-basic', groupId: 'information', label: '认证颜色' },
   filament_adhesiveness_category: { pageId: 'filament-basic', groupId: 'information', label: '粘性分类' },
-  filament_density: { pageId: 'filament-basic', groupId: 'information', label: '密度', unit: 'g/cm³' },
-  filament_shrink: { pageId: 'filament-basic', groupId: 'information', label: '收缩率' },
-  filament_cost: { pageId: 'filament-basic', groupId: 'information', label: '价格', unit: '¥/kg' },
-  filament_dev_ams_drying_softening_temperature: { pageId: 'filament-basic', groupId: 'information', label: '软化温度', unit: '°C' },
-  temperature_vitrification: { pageId: 'filament-basic', groupId: 'information', label: '玻璃化温度', unit: '°C' },
+  filament_density: { pageId: 'filament-basic', groupId: 'information', label: '密度', unit: '克/立方厘米' },
+  filament_shrink: { pageId: 'filament-basic', groupId: 'information', label: '收缩率（XY）', unit: '%' },
+  filament_shrinkage_compensation_z: { pageId: 'filament-basic', groupId: 'information', label: '收缩率（Z）', unit: '%' },
+  filament_cost: { pageId: 'filament-basic', groupId: 'information', label: '价格', unit: 'money/kg' },
+  temperature_vitrification: { pageId: 'filament-basic', groupId: 'information', label: '软化温度', unit: '℃' },
+  idle_temperature: { pageId: 'filament-basic', groupId: 'information', label: '待机温度', unit: '℃' },
+  // 建议喷嘴温度 - 配对行（最小 + 最大）
+  nozzle_temperature_range_low: {
+    pageId: 'filament-basic', groupId: 'information', label: '建议喷嘴温度（最小）', unit: '℃',
+    paired: { pairKey: 'nozzle_temp_range', pairLabel: '建议喷嘴温度', pairPosition: 'left', pairLeftLabel: '最小', pairRightLabel: '最大' },
+  },
+  nozzle_temperature_range_high: {
+    pageId: 'filament-basic', groupId: 'information', label: '建议喷嘴温度（最大）', unit: '℃',
+    paired: { pairKey: 'nozzle_temp_range', pairLabel: '建议喷嘴温度', pairPosition: 'right', pairLeftLabel: '最小', pairRightLabel: '最大' },
+  },
 
   // Flow Ratio and Pressure Advance Group
-  filament_flow_ratio: { pageId: 'filament-basic', groupId: 'flow-ratio', label: '流量比例', unit: '%' },
+  filament_flow_ratio: { pageId: 'filament-basic', groupId: 'flow-ratio', label: '流量比例' },
   enable_pressure_advance: { pageId: 'filament-basic', groupId: 'flow-ratio', label: '启用压力提前', kind: 'bool' },
   pressure_advance: { pageId: 'filament-basic', groupId: 'flow-ratio', label: '压力提前' },
-  filament_max_volumetric_speed: { pageId: 'filament-basic', groupId: 'flow-ratio', label: '最大体积流量', unit: 'mm³/s' },
-  filament_velocity_adaptation_factor: { pageId: 'filament-basic', groupId: 'flow-ratio', label: '速度适配因子' },
+  adaptive_pressure_advance: { pageId: 'filament-basic', groupId: 'flow-ratio', label: '启用自适应压力提前（试验）', kind: 'bool' },
 
   // Chamber Temperature Group
-  chamber_temperatures: { pageId: 'filament-basic', groupId: 'chamber-temp', label: '腔体温度', unit: '°C' },
+  activate_chamber_temp_control: { pageId: 'filament-basic', groupId: 'chamber-temp', label: '激活温度控制', kind: 'bool' },
 
-  // Extruder Temperature Group
-  nozzle_temperature: { pageId: 'filament-basic', groupId: 'extruder-temp', label: '喷嘴温度', unit: '°C' },
-  nozzle_temperature_initial_layer: { pageId: 'filament-basic', groupId: 'extruder-temp', label: '初始层喷嘴温度', unit: '°C' },
-  nozzle_temperature_range_low: { pageId: 'filament-basic', groupId: 'extruder-temp', label: '最低推荐温度', unit: '°C' },
-  nozzle_temperature_range_high: { pageId: 'filament-basic', groupId: 'extruder-temp', label: '最高推荐温度', unit: '°C' },
+  // Print Temperature Group - 配对行（首层 + 其它层）
+  nozzle_temperature_initial_layer: {
+    pageId: 'filament-basic', groupId: 'extruder-temp', label: '喷嘴（首层）', unit: '℃',
+    paired: { pairKey: 'nozzle_temp', pairLabel: '喷嘴', pairPosition: 'left', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
+  nozzle_temperature: {
+    pageId: 'filament-basic', groupId: 'extruder-temp', label: '喷嘴（其它层）', unit: '℃',
+    paired: { pairKey: 'nozzle_temp', pairLabel: '喷嘴', pairPosition: 'right', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
 
-  // Bed Temperature Group
-  textured_plate_temp: { pageId: 'filament-basic', groupId: 'bed-temp', label: '纹理板温度 (印刷)', unit: '°C' },
-  textured_plate_temp_initial_layer: { pageId: 'filament-basic', groupId: 'bed-temp', label: '纹理板温度 (初始层)', unit: '°C' },
-  hot_plate_temp: { pageId: 'filament-basic', groupId: 'bed-temp', label: '光面板温度 (印刷)', unit: '°C' },
-  hot_plate_temp_initial_layer: { pageId: 'filament-basic', groupId: 'bed-temp', label: '光面板温度 (初始层)', unit: '°C' },
-  cool_plate_temp: { pageId: 'filament-basic', groupId: 'bed-temp', label: '冷板温度 (印刷)', unit: '°C' },
-  cool_plate_temp_initial_layer: { pageId: 'filament-basic', groupId: 'bed-temp', label: '冷板温度 (初始层)', unit: '°C' },
-  supertack_plate_temp: { pageId: 'filament-basic', groupId: 'bed-temp', label: '超粘板温度 (印刷)', unit: '°C' },
-  supertack_plate_temp_initial_layer: { pageId: 'filament-basic', groupId: 'bed-temp', label: '超粘板温度 (初始层)', unit: '°C' },
-  eng_plate_temp: { pageId: 'filament-basic', groupId: 'bed-temp', label: '工程板温度 (印刷)', unit: '°C' },
-  eng_plate_temp_initial_layer: { pageId: 'filament-basic', groupId: 'bed-temp', label: '工程板温度 (初始层)', unit: '°C' },
+  // Bed Temperature Group - 所有配对行（首层 + 其它层）
+  supertack_plate_temp_initial_layer: {
+    pageId: 'filament-basic', groupId: 'bed-temp', label: '低温打印板（超强粘附）首层', unit: '℃',
+    paired: { pairKey: 'supertack_plate', pairLabel: '低温打印板（超强粘附）', pairPosition: 'left', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
+  supertack_plate_temp: {
+    pageId: 'filament-basic', groupId: 'bed-temp', label: '低温打印板（超强粘附）其它层', unit: '℃',
+    paired: { pairKey: 'supertack_plate', pairLabel: '低温打印板（超强粘附）', pairPosition: 'right', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
+  cool_plate_temp_initial_layer: {
+    pageId: 'filament-basic', groupId: 'bed-temp', label: '低温打印热床首层', unit: '℃',
+    paired: { pairKey: 'cool_plate', pairLabel: '低温打印热床', pairPosition: 'left', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
+  cool_plate_temp: {
+    pageId: 'filament-basic', groupId: 'bed-temp', label: '低温打印热床其它层', unit: '℃',
+    paired: { pairKey: 'cool_plate', pairLabel: '低温打印热床', pairPosition: 'right', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
+  textured_cool_plate_temp_initial_layer: {
+    pageId: 'filament-basic', groupId: 'bed-temp', label: '纹理的低温打印床首层', unit: '℃',
+    paired: { pairKey: 'textured_cool_plate', pairLabel: '纹理的低温打印床', pairPosition: 'left', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
+  textured_cool_plate_temp: {
+    pageId: 'filament-basic', groupId: 'bed-temp', label: '纹理的低温打印床其它层', unit: '℃',
+    paired: { pairKey: 'textured_cool_plate', pairLabel: '纹理的低温打印床', pairPosition: 'right', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
+  eng_plate_temp_initial_layer: {
+    pageId: 'filament-basic', groupId: 'bed-temp', label: '工程材料热床首层', unit: '℃',
+    paired: { pairKey: 'eng_plate', pairLabel: '工程材料热床', pairPosition: 'left', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
+  eng_plate_temp: {
+    pageId: 'filament-basic', groupId: 'bed-temp', label: '工程材料热床其它层', unit: '℃',
+    paired: { pairKey: 'eng_plate', pairLabel: '工程材料热床', pairPosition: 'right', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
+  hot_plate_temp_initial_layer: {
+    pageId: 'filament-basic', groupId: 'bed-temp', label: '光滑PEI板/高温板首层', unit: '℃',
+    paired: { pairKey: 'hot_plate', pairLabel: '光滑PEI板/高温板', pairPosition: 'left', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
+  hot_plate_temp: {
+    pageId: 'filament-basic', groupId: 'bed-temp', label: '光滑PEI板/高温板其它层', unit: '℃',
+    paired: { pairKey: 'hot_plate', pairLabel: '光滑PEI板/高温板', pairPosition: 'right', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
+  textured_plate_temp_initial_layer: {
+    pageId: 'filament-basic', groupId: 'bed-temp', label: '纹理PEI热床首层', unit: '℃',
+    paired: { pairKey: 'textured_plate', pairLabel: '纹理PEI热床', pairPosition: 'left', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
+  textured_plate_temp: {
+    pageId: 'filament-basic', groupId: 'bed-temp', label: '纹理PEI热床其它层', unit: '℃',
+    paired: { pairKey: 'textured_plate', pairLabel: '纹理PEI热床', pairPosition: 'right', pairLeftLabel: '首层', pairRightLabel: '其它层' },
+  },
 
   // Volumetric Speed Limitation Group
-  filament_volumetric_speed: { pageId: 'filament-basic', groupId: 'volumetric-speed', label: '体积流量限制', unit: 'mm³/s' },
-  filament_adaptive_volumetric_speed: { pageId: 'filament-basic', groupId: 'volumetric-speed', label: '自适应体积流量' },
+  filament_adaptive_volumetric_speed: { pageId: 'filament-basic', groupId: 'volumetric-speed', label: '自适应体积速度', kind: 'bool' },
+  filament_max_volumetric_speed: { pageId: 'filament-basic', groupId: 'volumetric-speed', label: '最大体积速度', unit: '毫米立方/秒' },
 
   // ============ COOLING PAGE ============
   
@@ -111,7 +175,6 @@ export const FILAMENT_FIELD_MAP: Record<string, {
   filament_wipe: { pageId: 'filament-overrides', groupId: 'retraction', label: '回抽撤销', kind: 'bool' },
   filament_wipe_distance: { pageId: 'filament-overrides', groupId: 'retraction', label: '回抽撤销距离', unit: 'mm' },
   filament_retract_before_wipe: { pageId: 'filament-overrides', groupId: 'retraction', label: '切料回抽 (实验)', unit: '%' },
-  filament_change_length: { pageId: 'filament-overrides', groupId: 'retraction', label: '回抽距离', unit: 'mm' },
   filament_change_length_nc: { pageId: 'filament-overrides', groupId: 'retraction', label: '回抽距离 (无切换)', unit: 'mm' },
   filament_retraction_distances_when_cut: { pageId: 'filament-overrides', groupId: 'retraction', label: '切料回抽距离', unit: 'mm' },
   filament_long_retractions_when_cut: { pageId: 'filament-overrides', groupId: 'retraction', label: '长回抽', kind: 'bool' },
@@ -185,6 +248,7 @@ export function getPageFields(data: Record<string, any>, pageId: string): Record
         value,
         unit: mapping.unit,
         kind: mapping.kind,
+        paired: mapping.paired,
       });
     }
   }
@@ -195,10 +259,39 @@ export function getPageFields(data: Record<string, any>, pageId: string): Record
 /**
  * 获取字段的显示标签和其他元数据
  */
-export function getFieldMetadata(fieldKey: string): { label: string; unit?: string; kind?: string } | null {
+export function getFieldMetadata(fieldKey: string): { label: string; unit?: string; kind?: string; paired?: any } | null {
   const mapping = FILAMENT_FIELD_MAP[fieldKey];
-  return mapping ? { label: mapping.label, unit: mapping.unit, kind: mapping.kind } : null;
+  return mapping ? { label: mapping.label, unit: mapping.unit, kind: mapping.kind, paired: mapping.paired } : null;
 }
+
+/**
+ * 每个 Group 内的字段显示顺序
+ * 用于确保字段按 OrcaSlicer UI 中的实际顺序显示
+ */
+export const FIELD_ORDER: Record<string, string[]> = {
+  information: [
+    'filament_type', 'filament_vendor', 'filament_soluble', 'filament_is_support',
+    'filament_change_length', 'required_nozzle_HRC', 'default_filament_colour',
+    'filament_diameter', 'filament_adhesiveness_category', 'filament_density',
+    'filament_shrink', 'filament_shrinkage_compensation_z', 'filament_cost',
+    'temperature_vitrification', 'idle_temperature',
+    'nozzle_temperature_range_low', 'nozzle_temperature_range_high',
+  ],
+  'flow-ratio': [
+    'filament_flow_ratio', 'enable_pressure_advance', 'pressure_advance', 'adaptive_pressure_advance',
+  ],
+  'chamber-temp': ['activate_chamber_temp_control'],
+  'extruder-temp': ['nozzle_temperature_initial_layer', 'nozzle_temperature'],
+  'bed-temp': [
+    'supertack_plate_temp_initial_layer', 'supertack_plate_temp',
+    'cool_plate_temp_initial_layer', 'cool_plate_temp',
+    'textured_cool_plate_temp_initial_layer', 'textured_cool_plate_temp',
+    'eng_plate_temp_initial_layer', 'eng_plate_temp',
+    'hot_plate_temp_initial_layer', 'hot_plate_temp',
+    'textured_plate_temp_initial_layer', 'textured_plate_temp',
+  ],
+  'volumetric-speed': ['filament_adaptive_volumetric_speed', 'filament_max_volumetric_speed'],
+};
 
 /**
  * 按 OrcaSlicer 页面顺序获取所有页面 ID
@@ -230,11 +323,11 @@ export const GROUP_ORDER: Record<string, string[]> = {
  * Group 的显示名称和图标
  */
 export const GROUP_METADATA: Record<string, { name: string; iconName?: string }> = {
-  information: { name: '基本信息', iconName: 'information' },
-  'flow-ratio': { name: '流量比和压力推进', iconName: 'flow-ratio' },
-  'chamber-temp': { name: '打印室温度', iconName: 'chamber-temp' },
-  'extruder-temp': { name: '喷嘴温度', iconName: 'extruder-temp' },
-  'bed-temp': { name: '热床温度', iconName: 'bed-temp' },
+  information: { name: '基础信息', iconName: 'information' },
+  'flow-ratio': { name: '流量和压力提前', iconName: 'flow-ratio' },
+  'chamber-temp': { name: '打印仓温度', iconName: 'chamber-temp' },
+  'extruder-temp': { name: '打印温度', iconName: 'extruder-temp' },
+  'bed-temp': { name: '床温', iconName: 'bed-temp' },
   'volumetric-speed': { name: '体积速度限制', iconName: 'volumetric-speed' },
   'cooling-fan': { name: '冷却风扇设置', iconName: 'cooling-fan' },
   'cooling-aux-fan': { name: '辅助风扇', iconName: 'cooling-aux-fan' },

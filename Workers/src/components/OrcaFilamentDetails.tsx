@@ -10,6 +10,7 @@ import {
   getPageFields,
   getFieldMetadata,
   FILAMENT_FIELD_MAP,
+  FIELD_ORDER,
 } from '@/lib/filamentFieldMap';
 
 interface OrcaFilamentDetailsProps {
@@ -17,6 +18,13 @@ interface OrcaFilamentDetailsProps {
   rawData?: Record<string, any>; // 原始 JSON 数据
   className?: string;
 }
+
+// 代码图标 SVG
+const CodeIcon = () => (
+  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+  </svg>
+);
 
 /**
  * 按 OrcaSlicer Tab/Page/Group 结构显示耗材详情
@@ -44,9 +52,226 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
   // 格式化 JSON 值以显示
   const formatJsonValue = (value: any): string => {
     if (Array.isArray(value)) {
-      return value.length === 1 ? value[0] : JSON.stringify(value);
+      return value.length === 1 ? String(value[0]) : JSON.stringify(value);
     }
     return String(value);
+  };
+
+  // 渲染单个值框
+  const renderValueBox = (value: string, unit?: string, kind?: string) => {
+    if (kind === 'bool') {
+      const isChecked = value === '1' || value.toLowerCase() === 'true';
+      return (
+        <div className="flex h-8 items-center rounded-md border border-zinc-700 bg-zinc-950/40 px-3">
+          <input
+            type="checkbox"
+            disabled
+            checked={isChecked}
+            className="h-4 w-4 rounded border-zinc-700 bg-zinc-950/40 text-emerald-500 focus:ring-emerald-500/20"
+          />
+        </div>
+      );
+    }
+    if (kind === 'multiline') {
+      return (
+        <textarea
+          readOnly
+          value={value}
+          className="min-h-[80px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 font-mono text-[12px] text-zinc-100 focus:outline-none"
+        />
+      );
+    }
+    return (
+      <div className="flex items-center h-8 rounded-md border border-zinc-700 bg-zinc-950/40 px-3 overflow-hidden">
+        <span className="text-sm text-zinc-100 truncate">{value}</span>
+        {unit && <span className="text-xs text-zinc-500 select-none ml-1 shrink-0">{unit}</span>}
+      </div>
+    );
+  };
+
+  // 渲染展开的 JSON 代码
+  const renderJsonCode = (fieldKey: string, rawValue: any, onToggle: () => void) => {
+    const jsonSnippet = JSON.stringify({ [fieldKey]: rawValue }, null, 2);
+    return (
+      <div className="relative w-full">
+        <textarea
+          readOnly
+          value={jsonSnippet}
+          className="min-h-[80px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-blue-400 focus:outline-none"
+        />
+        <button
+          onClick={onToggle}
+          className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+          title="返回数值"
+        >
+          <CodeIcon />
+        </button>
+      </div>
+    );
+  };
+
+  // 渲染配对行的 JSON 代码（包含两个字段）
+  const renderPairedJsonCode = (leftKey: string, rightKey: string, onToggle: () => void) => {
+    const leftRaw = rawData ? rawData[leftKey] : data[leftKey];
+    const rightRaw = rawData ? rawData[rightKey] : data[rightKey];
+    const combined = { [leftKey]: leftRaw, [rightKey]: rightRaw };
+    const jsonSnippet = JSON.stringify(combined, null, 2);
+    return (
+      <div className="relative w-full">
+        <textarea
+          readOnly
+          value={jsonSnippet}
+          className="min-h-[80px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-blue-400 focus:outline-none"
+        />
+        <button
+          onClick={onToggle}
+          className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+          title="返回数值"
+        >
+          <CodeIcon />
+        </button>
+      </div>
+    );
+  };
+
+  // 渲染一个 Group 内的所有字段
+  const renderGroupFields = (groupId: string, fields: Record<string, any[]>) => {
+    const fieldOrder = FIELD_ORDER[groupId];
+
+    // 获取有序的字段 key 列表
+    const orderedKeys: string[] = fieldOrder
+      ? fieldOrder.filter((k) => fields[k])
+      : Object.keys(fields);
+
+    // 追踪已渲染的配对行，避免重复
+    const renderedPairs = new Set<string>();
+    const elements: JSX.Element[] = [];
+
+    for (const fieldKey of orderedKeys) {
+      const fieldValues = fields[fieldKey];
+      const field = Array.isArray(fieldValues) ? fieldValues[0] : fieldValues;
+      if (!field) continue;
+
+      const meta = getFieldMetadata(fieldKey);
+      const displayValue = formatJsonValue(field.value);
+
+      // 跳过空值（但保留 '0' 和 false 等）
+      if (displayValue === '' || displayValue === 'undefined' || displayValue === 'null') continue;
+
+      // 处理配对字段
+      if (field.paired) {
+        const pairKey = field.paired.pairKey;
+        if (renderedPairs.has(pairKey)) continue; // 已渲染过这个配对
+        renderedPairs.add(pairKey);
+
+        // 找到配对的另一个字段
+        const isLeft = field.paired.pairPosition === 'left';
+        const leftKey = isLeft ? fieldKey : orderedKeys.find((k) => {
+          const m = getFieldMetadata(k);
+          return m?.paired?.pairKey === pairKey && m?.paired?.pairPosition === 'left';
+        });
+        const rightKey = !isLeft ? fieldKey : orderedKeys.find((k) => {
+          const m = getFieldMetadata(k);
+          return m?.paired?.pairKey === pairKey && m?.paired?.pairPosition === 'right';
+        });
+
+        if (!leftKey || !rightKey) continue;
+
+        const leftField = Array.isArray(fields[leftKey]) ? fields[leftKey][0] : fields[leftKey];
+        const rightField = Array.isArray(fields[rightKey]) ? fields[rightKey][0] : fields[rightKey];
+        if (!leftField || !rightField) continue;
+
+        const leftValue = formatJsonValue(leftField.value);
+        const rightValue = formatJsonValue(rightField.value);
+        const isExpanded = expandedFields.has(pairKey);
+
+        elements.push(
+          <div key={pairKey} className="py-1.5">
+            {isExpanded ? (
+              <div className="grid grid-cols-[160px,1fr] items-start gap-4">
+                <div className="min-w-0 pt-1">
+                  <div className="text-xs text-zinc-200">{field.paired.pairLabel}</div>
+                </div>
+                <div className="min-w-0">
+                  {renderPairedJsonCode(leftKey, rightKey, () => toggleFieldExpand(pairKey))}
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-[160px,auto,1fr,auto,1fr,auto] items-center gap-2">
+                {/* 行标签 */}
+                <div className="min-w-0">
+                  <div className="truncate text-xs text-zinc-200">{field.paired.pairLabel}</div>
+                </div>
+                {/* 左子标签 */}
+                <div className="text-xs text-zinc-500 shrink-0">{field.paired.pairLeftLabel}</div>
+                {/* 左值 */}
+                <div className="min-w-0">
+                  {renderValueBox(leftValue, leftField.unit, leftField.kind)}
+                </div>
+                {/* 右子标签 */}
+                <div className="text-xs text-zinc-500 shrink-0">{field.paired.pairRightLabel}</div>
+                {/* 右值 */}
+                <div className="min-w-0">
+                  {renderValueBox(rightValue, rightField.unit, rightField.kind)}
+                </div>
+                {/* 代码按钮 */}
+                <button
+                  onClick={() => toggleFieldExpand(pairKey)}
+                  className="text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30 shrink-0"
+                  title="查看源代码"
+                >
+                  <CodeIcon />
+                </button>
+              </div>
+            )}
+          </div>
+        );
+        continue;
+      }
+
+      // 单值字段
+      const isExpanded = expandedFields.has(fieldKey);
+      const rawValue = rawData ? rawData[fieldKey] : field.value;
+
+      elements.push(
+        <div key={fieldKey} className="py-1.5">
+          {isExpanded ? (
+            <div className="grid grid-cols-[160px,1fr] items-start gap-4">
+              <div className="min-w-0 pt-1">
+                <div className="text-xs text-zinc-200">{field.label || meta?.label || fieldKey}</div>
+                {(field.label || meta?.label) && field.label !== fieldKey ? (
+                  <div className="mt-0.5 font-mono text-[10px] text-zinc-500 truncate">{fieldKey}</div>
+                ) : null}
+              </div>
+              <div className="min-w-0">
+                {renderJsonCode(fieldKey, rawValue, () => toggleFieldExpand(fieldKey))}
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-[160px,1fr,auto] items-center gap-4">
+              {/* 标签 */}
+              <div className="min-w-0">
+                <div className="truncate text-xs text-zinc-200">{field.label || meta?.label || fieldKey}</div>
+              </div>
+              {/* 值 */}
+              <div className="min-w-0">
+                {renderValueBox(displayValue, field.unit, field.kind)}
+              </div>
+              {/* 代码按钮 */}
+              <button
+                onClick={() => toggleFieldExpand(fieldKey)}
+                className="text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30 shrink-0"
+                title="查看源代码"
+              >
+                <CodeIcon />
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    return elements;
   };
 
   return (
@@ -76,16 +301,6 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
         })}
       </div>
 
-      {/* Page Header */}
-      {currentPageMeta && (
-        <div className="flex items-center gap-3">
-          <Icon name={currentPageMeta.iconName as any} size={32} alt={currentPageMeta.name} />
-          <div>
-            <h2 className="text-2xl font-bold text-zinc-50">{currentPageMeta.name}</h2>
-          </div>
-        </div>
-      )}
-
       {/* Groups and Fields */}
       <div className="space-y-4">
         {groupOrder.length === 0 ? (
@@ -95,15 +310,12 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
             const groupMeta = GROUP_METADATA[groupId];
             const fields = pageFields[groupId] || {};
 
-            // 如果这个 Group 没有字段，跳过它
-            if (Object.keys(fields).length === 0) {
-              return null;
-            }
+            if (Object.keys(fields).length === 0) return null;
 
             return (
               <div key={groupId} className="rounded-lg border border-zinc-800 bg-zinc-900/40 overflow-hidden">
-                {/* Group Header with Icon */}
-                <div className="border-b border-zinc-800 px-4 py-3 bg-zinc-800/30">
+                {/* Group Header */}
+                <div className="border-b border-zinc-800 px-4 py-2.5 bg-zinc-800/30">
                   <div className="flex items-center gap-3">
                     {groupMeta?.iconName && (
                       <Icon name={groupMeta.iconName as any} size={20} alt={groupMeta?.name || groupId} />
@@ -112,130 +324,9 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                   </div>
                 </div>
 
-                {/* Fields in Group */}
-                <div className="px-4 py-3 space-y-3">
-                  {Object.entries(fields).map(([fieldKey, fieldValues]) => {
-                    // fieldValues is an array, we take the first one (simplified)
-                    const field = Array.isArray(fieldValues) ? fieldValues[0] : fieldValues;
-                    if (!field) return null;
-
-                    const meta = getFieldMetadata(fieldKey);
-                    const displayValue = String(field.value || '').trim();
-                    const isExpanded = expandedFields.has(fieldKey);
-                    const rawValue = rawData ? rawData[fieldKey] : field.value;
-
-                    if (!displayValue) return null;
-
-                    // 渲染 INPUT - 支持显示原始值或JSON格式
-                    const renderInput = (value: string, kind: string, unit?: string, showRaw: boolean = false, onToggleRaw?: () => void) => {
-                      // 如果显示原始 JSON 代码 - 所有类型都用 textarea 展开显示
-                      if (showRaw) {
-                        // 生成完整的 JSON 片段，包括字段名和值
-                        const jsonSnippet = JSON.stringify({ [fieldKey]: rawValue }, null, 2);
-                        return (
-                          <div className="relative w-full">
-                            <textarea
-                              readOnly
-                              value={jsonSnippet}
-                              className="min-h-[120px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-blue-400 focus:outline-none"
-                            />
-                            <button
-                              onClick={onToggleRaw}
-                              className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
-                              title="返回数值"
-                            >
-                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                              </svg>
-                            </button>
-                          </div>
-                        );
-                      }
-
-                      // 原始显示模式
-                      if (kind === 'bool') {
-                        const isChecked = value === '1' || value.toLowerCase() === 'true';
-                        return (
-                          <div className="relative flex h-9 w-full items-center rounded-md border border-zinc-700 bg-zinc-950/40 px-3">
-                            <input 
-                              type="checkbox" 
-                              disabled 
-                              checked={isChecked} 
-                              className="h-4 w-4 rounded border-zinc-700 bg-zinc-950/40 text-emerald-500 focus:ring-emerald-500/20" 
-                            />
-                            <button
-                              onClick={onToggleRaw}
-                              className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
-                              title="查看源代码"
-                            >
-                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                              </svg>
-                            </button>
-                          </div>
-                        );
-                      }
-                      if (kind === 'multiline') {
-                        return (
-                          <div className="relative w-full">
-                            <textarea
-                              readOnly
-                              value={value}
-                              className="min-h-[80px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-zinc-100 focus:outline-none"
-                            />
-                            <button
-                              onClick={onToggleRaw}
-                              className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
-                              title="查看源代码"
-                            >
-                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                              </svg>
-                            </button>
-                          </div>
-                        );
-                      }
-                      return (
-                        <div className="relative flex items-center h-9 w-full rounded-md border border-zinc-700 bg-zinc-950/40 px-3 focus-within:border-zinc-500 pr-10 overflow-hidden">
-                          <span className="text-sm text-zinc-100 truncate">{value}</span>
-                          {unit && <span className="text-xs text-zinc-500 select-none ml-1 shrink-0">{unit}</span>}
-                          <button
-                            onClick={onToggleRaw}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
-                            title="查看源代码"
-                          >
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                            </svg>
-                          </button>
-                        </div>
-                      );
-                    };
-
-                    return (
-                      <div key={fieldKey} className="py-2">
-                        {/* left-right layout */}
-                        <div className="grid grid-cols-[200px,1fr] items-start gap-4">
-                          {/* Left: Label and Field Key */}
-                          <div className="min-w-0">
-                            <div className="truncate text-xs text-zinc-200">
-                              {field.label || meta?.label || fieldKey}
-                            </div>
-                            {(field.label || meta?.label) && field.label !== fieldKey ? (
-                              <div className="mt-0.5 font-mono text-[10px] text-zinc-500 truncate">
-                                {fieldKey}
-                              </div>
-                            ) : null}
-                          </div>
-
-                          {/* Right: Input with Code Icon inside */}
-                          <div className="min-w-0">
-                            {renderInput(displayValue, field.kind, field.unit, isExpanded, () => toggleFieldExpand(fieldKey))}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                {/* Fields */}
+                <div className="px-4 py-2 space-y-0">
+                  {renderGroupFields(groupId, fields)}
                 </div>
               </div>
             );
