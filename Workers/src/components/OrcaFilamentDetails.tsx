@@ -165,7 +165,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                             />
                             <button
                               onClick={onToggleRaw}
-                              className="absolute right-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                              className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
                               title="查看源代码"
                             >
                               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -205,7 +205,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                           {unit && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 select-none pointer-events-none">{unit}</div>}
                           <button
                             onClick={onToggleRaw}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                            className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
                             title="查看源代码"
                           >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
