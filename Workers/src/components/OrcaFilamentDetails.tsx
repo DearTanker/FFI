@@ -126,59 +126,81 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
 
                     if (!displayValue) return null;
 
+                    // 렌더링 INPUT
+                    const renderInput = (value: string, kind: string, unit?: string) => {
+                      if (kind === 'bool') {
+                        const isChecked = value === '1' || value.toLowerCase() === 'true';
+                        return (
+                          <div className="flex h-9 items-center">
+                            <input 
+                              type="checkbox" 
+                              disabled 
+                              checked={isChecked} 
+                              className="h-4 w-4 rounded border-zinc-700 bg-zinc-950/40 text-emerald-500 focus:ring-emerald-500/20" 
+                            />
+                          </div>
+                        );
+                      }
+                      if (kind === 'multiline') {
+                        return (
+                          <textarea
+                            readOnly
+                            value={value}
+                            className="min-h-[80px] w-full resize-y rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 font-mono text-[12px] text-zinc-100 focus:outline-none"
+                          />
+                        );
+                      }
+                      return (
+                        <div className="relative flex h-9 w-full items-center rounded-md border border-zinc-700 bg-zinc-950/40 px-3 focus-within:border-zinc-500">
+                          <input
+                            readOnly
+                            value={value}
+                            className="h-full w-full bg-transparent text-sm text-zinc-100 focus:outline-none"
+                          />
+                          {unit && <div className="ml-2 shrink-0 text-xs text-zinc-500 select-none">{unit}</div>}
+                        </div>
+                      );
+                    };
+
                     return (
-                      <div key={fieldKey} className="flex flex-col gap-2 text-sm border-l-2 border-zinc-700 pl-3">
-                        {/* Field Label and Value */}
-                        <div className="flex flex-col gap-1">
-                          <label className="text-[11px] font-medium text-zinc-400">
-                            {field.label || meta?.label || fieldKey}
-                            {field.unit && <span className="ml-1 text-zinc-500">{field.unit}</span>}
-                          </label>
-                          {field.kind === 'multiline' ? (
-                            <pre className="bg-zinc-950/50 rounded px-2 py-1 text-xs text-zinc-300 overflow-x-auto whitespace-pre-wrap break-words font-mono">
-                              {displayValue}
-                            </pre>
-                          ) : field.kind === 'bool' ? (
-                            <div className="text-zinc-100">
-                              {displayValue === '1' || displayValue.toLowerCase() === 'true' ? (
-                                <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs">
-                                  ✓ 启用
-                                </span>
-                              ) : (
-                                <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-zinc-700/20 text-zinc-400 text-xs">
-                                  ○ 禁用
-                                </span>
-                              )}
+                      <div key={fieldKey} className="py-2">
+                        {/* left-right layout */}
+                        <div className="grid grid-cols-[200px,1fr] items-start gap-4">
+                          {/* Left: Label and Field Key */}
+                          <div className="min-w-0">
+                            <div className="truncate text-xs text-zinc-200">
+                              {field.label || meta?.label || fieldKey}
                             </div>
-                          ) : displayValue.split('\n').length > 1 ? (
-                            <textarea
-                              className="w-full px-2 py-1 rounded bg-zinc-950/50 text-zinc-100 text-xs border border-zinc-700 resize-none"
-                              readOnly
-                              rows={Math.min(displayValue.split('\n').length, 5)}
-                              value={displayValue}
-                            />
-                          ) : (
-                            <input
-                              type="text"
-                              className="w-full px-2 py-1 rounded bg-zinc-950/50 text-zinc-100 text-xs border border-zinc-700 focus:border-blue-500 focus:outline-none"
-                              readOnly
-                              value={displayValue}
-                            />
-                          )}
+                            {(field.label || meta?.label) && field.label !== fieldKey ? (
+                              <div className="mt-0.5 font-mono text-[10px] text-zinc-500 truncate">
+                                {fieldKey}
+                              </div>
+                            ) : null}
+                          </div>
+
+                          {/* Right: Input and Code Icon */}
+                          <div className="flex min-w-0 items-start gap-2">
+                            {/* Input Field */}
+                            <div className="flex-1 min-w-0">
+                              {renderInput(displayValue, field.kind, field.unit)}
+                            </div>
+                            
+                            {/* Code Icon Button */}
+                            <button
+                              onClick={() => toggleFieldExpand(fieldKey)}
+                              className="shrink-0 text-zinc-500 hover:text-zinc-300 transition-colors p-1.5 rounded hover:bg-zinc-800/30 mt-0.5"
+                              title="查看源代码"
+                            >
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
 
-                        {/* JSON Source Code Toggle */}
-                        <button
-                          onClick={() => toggleFieldExpand(fieldKey)}
-                          className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors flex items-center gap-1"
-                        >
-                          <span>{isExpanded ? '▼' : '▶'}</span>
-                          <span>JSON 源代码</span>
-                        </button>
-
-                        {/* JSON Source Code Display */}
+                        {/* JSON Source Code Display (below, when expanded) */}
                         {isExpanded && (
-                          <div className="bg-black/50 rounded p-2 border border-zinc-700/50">
+                          <div className="mt-2 ml-[200px] bg-black/50 rounded p-2 border border-zinc-700/50">
                             <div className="text-xs text-zinc-400 mb-1">
                               <code className="text-blue-400">&quot;{fieldKey}&quot;</code>
                               <code className="text-zinc-500">: </code>
