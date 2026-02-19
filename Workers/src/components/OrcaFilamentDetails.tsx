@@ -196,15 +196,16 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                         );
                       }
                       return (
-                        <div className="relative w-full">
+                        <div className="relative flex items-center h-9 w-full rounded-md border border-zinc-700 bg-zinc-950/40 px-3 focus-within:border-zinc-500 pr-10">
                           <input
                             readOnly
-                            value={unit ? `${value} ${unit}` : value}
-                            className="h-9 w-full rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 text-sm text-zinc-100 focus:outline-none focus:border-zinc-500"
+                            value={value}
+                            className="bg-transparent text-sm text-zinc-100 focus:outline-none flex-1 p-0"
                           />
+                          {unit && <div className="text-xs text-zinc-500 select-none ml-2 shrink-0">{unit}</div>}
                           <button
                             onClick={onToggleRaw}
-                            className="absolute right-2 top-2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
                             title="查看源代码"
                           >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
