@@ -96,33 +96,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
 
   // 渲染展开的 JSON 代码
   const renderJsonCode = (fieldKey: string, rawValue: any, onToggle: () => void) => {
-    const jsonSnippet = JSON.stringify({ [fieldKey]: rawValue }, null, 2);
-    return (
-      <div className="relative w-full">
-        <textarea
-          readOnly
-          value={jsonSnippet}
-          rows={1}
-          style={{ fieldSizing: 'content' } as React.CSSProperties}
-          className="w-full resize-none rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-10 font-mono text-[12px] text-blue-400 focus:outline-none overflow-hidden"
-        />
-        <button
-          onClick={onToggle}
-          className="absolute right-2 top-1 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
-          title="返回数值"
-        >
-          <CodeIcon />
-        </button>
-      </div>
-    );
-  };
-
-  // 渲染配对行的 JSON 代码（包含两个字段）
-  const renderPairedJsonCode = (leftKey: string, rightKey: string, onToggle: () => void) => {
-    const leftRaw = rawData ? rawData[leftKey] : data[leftKey];
-    const rightRaw = rawData ? rawData[rightKey] : data[rightKey];
-    const combined = { [leftKey]: leftRaw, [rightKey]: rightRaw };
-    const jsonSnippet = JSON.stringify(combined, null, 2);
+    const jsonSnippet = `"${fieldKey}": ${JSON.stringify(rawValue, null, 2)}`;
     return (
       <div className="relative w-full">
         <textarea
@@ -189,50 +163,59 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
 
         const leftValue = formatJsonValue(leftField.value);
         const rightValue = formatJsonValue(rightField.value);
-        const isExpanded = expandedFields.has(pairKey);
+        const leftExpanded = expandedFields.has(leftKey);
+        const rightExpanded = expandedFields.has(rightKey);
+        const leftRawValue = rawData ? rawData[leftKey] : leftField.value;
+        const rightRawValue = rawData ? rawData[rightKey] : rightField.value;
 
         elements.push(
           <div key={pairKey} className="py-1.5">
-            {isExpanded ? (
-              <div className="grid grid-cols-[200px,1fr] items-start gap-4">
-                <div className="min-w-0 pt-1">
-                  <div className="text-xs text-zinc-200 break-words">{field.paired.pairLabel}</div>
-                  <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{leftKey}</div>
-                  <div className="font-mono text-[10px] text-zinc-500 break-all">{rightKey}</div>
-                </div>
-                <div className="min-w-0">
-                  {renderPairedJsonCode(leftKey, rightKey, () => toggleFieldExpand(pairKey))}
-                </div>
+            <div className="grid grid-cols-[200px,auto,1fr,auto,1fr] items-center gap-2">
+              {/* 行标签 */}
+              <div className="min-w-0">
+                <div className="text-xs text-zinc-200 break-words">{field.paired.pairLabel}</div>
+                <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{leftKey}</div>
+                <div className="font-mono text-[10px] text-zinc-500 break-all">{rightKey}</div>
               </div>
-            ) : (
-              <div className="grid grid-cols-[200px,auto,1fr,auto,1fr] items-center gap-2">
-                {/* 行标签 */}
-                <div className="min-w-0">
-                  <div className="text-xs text-zinc-200 break-words">{field.paired.pairLabel}</div>
-                  <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{leftKey}</div>
-                  <div className="font-mono text-[10px] text-zinc-500 break-all">{rightKey}</div>
-                </div>
-                {/* 左子标签 */}
-                <div className="text-xs text-zinc-500 shrink-0">{field.paired.pairLeftLabel}</div>
-                {/* 左值 */}
-                <div className="min-w-0">
-                  {renderValueBox(leftValue, leftField.unit, leftField.kind)}
-                </div>
-                {/* 右子标签 */}
-                <div className="text-xs text-zinc-500 shrink-0">{field.paired.pairRightLabel}</div>
-                {/* 右值 - 带代码按钮 */}
-                <div className="relative min-w-0">
-                  {renderValueBox(rightValue, rightField.unit, rightField.kind)}
-                  <button
-                    onClick={() => toggleFieldExpand(pairKey)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
-                    title="查看源代码"
-                  >
-                    <CodeIcon />
-                  </button>
-                </div>
+              {/* 左子标签 */}
+              <div className="text-xs text-zinc-500 shrink-0">{field.paired.pairLeftLabel}</div>
+              {/* 左值 */}
+              <div className="relative min-w-0">
+                {leftExpanded ? (
+                  renderJsonCode(leftKey, leftRawValue, () => toggleFieldExpand(leftKey))
+                ) : (
+                  <>
+                    {renderValueBox(leftValue, leftField.unit, leftField.kind)}
+                    <button
+                      onClick={() => toggleFieldExpand(leftKey)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                      title="查看源代码"
+                    >
+                      <CodeIcon />
+                    </button>
+                  </>
+                )}
               </div>
-            )}
+              {/* 右子标签 */}
+              <div className="text-xs text-zinc-500 shrink-0">{field.paired.pairRightLabel}</div>
+              {/* 右值 */}
+              <div className="relative min-w-0">
+                {rightExpanded ? (
+                  renderJsonCode(rightKey, rightRawValue, () => toggleFieldExpand(rightKey))
+                ) : (
+                  <>
+                    {renderValueBox(rightValue, rightField.unit, rightField.kind)}
+                    <button
+                      onClick={() => toggleFieldExpand(rightKey)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                      title="查看源代码"
+                    >
+                      <CodeIcon />
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
         );
         continue;

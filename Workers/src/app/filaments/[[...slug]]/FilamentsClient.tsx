@@ -118,7 +118,10 @@ export default function FilamentsClient() {
           <nav className="w-80 shrink-0 px-2 py-2 text-sm flex flex-col gap-6">
             {/* 类型选择菜单 */}
             <div className="sticky top-6">
-              <div className="px-2 py-1 text-xs font-medium text-zinc-400">类型</div>
+              <div className="px-2 py-1 text-xs font-medium text-zinc-400 flex items-center gap-2">
+                <Icon name="filament" size={14} alt="Material Type" />
+                <span>类型</span>
+              </div>
               <div className="space-y-1">
                 {vendorTypes.length > 0 ? (
                   vendorTypes.map(t => (
@@ -150,7 +153,10 @@ export default function FilamentsClient() {
 
             {/* 系列选择菜单 */}
             <div>
-              <div className="px-2 py-1 text-xs font-medium text-zinc-400">系列</div>
+              <div className="px-2 py-1 text-xs font-medium text-zinc-400 flex items-center gap-2">
+                <Icon name="filament" size={14} alt="Product Series" />
+                <span>系列</span>
+              </div>
               <div className="space-y-1">
                 {selectedType ? (
                   vendorSeriesList.length > 0 ? (
@@ -208,12 +214,12 @@ export default function FilamentsClient() {
                       href={`/filaments/${toSegment(vendor)}/${toSegment(selectedType)}/${toSegment(selectedSeries)}/${toSegment(p.displayName)}`}
                       className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors"
                     >
-                      <div className="text-sm font-medium text-zinc-50">{p.displayName}</div>
-                      {p.compatiblePrinters.length > 0 && (
-                        <div className="mt-1 text-xs text-zinc-400">
-                          {p.compatiblePrinters.join(", ")}
-                        </div>
-                      )}
+                      <div className="text-sm font-medium text-zinc-50">{p.displayName.replace(/\s*@.*$/, '') || p.displayName}</div>
+                      <div className="mt-1 text-xs text-zinc-400">
+                        {p.compatiblePrinters.length > 0
+                          ? p.compatiblePrinters.join(", ")
+                          : p.displayName.match(/@\s*(.+)$/)?.[1] || ''}
+                      </div>
                     </StaticLink>
                   ))}
                 </div>
@@ -236,33 +242,34 @@ export default function FilamentsClient() {
     return (
       <FilamentsShell vendor={vendor} type={type} series={series}>
         <Breadcrumb vendor={vendor} type={type} series={series} profileLabel={file} />
+        <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-[280px,1fr]">
+          {/* 左侧边栏 */}
+          <div>
+            {profileLoading || !profileData ? (
+              <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4">
+                <div className="text-sm text-zinc-500">Loading...</div>
+              </div>
+            ) : (
+              <ProfileSidebarClient
+                vendor={vendor}
+                type={type}
+                series={series}
+                fileName={currentProfile?.fileName || file}
+                profiles={profiles}
+              />
+            )}
+          </div>
 
-        {/* 顶部：耗材丝设置信息栏 */}
-        <div className="mt-4">
-          {profileLoading || !profileData ? (
-            <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4">
-              <div className="text-sm text-zinc-500">Loading...</div>
-            </div>
-          ) : (
-            <ProfileSidebarClient
-              vendor={vendor}
-              type={type}
-              series={series}
-              fileName={currentProfile?.fileName || file}
-              profiles={profiles}
-            />
-          )}
-        </div>
-
-        {/* 下方：耗材丝设置详情 */}
-        <div className="mt-6">
-          {profileLoading ? (
-            <div className="text-zinc-500">Loading profile...</div>
-          ) : profileData ? (
-            <OrcaFilamentDetails data={jsonToRecord(profileData)} rawData={profileData} />
-          ) : (
-            <div className="text-zinc-500">Profile not found</div>
-          )}
+          {/* 右侧详情 */}
+          <div className="min-w-0">
+            {profileLoading ? (
+              <div className="text-zinc-500">Loading profile...</div>
+            ) : profileData ? (
+              <OrcaFilamentDetails data={jsonToRecord(profileData)} rawData={profileData} />
+            ) : (
+              <div className="text-zinc-500">Profile not found</div>
+            )}
+          </div>
         </div>
       </FilamentsShell>
     );
@@ -327,7 +334,7 @@ export default function FilamentsClient() {
           {/* 系列选择菜单 */}
           <div>
             <div className="px-2 py-1 text-xs font-medium text-zinc-400 flex items-center gap-2">
-              <Icon name="cooling" size={14} alt="Product Series" />
+              <Icon name="filament" size={14} alt="Product Series" />
               <span>产品系列</span>
             </div>
             <div className="space-y-1">
@@ -391,12 +398,12 @@ export default function FilamentsClient() {
                     href={`/filaments/${toSegment(selectedVendor)}/${toSegment(selectedType)}/${toSegment(selectedSeries)}/${toSegment(p.displayName)}`}
                     className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors"
                   >
-                    <div className="text-sm font-medium text-zinc-50">{p.displayName}</div>
-                    {p.compatiblePrinters.length > 0 && (
-                      <div className="mt-1 text-xs text-zinc-400">
-                        {p.compatiblePrinters.join(", ")}
-                      </div>
-                    )}
+                    <div className="text-sm font-medium text-zinc-50">{p.displayName.replace(/\s*@.*$/, '') || p.displayName}</div>
+                    <div className="mt-1 text-xs text-zinc-400">
+                      {p.compatiblePrinters.length > 0
+                        ? p.compatiblePrinters.join(", ")
+                        : p.displayName.match(/@\s*(.+)$/)?.[1] || ''}
+                    </div>
                   </StaticLink>
                 ))}
               </div>
