@@ -128,7 +128,10 @@ const en: LocaleMessages = {
     filament_tower_ironing_area:         'Tower ironing area',
     filament_tower_interface_purge_volume:'Interface layer purge length',
     filament_tower_interface_print_temp: 'Interface layer print temperature',
-    filament_cooling_before_tower:       'Cooling before wipe tower',
+
+    // ---- Multimaterial: Multi Filament ----
+    long_retractions_when_ec:            'Long retraction when extruder change',
+    retraction_distances_when_ec:        'Retraction distance when extruder change',
 
     // ---- Multimaterial: Single Extruder Toolchange ----
     filament_loading_speed_start:        'Loading speed at the start',
@@ -195,6 +198,7 @@ const en: LocaleMessages = {
     'gcode-start':              'Start G-code',
     'gcode-end':                'End G-code',
     'tower-params':             'Wipe Tower Parameters',
+    'multi-filament':            'Multi Filament',
     'toolchange-single':        'Single Extruder Toolchange',
     'toolchange-multi':         'Multi Extruder Toolchange',
     'compatible-printers':      'Compatible Printers',

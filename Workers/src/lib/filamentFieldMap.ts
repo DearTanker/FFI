@@ -210,7 +210,10 @@ export const FILAMENT_FIELD_MAP: Record<string, {
   filament_tower_ironing_area: { pageId: 'filament-multimaterial', groupId: 'tower-params', unit: 'mm²' },
   filament_tower_interface_purge_volume: { pageId: 'filament-multimaterial', groupId: 'tower-params', unit: 'mm' },
   filament_tower_interface_print_temp: { pageId: 'filament-multimaterial', groupId: 'tower-params', unit: '℃' },
-  filament_cooling_before_tower: { pageId: 'filament-multimaterial', groupId: 'tower-params' },
+
+  // 复丝 Group
+  long_retractions_when_ec: { pageId: 'filament-multimaterial', groupId: 'multi-filament', kind: 'bool' },
+  retraction_distances_when_ec: { pageId: 'filament-multimaterial', groupId: 'multi-filament', unit: 'mm' },
 
   // 单挤出机多材料打印机的换色参数 Group
   filament_loading_speed_start: { pageId: 'filament-multimaterial', groupId: 'toolchange-single', unit: 'mm/s' },
@@ -382,7 +385,10 @@ export const FIELD_ORDER: Record<string, string[]> = {
     'filament_minimal_purge_on_wipe_tower',
     'filament_tower_interface_pre_extrusion_dist', 'filament_tower_interface_pre_extrusion_length',
     'filament_tower_ironing_area', 'filament_tower_interface_purge_volume',
-    'filament_tower_interface_print_temp', 'filament_cooling_before_tower',
+    'filament_tower_interface_print_temp',
+  ],
+  'multi-filament': [
+    'long_retractions_when_ec', 'retraction_distances_when_ec',
   ],
   'toolchange-single': [
     'filament_loading_speed_start', 'filament_loading_speed',
@@ -425,7 +431,7 @@ export const GROUP_ORDER: Record<string, string[]> = {
   'filament-cooling': ['cooling-specific-layer', 'cooling-part-fan', 'cooling-aux-fan', 'cooling-exhaust'],
   'filament-overrides': ['retraction', 'ironing'],
   'filament-advanced': ['gcode-start', 'gcode-end'],
-  'filament-multimaterial': ['tower-params', 'toolchange-single', 'toolchange-multi'],
+  'filament-multimaterial': ['tower-params', 'multi-filament', 'toolchange-single', 'toolchange-multi'],
   'filament-dependencies': ['compatible-printers'],
   'filament-notes': ['notes'],
 };
@@ -449,6 +455,7 @@ export const GROUP_METADATA: Record<string, { iconName?: string }> = {
   'gcode-start': { iconName: 'gcode' },
   'gcode-end': { iconName: 'gcode' },
   'tower-params': { iconName: 'tower' },
+  'multi-filament': {},
   'toolchange-single': { iconName: 'toolchange' },
   'toolchange-multi': { iconName: 'toolchange-multi-extruder' },
   'compatible-printers': { iconName: 'dependencies-printers' },
