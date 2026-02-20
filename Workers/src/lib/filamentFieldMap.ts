@@ -211,10 +211,6 @@ export const FILAMENT_FIELD_MAP: Record<string, {
   filament_tower_interface_purge_volume: { pageId: 'filament-multimaterial', groupId: 'tower-params', unit: 'mm' },
   filament_tower_interface_print_temp: { pageId: 'filament-multimaterial', groupId: 'tower-params', unit: '℃' },
 
-  // 复丝 Group
-  long_retractions_when_ec: { pageId: 'filament-multimaterial', groupId: 'multi-filament', kind: 'bool' },
-  retraction_distances_when_ec: { pageId: 'filament-multimaterial', groupId: 'multi-filament', unit: 'mm' },
-
   // 单挤出机多材料打印机的换色参数 Group
   filament_loading_speed_start: { pageId: 'filament-multimaterial', groupId: 'toolchange-single', unit: 'mm/s' },
   filament_loading_speed: { pageId: 'filament-multimaterial', groupId: 'toolchange-single', unit: 'mm/s' },
@@ -226,21 +222,11 @@ export const FILAMENT_FIELD_MAP: Record<string, {
   filament_cooling_final_speed: { pageId: 'filament-multimaterial', groupId: 'toolchange-single', unit: 'mm/s' },
   filament_ramming_volumetric_speed: { pageId: 'filament-multimaterial', groupId: 'toolchange-single' },
   filament_stamping_distance: { pageId: 'filament-multimaterial', groupId: 'toolchange-single' },
-  counter_coef_1: { pageId: 'filament-multimaterial', groupId: 'toolchange-single' },
-  counter_coef_2: { pageId: 'filament-multimaterial', groupId: 'toolchange-single' },
-  counter_coef_3: { pageId: 'filament-multimaterial', groupId: 'toolchange-single' },
-  counter_limit_min: { pageId: 'filament-multimaterial', groupId: 'toolchange-single' },
-  counter_limit_max: { pageId: 'filament-multimaterial', groupId: 'toolchange-single' },
 
   // 多挤出机多材料打印机的换色参数 Group
   filament_multitool_ramming: { pageId: 'filament-multimaterial', groupId: 'toolchange-multi', kind: 'bool' },
   filament_multitool_ramming_volume: { pageId: 'filament-multimaterial', groupId: 'toolchange-multi', unit: 'mm³' },
   filament_multitool_ramming_flow: { pageId: 'filament-multimaterial', groupId: 'toolchange-multi', unit: 'mm³/s' },
-  hole_coef_1: { pageId: 'filament-multimaterial', groupId: 'toolchange-multi' },
-  hole_coef_2: { pageId: 'filament-multimaterial', groupId: 'toolchange-multi' },
-  hole_coef_3: { pageId: 'filament-multimaterial', groupId: 'toolchange-multi' },
-  hole_limit_min: { pageId: 'filament-multimaterial', groupId: 'toolchange-multi' },
-  hole_limit_max: { pageId: 'filament-multimaterial', groupId: 'toolchange-multi' },
 
   // ============ DEPENDENCIES PAGE ============
 
@@ -387,22 +373,15 @@ export const FIELD_ORDER: Record<string, string[]> = {
     'filament_tower_ironing_area', 'filament_tower_interface_purge_volume',
     'filament_tower_interface_print_temp',
   ],
-  'multi-filament': [
-    'long_retractions_when_ec', 'retraction_distances_when_ec',
-  ],
   'toolchange-single': [
     'filament_loading_speed_start', 'filament_loading_speed',
     'filament_unloading_speed_start', 'filament_unloading_speed',
     'filament_toolchange_delay', 'filament_cooling_moves',
     'filament_cooling_initial_speed', 'filament_cooling_final_speed',
     'filament_ramming_volumetric_speed', 'filament_stamping_distance',
-    'counter_coef_1', 'counter_coef_2', 'counter_coef_3',
-    'counter_limit_min', 'counter_limit_max',
   ],
   'toolchange-multi': [
     'filament_multitool_ramming', 'filament_multitool_ramming_volume', 'filament_multitool_ramming_flow',
-    'hole_coef_1', 'hole_coef_2', 'hole_coef_3',
-    'hole_limit_min', 'hole_limit_max',
   ],
   // Dependencies page
   'compatible-printers': ['compatible_printers'],
@@ -431,7 +410,7 @@ export const GROUP_ORDER: Record<string, string[]> = {
   'filament-cooling': ['cooling-specific-layer', 'cooling-part-fan', 'cooling-aux-fan', 'cooling-exhaust'],
   'filament-overrides': ['retraction', 'ironing'],
   'filament-advanced': ['gcode-start', 'gcode-end'],
-  'filament-multimaterial': ['tower-params', 'multi-filament', 'toolchange-single', 'toolchange-multi'],
+  'filament-multimaterial': ['tower-params', 'toolchange-single', 'toolchange-multi'],
   'filament-dependencies': ['compatible-printers'],
   'filament-notes': ['notes'],
 };
@@ -455,7 +434,6 @@ export const GROUP_METADATA: Record<string, { iconName?: string }> = {
   'gcode-start': { iconName: 'gcode' },
   'gcode-end': { iconName: 'gcode' },
   'tower-params': { iconName: 'tower' },
-  'multi-filament': {},
   'toolchange-single': { iconName: 'toolchange' },
   'toolchange-multi': { iconName: 'toolchange-multi-extruder' },
   'compatible-printers': { iconName: 'dependencies-printers' },

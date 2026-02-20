@@ -129,10 +129,6 @@ const en: LocaleMessages = {
     filament_tower_interface_purge_volume:'Interface layer purge length',
     filament_tower_interface_print_temp: 'Interface layer print temperature',
 
-    // ---- Multimaterial: Multi Filament ----
-    long_retractions_when_ec:            'Long retraction when extruder change',
-    retraction_distances_when_ec:        'Retraction distance when extruder change',
-
     // ---- Multimaterial: Single Extruder Toolchange ----
     filament_loading_speed_start:        'Loading speed at the start',
     filament_loading_speed:              'Loading speed',
@@ -144,21 +140,11 @@ const en: LocaleMessages = {
     filament_cooling_final_speed:        'Speed of the last cooling move',
     filament_ramming_volumetric_speed:   'Ramming volumetric speed',
     filament_stamping_distance:          'Stamping distance from cooling tube center',
-    counter_coef_1:                      'Color calibration parameter 1',
-    counter_coef_2:                      'Color calibration parameter 2',
-    counter_coef_3:                      'Color calibration parameter 3',
-    counter_limit_min:                   'Color calibration min',
-    counter_limit_max:                   'Color calibration max',
 
     // ---- Multimaterial: Multi Extruder Toolchange ----
     filament_multitool_ramming:          'Enable multi-tool ramming',
     filament_multitool_ramming_volume:   'Multi-tool ramming volume',
     filament_multitool_ramming_flow:     'Multi-tool ramming flow',
-    hole_coef_1:                         'Color calibration parameter 1',
-    hole_coef_2:                         'Color calibration parameter 2',
-    hole_coef_3:                         'Color calibration parameter 3',
-    hole_limit_min:                      'Color calibration min',
-    hole_limit_max:                      'Color calibration max',
 
     // ---- Dependencies ----
     compatible_printers:                 'Compatible printers',
@@ -198,7 +184,6 @@ const en: LocaleMessages = {
     'gcode-start':              'Start G-code',
     'gcode-end':                'End G-code',
     'tower-params':             'Wipe Tower Parameters',
-    'multi-filament':            'Multi Filament',
     'toolchange-single':        'Single Extruder Toolchange',
     'toolchange-multi':         'Multi Extruder Toolchange',
     'compatible-printers':      'Compatible Printers',

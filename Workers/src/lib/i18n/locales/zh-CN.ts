@@ -133,10 +133,6 @@ const zhCN: LocaleMessages = {
     filament_tower_interface_purge_volume:'Interface layer purge length',  // L(...)
     filament_tower_interface_print_temp: 'Interface layer print temperature', // L(...)
 
-    // ---- Multimaterial: 复丝 ----
-    long_retractions_when_ec:            '更换挤出机时长回缩',               // L("Long retraction when extruder change")
-    retraction_distances_when_ec:        '更换挤出机时的回缩距离',           // L("Retraction distance when extruder change")
-
     // ---- Multimaterial: 单挤出机换色参数 ----
     filament_loading_speed_start:        '加载初始速度',                   // L("Loading speed at the start")
     filament_loading_speed:              '装载速度',                       // L("Loading speed")
@@ -148,21 +144,11 @@ const zhCN: LocaleMessages = {
     filament_cooling_final_speed:        '最后一次冷却移动的速度',         // L("Speed of the last cooling move")
     filament_ramming_volumetric_speed:   '尖端成型加载速度',               // --
     filament_stamping_distance:          '从冷却管中心测量的尖端成型距离', // L("Stamping distance...")
-    counter_coef_1:                      '色彩校准参数 1',                 // --
-    counter_coef_2:                      '色彩校准参数 2',                 // --
-    counter_coef_3:                      '色彩校准参数 3',                 // --
-    counter_limit_min:                   '色彩校准最小值',                 // --
-    counter_limit_max:                   '色彩校准最大值',                 // --
 
     // ---- Multimaterial: 多挤出机换色参数 ----
     filament_multitool_ramming:          '启用多色尖端成型设置',           // --
     filament_multitool_ramming_volume:   '多色尖端成型体积',               // --
     filament_multitool_ramming_flow:     '多色尖端成型流量',               // --
-    hole_coef_1:                         '色彩校准参数 1',                 // --
-    hole_coef_2:                         '色彩校准参数 2',                 // --
-    hole_coef_3:                         '色彩校准参数 3',                 // --
-    hole_limit_min:                      '色彩校准最小值',                 // --
-    hole_limit_max:                      '色彩校准最大值',                 // --
 
     // ---- Dependencies ----
     compatible_printers:                 '兼容打印机',                     // L("Compatible printers")
@@ -202,7 +188,6 @@ const zhCN: LocaleMessages = {
     'gcode-start':              '耗材丝起始G-code',
     'gcode-end':                '耗材丝结束G-code',
     'tower-params':             '色塔参数',
-    'multi-filament':            '复丝',
     'toolchange-single':        '单挤出机多材料打印机的换色参数',
     'toolchange-multi':         '多挤出机多材料打印机的换色参数',
     'compatible-printers':      '兼容打印机',
