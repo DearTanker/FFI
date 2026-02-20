@@ -13,6 +13,7 @@ import { FilamentProfileSummary } from "@/lib/filaments";
 import { ProfileSidebarClient } from "@/components/ProfileSidebarClient";
 import { OrcaFilamentDetails } from "@/components/OrcaFilamentDetails";
 import { jsonToRecord } from "@/lib/filamentPreset";
+import { tUI } from "@/lib/i18n";
 
 type NavState = {
   selectedVendor?: string;
@@ -77,7 +78,7 @@ export default function FilamentsClient() {
       <FilamentsShell>
         <Breadcrumb />
         <div className="mt-8 rounded-md bg-red-900/20 p-4 text-red-200 border border-red-900/50">
-          <h3 className="font-semibold">无法加载耗材数据</h3>
+          <h3 className="font-semibold">{tUI('error_load')}</h3>
           <p className="mt-1 text-sm text-red-300/80">{error.message}</p>
         </div>
       </FilamentsShell>
@@ -109,7 +110,7 @@ export default function FilamentsClient() {
         
         <div className="mt-8">
           <h1 className="text-3xl font-bold text-zinc-50">{getBrandDisplayName(index, vendor)}</h1>
-          <p className="mt-2 text-zinc-400">选择下方的类型和系列查看耗材配置</p>
+          <p className="mt-2 text-zinc-400">{tUI('brand_instruction')}</p>
         </div>
         <hr className="mt-6 border-zinc-800" />
 
@@ -120,7 +121,7 @@ export default function FilamentsClient() {
             <div className="sticky top-6">
               <div className="px-2 py-1 text-xs font-medium text-zinc-400 flex items-center gap-2">
                 <Icon name="filament" size={14} alt="Material Type" />
-                <span>类型</span>
+                <span>{tUI('type')}</span>
               </div>
               <div className="space-y-1">
                 {vendorTypes.length > 0 ? (
@@ -146,7 +147,7 @@ export default function FilamentsClient() {
                     </button>
                   ))
                 ) : (
-                  <div className="text-xs text-zinc-500 px-2 py-1.5">暂无可用类型</div>
+                  <div className="text-xs text-zinc-500 px-2 py-1.5">{tUI('no_types')}</div>
                 )}
               </div>
             </div>
@@ -155,7 +156,7 @@ export default function FilamentsClient() {
             <div>
               <div className="px-2 py-1 text-xs font-medium text-zinc-400 flex items-center gap-2">
                 <Icon name="filament" size={14} alt="Product Series" />
-                <span>系列</span>
+                <span>{tUI('series')}</span>
               </div>
               <div className="space-y-1">
                 {selectedType ? (
@@ -180,10 +181,10 @@ export default function FilamentsClient() {
                       </button>
                     ))
                   ) : (
-                    <div className="text-xs text-zinc-500 px-2 py-1.5">暂无可用系列</div>
+                    <div className="text-xs text-zinc-500 px-2 py-1.5">{tUI('no_series')}</div>
                   )
                 ) : (
-                  <div className="text-xs text-zinc-500 px-2 py-1.5">请先选择类型</div>
+                  <div className="text-xs text-zinc-500 px-2 py-1.5">{tUI('select_type_first')}</div>
                 )}
               </div>
             </div>
@@ -193,11 +194,11 @@ export default function FilamentsClient() {
           <div className="flex-1 min-w-0">
             {!selectedType ? (
               <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-8 text-center">
-                <p className="text-zinc-400">请先选择耗材类型</p>
+                <p className="text-zinc-400">{tUI('select_type_prompt')}</p>
               </div>
             ) : !selectedSeries ? (
               <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-8 text-center">
-                <p className="text-zinc-400">请选择耗材系列</p>
+                <p className="text-zinc-400">{tUI('select_series_prompt')}</p>
               </div>
             ) : profiles.length > 0 ? (
               <>
@@ -205,7 +206,7 @@ export default function FilamentsClient() {
                   <h2 className="text-lg font-semibold text-zinc-50 mb-1">
                     {getBrandDisplayName(index, vendor)} • {selectedType} • {selectedSeries}
                   </h2>
-                  <p className="text-xs text-zinc-400">共 {profiles.length} 个配置</p>
+                  <p className="text-xs text-zinc-400">{tUI('profile_count', { count: profiles.length })}</p>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {profiles.map(p => (
@@ -226,7 +227,7 @@ export default function FilamentsClient() {
               </>
             ) : (
               <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-8 text-center">
-                <p className="text-zinc-400">暂无该系列的配置</p>
+                <p className="text-zinc-400">{tUI('no_profiles')}</p>
               </div>
             )}
           </div>
@@ -293,7 +294,7 @@ export default function FilamentsClient() {
         <>
           <div className="mt-8">
             <h1 className="text-3xl font-bold text-zinc-50">{getBrandDisplayName(index, vendor)}</h1>
-            <p className="mt-2 text-zinc-400">选择下方的类型和系列查看耗材配置</p>
+            <p className="mt-2 text-zinc-400">{tUI('brand_instruction')}</p>
           </div>
           <hr className="mt-6 border-zinc-800" />
         </>
@@ -305,7 +306,7 @@ export default function FilamentsClient() {
           <div className="sticky top-6">
             <div className="px-2 py-1 text-xs font-medium text-zinc-400 flex items-center gap-2">
               <Icon name="filament" size={14} alt="Material Type" />
-              <span>材料类型</span>
+              <span>{tUI('material_type')}</span>
             </div>
             <div className="space-y-1">
               {selectedVendor ? (
@@ -332,10 +333,10 @@ export default function FilamentsClient() {
                     </button>
                   ))
                 ) : (
-                  <div className="text-xs text-zinc-500 px-2 py-1.5">暂无可用类型</div>
+                  <div className="text-xs text-zinc-500 px-2 py-1.5">{tUI('no_types')}</div>
                 )
               ) : (
-                <div className="text-xs text-zinc-500 px-2 py-1.5">请先选择品牌</div>
+                <div className="text-xs text-zinc-500 px-2 py-1.5">{tUI('select_brand_first')}</div>
               )}
             </div>
           </div>
@@ -344,7 +345,7 @@ export default function FilamentsClient() {
           <div>
             <div className="px-2 py-1 text-xs font-medium text-zinc-400 flex items-center gap-2">
               <Icon name="filament" size={14} alt="Product Series" />
-              <span>产品系列</span>
+              <span>{tUI('product_series')}</span>
             </div>
             <div className="space-y-1">
               {selectedType ? (
@@ -369,10 +370,10 @@ export default function FilamentsClient() {
                     </button>
                   ))
                 ) : (
-                  <div className="text-xs text-zinc-500 px-2 py-1.5">暂无可用系列</div>
+                  <div className="text-xs text-zinc-500 px-2 py-1.5">{tUI('no_series')}</div>
                 )
               ) : (
-                <div className="text-xs text-zinc-500 px-2 py-1.5">请先选择类型</div>
+                <div className="text-xs text-zinc-500 px-2 py-1.5">{tUI('select_type_first')}</div>
               )}
             </div>
           </div>
@@ -382,15 +383,15 @@ export default function FilamentsClient() {
         <div className="flex-1 min-w-0">
           {!selectedVendor ? (
             <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-8 text-center">
-              <p className="text-zinc-400">请先在左侧菜单选择品牌</p>
+              <p className="text-zinc-400">{tUI('select_brand_prompt')}</p>
             </div>
           ) : !selectedType ? (
             <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-8 text-center">
-              <p className="text-zinc-400">请在上方选择耗材类型</p>
+              <p className="text-zinc-400">{tUI('select_type_above')}</p>
             </div>
           ) : !selectedSeries ? (
             <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-8 text-center">
-              <p className="text-zinc-400">请在上方选择耗材系列</p>
+              <p className="text-zinc-400">{tUI('select_series_above')}</p>
             </div>
           ) : profiles.length > 0 ? (
             <>
@@ -398,7 +399,7 @@ export default function FilamentsClient() {
                 <h2 className="text-lg font-semibold text-zinc-50 mb-1">
                   {getBrandDisplayName(index, selectedVendor)} • {selectedType} • {selectedSeries}
                 </h2>
-                <p className="text-xs text-zinc-400">共 {profiles.length} 个配置</p>
+                <p className="text-xs text-zinc-400">{tUI('profile_count', { count: profiles.length })}</p>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 {profiles.map(p => (
@@ -419,7 +420,7 @@ export default function FilamentsClient() {
             </>
           ) : (
             <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-8 text-center">
-              <p className="text-zinc-400">暂无该系列的配置</p>
+              <p className="text-zinc-400">{tUI('no_profiles')}</p>
             </div>
           )}
         </div>

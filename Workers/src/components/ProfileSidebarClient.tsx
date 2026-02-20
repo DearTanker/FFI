@@ -3,6 +3,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { StaticLink } from "@/components/StaticLink";
 import { toSegment } from "@/lib/segments";
+import { tUI } from "@/lib/i18n";
 
 type ProfileItem = {
   fileName: string;
@@ -71,22 +72,22 @@ export function ProfileSidebarClient(props: {
   return (
     <div className="sticky top-4 rounded-lg border border-zinc-800 bg-zinc-900/40">
       <div className="border-b border-zinc-800 px-4 py-3">
-        <div className="text-sm font-semibold text-zinc-50">耗材丝设置</div>
+        <div className="text-sm font-semibold text-zinc-50">{tUI('nav_filament_settings')}</div>
         <div className="mt-1 flex items-center justify-between text-xs text-zinc-400">
           <StaticLink href={`/${toSegment(props.vendor)}/${toSegment(props.type)}/${toSegment(props.series)}`} className="text-emerald-400 hover:text-emerald-300">
-            返回列表
+            {tUI('back_to_list')}
           </StaticLink>
-          <span>{enrichedProfiles.length} 个配置</span>
+          <span>{tUI('n_profiles', { count: enrichedProfiles.length })}</span>
         </div>
 
         <div className="mt-3 flex items-center gap-2">
-          <div className="shrink-0 text-xs text-zinc-400">兼容打印机</div>
+          <div className="shrink-0 text-xs text-zinc-400">{tUI('compatible_printers')}</div>
           <select
             value={printer}
             onChange={(e) => setPrinter(e.target.value)}
             className="h-8 w-full rounded-md border border-zinc-700 bg-zinc-900 px-2 text-sm text-zinc-100 focus:border-emerald-500 focus:outline-none"
           >
-            <option value="__all__">全部</option>
+            <option value="__all__">{tUI('all')}</option>
             {printerOptions.map((p) => (
               <option key={p} value={p}>
                 {p}

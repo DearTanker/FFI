@@ -1,10 +1,11 @@
 import { toSegment } from "@/lib/segments";
 import { StaticLink } from "@/components/StaticLink";
+import { tUI } from "@/lib/i18n";
 
 type Crumb = { label: string; href?: string };
 
 export function Breadcrumb(props: { vendor?: string; type?: string; series?: string; profileLabel?: string; vendorDisplayName?: string }) {
-  const crumbs: Crumb[] = [{ label: "耗材", href: "/" }];
+  const crumbs: Crumb[] = [{ label: tUI('breadcrumb_root'), href: "/" }];
   if (props.vendor) crumbs.push({ label: props.vendorDisplayName || props.vendor, href: `/${toSegment(props.vendor)}` });
   if (props.vendor && props.type) crumbs.push({ label: props.type, href: `/${toSegment(props.vendor)}/${toSegment(props.type)}` });
   if (props.vendor && props.type && props.series)

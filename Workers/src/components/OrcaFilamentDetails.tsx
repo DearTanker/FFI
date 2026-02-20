@@ -12,14 +12,14 @@ import {
   FILAMENT_FIELD_MAP,
   FIELD_ORDER,
 } from '@/lib/filamentFieldMap';
+import { tField, tGroup, tPage, tUI } from '@/lib/i18n';
 
 interface OrcaFilamentDetailsProps {
   data: Record<string, any>;
-  rawData?: Record<string, any>; // 原始 JSON 数据
+  rawData?: Record<string, any>;
   className?: string;
 }
 
-// 代码图标 SVG
 const CodeIcon = () => (
   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
@@ -27,8 +27,7 @@ const CodeIcon = () => (
 );
 
 /**
- * 按 OrcaSlicer Tab/Page/Group 结构显示耗材详情
- * 与新的 orcaSlicerStructure 数据模型完全一致
+ * OrcaSlicer Tab/Page/Group structure filament details view
  */
 export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilamentDetailsProps) {
   const [activePage, setActivePage] = useState<string>(FILAMENT_PAGE_ORDER[0]);
@@ -49,8 +48,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
     setExpandedFields(newSet);
   };
 
-  // 格式化 JSON 值以显示
-  // OrcaSlicer 始终取数组 index 0 显示耗材参数
+  // OrcaSlicer always takes array index 0 for filament params
   const formatJsonValue = (value: any): string => {
     if (value === undefined || value === null) return '';
     if (Array.isArray(value)) {
@@ -59,7 +57,6 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
     return String(value);
   };
 
-  // 渲染单个值框
   const renderValueBox = (value: string, unit?: string, kind?: string) => {
     if (kind === 'bool') {
       const isChecked = value === '1' || value.toLowerCase() === 'true';
@@ -101,7 +98,6 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
     );
   };
 
-  // 渲染展开的 JSON 代码
   const renderJsonCode = (fieldKey: string, rawValue: any, onToggle: () => void) => {
     const jsonSnippet = `"${fieldKey}": ${JSON.stringify(rawValue, null, 2)}`;
     return (
@@ -116,7 +112,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
         <button
           onClick={onToggle}
           className="absolute right-2 top-1 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
-          title="返回数值"
+          title={tUI('back_to_value')}
         >
           <CodeIcon />
         </button>
@@ -124,16 +120,13 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
     );
   };
 
-  // 渲染一个 Group 内的所有字段
   const renderGroupFields = (groupId: string, fields: Record<string, any[]>) => {
     const fieldOrder = FIELD_ORDER[groupId];
 
-    // 获取有序的字段 key 列表
     const orderedKeys: string[] = fieldOrder
       ? fieldOrder.filter((k) => fields[k])
       : Object.keys(fields);
 
-    // 追踪已渲染的配对行，避免重复
     const renderedPairs = new Set<string>();
     const elements: JSX.Element[] = [];
 
@@ -145,13 +138,12 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
       const meta = getFieldMetadata(fieldKey);
       const displayValue = formatJsonValue(field.value);
 
-      // 处理配对字段
+      // Paired fields
       if (field.paired) {
         const pairKey = field.paired.pairKey;
-        if (renderedPairs.has(pairKey)) continue; // 已渲染过这个配对
+        if (renderedPairs.has(pairKey)) continue;
         renderedPairs.add(pairKey);
 
-        // 找到配对的另一个字段
         const isLeft = field.paired.pairPosition === 'left';
         const leftKey = isLeft ? fieldKey : orderedKeys.find((k) => {
           const m = getFieldMetadata(k);
@@ -178,15 +170,15 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
         elements.push(
           <div key={pairKey} className="py-1.5">
             <div className="grid grid-cols-[200px,auto,1fr,auto,1fr] items-center gap-2">
-              {/* 行标签 */}
+              {/* Row label */}
               <div className="min-w-0">
                 <div className="text-xs text-zinc-200 break-words">{field.paired.pairLabel}</div>
                 <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{leftKey}</div>
                 <div className="font-mono text-[10px] text-zinc-500 break-all">{rightKey}</div>
               </div>
-              {/* 左子标签 */}
+              {/* Left sub-label */}
               <div className="text-xs text-zinc-500 shrink-0">{field.paired.pairLeftLabel}</div>
-              {/* 左值 */}
+              {/* Left value */}
               <div className="relative min-w-0">
                 {leftExpanded ? (
                   renderJsonCode(leftKey, leftRawValue, () => toggleFieldExpand(leftKey))
@@ -196,16 +188,16 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                     <button
                       onClick={() => toggleFieldExpand(leftKey)}
                       className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
-                      title="查看源代码"
+                      title={tUI('view_source')}
                     >
                       <CodeIcon />
                     </button>
                   </>
                 )}
               </div>
-              {/* 右子标签 */}
+              {/* Right sub-label */}
               <div className="text-xs text-zinc-500 shrink-0">{field.paired.pairRightLabel}</div>
-              {/* 右值 */}
+              {/* Right value */}
               <div className="relative min-w-0">
                 {rightExpanded ? (
                   renderJsonCode(rightKey, rightRawValue, () => toggleFieldExpand(rightKey))
@@ -215,7 +207,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                     <button
                       onClick={() => toggleFieldExpand(rightKey)}
                       className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
-                      title="查看源代码"
+                      title={tUI('view_source')}
                     >
                       <CodeIcon />
                     </button>
@@ -228,7 +220,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
         continue;
       }
 
-      // 单值字段
+      // Single value field
       const isExpanded = expandedFields.has(fieldKey);
       const rawValue = rawData ? rawData[fieldKey] : field.value;
 
@@ -246,18 +238,18 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
             </div>
           ) : (
             <div className="grid grid-cols-[200px,1fr] items-center gap-4">
-              {/* 标签 */}
+              {/* Label */}
               <div className="min-w-0">
                 <div className="text-xs text-zinc-200 break-words">{field.label || meta?.label || fieldKey}</div>
                 <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{fieldKey}</div>
               </div>
-              {/* 值 - 带代码按钮 */}
+              {/* Value with code button */}
               <div className="relative min-w-0">
                 {renderValueBox(displayValue, field.unit, field.kind)}
                 <button
                   onClick={() => toggleFieldExpand(fieldKey)}
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
-                  title="查看源代码"
+                  title={tUI('view_source')}
                 >
                   <CodeIcon />
                 </button>
@@ -291,8 +283,8 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                 }
               `}
             >
-              <Icon name={meta.iconName as any} size={18} alt={meta.name} />
-              <span className="text-sm font-medium">{meta.name}</span>
+              <Icon name={meta.iconName as any} size={18} alt={tPage(pageId)} />
+              <span className="text-sm font-medium">{tPage(pageId)}</span>
             </button>
           );
         })}
@@ -301,7 +293,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
       {/* Groups and Fields */}
       <div className="space-y-4">
         {groupOrder.length === 0 ? (
-          <div className="text-center py-6 text-zinc-400">本页暂无配置数据</div>
+          <div className="text-center py-6 text-zinc-400">{tUI('page_no_data')}</div>
         ) : (
           groupOrder.map((groupId) => {
             const groupMeta = GROUP_METADATA[groupId];
@@ -315,9 +307,9 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                 <div className="border-b border-zinc-800 px-4 py-2.5 bg-zinc-800/30">
                   <div className="flex items-center gap-3">
                     {groupMeta?.iconName && (
-                      <Icon name={groupMeta.iconName as any} size={20} alt={groupMeta?.name || groupId} />
+                      <Icon name={groupMeta.iconName as any} size={20} alt={tGroup(groupId)} />
                     )}
-                    <h3 className="text-sm font-semibold text-zinc-200">{groupMeta?.name || groupId}</h3>
+                    <h3 className="text-sm font-semibold text-zinc-200">{tGroup(groupId)}</h3>
                   </div>
                 </div>
 
