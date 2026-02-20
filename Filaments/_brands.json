@@ -1,41 +1,80 @@
 {
   "Aliz": {
-    "displayName": "Aliz"
+    "displayName": "Aliz·爱丽兹",
+    "links": [
+      { "label": "官网", "url": "https://www.jylssl.com/print.html" }
+    ]
   },
   "CaiGe": {
-    "displayName": "彩格 CaiGe"
+    "displayName": "CaiGe·彩格",
+    "links": [
+      { "label": "官网", "url": "" }
+    ]
   },
   "CaiLab": {
-    "displayName": "CaiLab"
+    "displayName": "CaiLab·彩多屋",
+    "links": [
+      { "label": "官网", "url": "" }
+    ]
   },
   "CMYK": {
-    "displayName": "CMYK"
+    "displayName": "CMYK",
+    "links": [
+      { "label": "官网", "url": "" }
+    ]
   },
   "DoWell": {
-    "displayName": "DoWell"
+    "displayName": "DoWell",
+    "links": [
+      { "label": "官网", "url": "" }
+    ]
   },
   "Fiberon": {
-    "displayName": "Fiberon"
+    "displayName": "Fiberon",
+    "links": [
+      { "label": "官网", "url": "" }
+    ]
   },
   "FullJoy": {
-    "displayName": "FullJoy"
+    "displayName": "FullJoy",
+    "links": [
+      { "label": "官网", "url": "" }
+    ]
   },
   "Kaaber": {
-    "displayName": "Kaaber"
+    "displayName": "Kaaber",
+    "links": [
+      { "label": "官网", "url": "" }
+    ]
   },
   "Kexcelled": {
-    "displayName": "Kexcelled"
+    "displayName": "Kexcelled",
+    "links": [
+      { "label": "官网", "url": "" }
+    ]
   },
   "Magforms": {
-    "displayName": "Magforms"
+    "displayName": "Magforms",
+    "links": [
+      { "label": "官网", "url": "" }
+    ]
   },
   "Polymaker": {
-    "displayName": "Polymaker"
+    "displayName": "Polymaker",
+    "links": [
+      { "label": "官网", "url": "" }
+    ]
   },
   "R3D": {
-    "displayName": "R3D"
+    "displayName": "R3D",
+    "links": [
+      { "label": "官网", "url": "" }
+    ]
   },
   "YuBros": {
-    "displayName": "煜兄弟 YuBros"
+    "displayName": "YuBros·余兄弟",
+    "links": [
+      { "label": "官网", "url": "" }
+    ]
   }
 }
