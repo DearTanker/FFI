@@ -9,6 +9,8 @@ coverage/
 # Next.js
 .next/
 out/
+.next-out/
+out.old/
 
 # Production
 build/
