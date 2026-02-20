@@ -289,6 +289,12 @@ export default function FilamentsClient() {
   return (
     <FilamentsShell vendor={selectedVendor} type={selectedType} series={selectedSeries}>
       <Breadcrumb vendor={vendor} type={type} series={series} />
+      {vendor && (
+        <div className="mt-8">
+          <h1 className="text-3xl font-bold text-zinc-50">{vendor}</h1>
+          <p className="mt-2 text-zinc-400">选择下方的类型和系列查看耗材配置</p>
+        </div>
+      )}
       <div className="mt-4 flex gap-6">
         {/* 第二列：导航菜单（类型选择 + 系列选择）*/}
         <nav className="w-80 shrink-0 px-2 py-2 text-sm flex flex-col gap-6">
