@@ -158,10 +158,9 @@ export const FILAMENT_FIELD_MAP: Record<string, {
   enable_overhang_bridge_fan: { pageId: 'filament-cooling', groupId: 'cooling-part-fan', label: '悬垂/桥接强制冷却', kind: 'bool' },
   overhang_fan_threshold: { pageId: 'filament-cooling', groupId: 'cooling-part-fan', label: '悬垂冷却激活阈值' },
   overhang_fan_speed: { pageId: 'filament-cooling', groupId: 'cooling-part-fan', label: '悬垂和外部桥接风扇速度', unit: '%' },
-  first_x_layer_fan_speed: { pageId: 'filament-cooling', groupId: 'cooling-part-fan', label: '初始层风扇速度', unit: '%' },
-  pre_start_fan_time: { pageId: 'filament-cooling', groupId: 'cooling-part-fan', label: '打印前启动风扇' },
-  overhang_threshold_participating_cooling: { pageId: 'filament-cooling', groupId: 'cooling-part-fan', label: '悬垂和部件冷却参与阈值' },
-  filament_enable_overhang_speed: { pageId: 'filament-cooling', groupId: 'cooling-part-fan', label: '启用悬垂速度', kind: 'bool' },
+  internal_bridge_fan_speed: { pageId: 'filament-cooling', groupId: 'cooling-part-fan', label: '内部桥接风扇速度', unit: '%' },
+  support_material_interface_fan_speed: { pageId: 'filament-cooling', groupId: 'cooling-part-fan', label: '支撑接触面风扇速度', unit: '%' },
+  ironing_fan_speed: { pageId: 'filament-cooling', groupId: 'cooling-part-fan', label: '熨烫时风扇速度', unit: '%' },
 
   // 辅助部件冷却风扇 Group
   additional_cooling_fan_speed: { pageId: 'filament-cooling', groupId: 'cooling-aux-fan', label: '风扇速度', unit: '%' },
