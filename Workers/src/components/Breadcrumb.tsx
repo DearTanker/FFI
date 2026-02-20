@@ -3,9 +3,9 @@ import { StaticLink } from "@/components/StaticLink";
 
 type Crumb = { label: string; href?: string };
 
-export function Breadcrumb(props: { vendor?: string; type?: string; series?: string; profileLabel?: string }) {
+export function Breadcrumb(props: { vendor?: string; type?: string; series?: string; profileLabel?: string; vendorDisplayName?: string }) {
   const crumbs: Crumb[] = [{ label: "耗材", href: "/" }];
-  if (props.vendor) crumbs.push({ label: props.vendor, href: `/${toSegment(props.vendor)}` });
+  if (props.vendor) crumbs.push({ label: props.vendorDisplayName || props.vendor, href: `/${toSegment(props.vendor)}` });
   if (props.vendor && props.type) crumbs.push({ label: props.type, href: `/${toSegment(props.vendor)}/${toSegment(props.type)}` });
   if (props.vendor && props.type && props.series)
     crumbs.push({

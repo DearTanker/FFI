@@ -7,7 +7,7 @@ import { FilamentsShell } from "@/components/FilamentsShell";
 import { StaticLink } from "@/components/StaticLink";
 import { Icon } from "@/components/Icon";
 import { useFilamentContext } from "@/context/FilamentContext";
-import { getVendors, getTypes, getSeries, getProfiles, fetchProfileContent, getBrandDisplayName } from "@/lib/filaments-client";
+import { getVendors, getTypes, getSeries, getProfiles, fetchProfileContent } from "@/lib/filaments-client";
 import { toSegment, fromSegment } from "@/lib/segments";
 import { FilamentProfileSummary } from "@/lib/filaments";
 import { ProfileSidebarClient } from "@/components/ProfileSidebarClient";
@@ -25,8 +25,8 @@ export default function FilamentsClient() {
   const pathname = usePathname();
 
   let slug: string[] = [];
-  if (pathname) {
-    slug = pathname.replace(/^\//, "").split("/").filter(Boolean);
+  if (pathname && pathname.startsWith("/filaments")) {
+    slug = pathname.replace(/^\/filaments\/?/, "").split("/").filter(Boolean);
   }
 
   const vendor = slug[0] ? fromSegment(slug[0]) : undefined;
@@ -93,6 +93,7 @@ export default function FilamentsClient() {
     );
   }
 
+  // 当显示profile详情时
   // 显示品牌页面时（仅有品牌名，无类型、系列）
   if (vendor && !type && !series) {
     const vendorTypes = getTypes(index, vendor);
@@ -105,10 +106,10 @@ export default function FilamentsClient() {
 
     return (
       <FilamentsShell vendor={vendor}>
-        <Breadcrumb vendor={vendor} vendorDisplayName={getBrandDisplayName(index, vendor)} />
+        <Breadcrumb vendor={vendor} />
         
         <div className="mt-8">
-          <h1 className="text-3xl font-bold text-zinc-50">{getBrandDisplayName(index, vendor)}</h1>
+          <h1 className="text-3xl font-bold text-zinc-50">{vendor}</h1>
           <p className="mt-2 text-zinc-400">选择下方的类型和系列查看耗材配置</p>
         </div>
         <hr className="mt-6 border-zinc-800" />
@@ -203,7 +204,7 @@ export default function FilamentsClient() {
               <>
                 <div className="mb-6">
                   <h2 className="text-lg font-semibold text-zinc-50 mb-1">
-                    {getBrandDisplayName(index, vendor)} • {selectedType} • {selectedSeries}
+                    {vendor} • {selectedType} • {selectedSeries}
                   </h2>
                   <p className="text-xs text-zinc-400">共 {profiles.length} 个配置</p>
                 </div>
@@ -211,7 +212,7 @@ export default function FilamentsClient() {
                   {profiles.map(p => (
                     <StaticLink
                       key={p.fileName}
-                      href={`/${toSegment(vendor)}/${toSegment(selectedType)}/${toSegment(selectedSeries)}/${toSegment(p.displayName)}`}
+                      href={`/filaments/${toSegment(vendor)}/${toSegment(selectedType)}/${toSegment(selectedSeries)}/${toSegment(p.displayName)}`}
                       className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors"
                     >
                       <div className="text-sm font-medium text-zinc-50">{p.displayName.replace(/\s*@.*$/, '') || p.displayName}</div>
@@ -241,7 +242,7 @@ export default function FilamentsClient() {
     
     return (
       <FilamentsShell vendor={vendor} type={type} series={series}>
-        <Breadcrumb vendor={vendor} type={type} series={series} profileLabel={file} vendorDisplayName={getBrandDisplayName(index, vendor)} />
+        <Breadcrumb vendor={vendor} type={type} series={series} profileLabel={file} />
         <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-[280px,1fr]">
           {/* 左侧边栏 */}
           <div>
@@ -288,11 +289,11 @@ export default function FilamentsClient() {
 
   return (
     <FilamentsShell vendor={selectedVendor} type={selectedType} series={selectedSeries}>
-      <Breadcrumb vendor={vendor} type={type} series={series} vendorDisplayName={vendor ? getBrandDisplayName(index, vendor) : undefined} />
+      <Breadcrumb vendor={vendor} type={type} series={series} />
       {vendor && (
         <>
           <div className="mt-8">
-            <h1 className="text-3xl font-bold text-zinc-50">{getBrandDisplayName(index, vendor)}</h1>
+            <h1 className="text-3xl font-bold text-zinc-50">{vendor}</h1>
             <p className="mt-2 text-zinc-400">选择下方的类型和系列查看耗材配置</p>
           </div>
           <hr className="mt-6 border-zinc-800" />
@@ -396,7 +397,7 @@ export default function FilamentsClient() {
             <>
               <div className="mb-6">
                 <h2 className="text-lg font-semibold text-zinc-50 mb-1">
-                  {getBrandDisplayName(index, selectedVendor)} • {selectedType} • {selectedSeries}
+                  {selectedVendor} • {selectedType} • {selectedSeries}
                 </h2>
                 <p className="text-xs text-zinc-400">共 {profiles.length} 个配置</p>
               </div>
@@ -404,7 +405,7 @@ export default function FilamentsClient() {
                 {profiles.map(p => (
                   <StaticLink
                     key={p.fileName}
-                    href={`/${toSegment(selectedVendor)}/${toSegment(selectedType)}/${toSegment(selectedSeries)}/${toSegment(p.displayName)}`}
+                    href={`/filaments/${toSegment(selectedVendor)}/${toSegment(selectedType)}/${toSegment(selectedSeries)}/${toSegment(p.displayName)}`}
                     className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors"
                   >
                     <div className="text-sm font-medium text-zinc-50">{p.displayName.replace(/\s*@.*$/, '') || p.displayName}</div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useFilamentContext } from "@/context/FilamentContext";
-import { getVendors, getTypes, getSeries } from "@/lib/filaments-client";
+import { getVendors, getTypes, getSeries, getBrandDisplayName } from "@/lib/filaments-client";
 import { toSegment } from "@/lib/segments";
 import { StaticLink } from "@/components/StaticLink";
 
@@ -56,7 +56,7 @@ export function FilamentNav(props: { vendor?: string; type?: string; series?: st
                   active ? "bg-zinc-800/80 text-zinc-50" : "text-zinc-200"
                 ].join(" ")}
               >
-                <span className="truncate">{v}</span>
+                <span className="truncate">{getBrandDisplayName(index, v)}</span>
               </StaticLink>
             );
           })}

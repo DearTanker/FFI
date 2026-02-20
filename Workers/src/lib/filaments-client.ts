@@ -1,10 +1,23 @@
 import { FilamentProfileSummary } from "./filaments";
 
+export type BrandLink = {
+  label: string;
+  url: string;
+};
+
+export type BrandConfig = {
+  displayName: string;
+  links?: BrandLink[];
+};
+
+export type BrandsMap = Record<string, BrandConfig>;
+
 export type ClientIndex = {
   vendors: string[];
   typesByVendor: Map<string, string[]>;
   seriesByVendorType: Map<string, string[]>;
   profilesByVendorTypeSeries: Map<string, FilamentProfileSummary[]>;
+  brands: BrandsMap;
 };
 
 let indexCache: ClientIndex | null = null;
@@ -112,10 +125,21 @@ export async function fetchFilamentIndex(): Promise<ClientIndex> {
       vendors: sortedVendors,
       typesByVendor: sortedTypesByVendor,
       seriesByVendorType: sortedSeriesByVendorType,
-      profilesByVendorTypeSeries
+      profilesByVendorTypeSeries,
+      brands: await fetchBrandsConfig()
   };
   
   return indexCache;
+}
+
+async function fetchBrandsConfig(): Promise<BrandsMap> {
+  try {
+    const res = await fetch(`/api/github/content?path=${encodeURIComponent("Filaments/_brands.json")}`);
+    if (!res.ok) return {};
+    return await res.json();
+  } catch {
+    return {};
+  }
 }
 
 export async function fetchProfileContent(path: string): Promise<Record<string, unknown>> {
@@ -139,4 +163,12 @@ export function getSeries(index: ClientIndex, vendor: string, type: string): str
 
 export function getProfiles(index: ClientIndex, vendor: string, type: string, series: string): FilamentProfileSummary[] {
   return index.profilesByVendorTypeSeries.get(`${vendor}|||${type}|||${series}`) ?? [];
+}
+
+export function getBrandDisplayName(index: ClientIndex, vendor: string): string {
+  return index.brands[vendor]?.displayName || vendor;
+}
+
+export function getBrandConfig(index: ClientIndex, vendor: string): BrandConfig | undefined {
+  return index.brands[vendor];
 }
