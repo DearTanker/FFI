@@ -87,11 +87,10 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
     );
   };
 
-  // nil 值的提示框（OrcaSlicer 中 nil 值显示为灰色禁用状态）
+  // nil 值的空白框（OrcaSlicer 中 nil 值显示为灰色禁用状态）
   const renderNilValueBox = (unit?: string) => {
     return (
       <div className="flex items-center h-8 rounded-md border border-zinc-700/50 bg-zinc-950/20 px-3 pr-8 overflow-hidden opacity-50">
-        <span className="text-sm text-zinc-500 italic">{tUI('not_overridden')}</span>
       </div>
     );
   };
