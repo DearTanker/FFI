@@ -8,6 +8,7 @@
  *   tGroup('cooling-part-fan')           // → '部件冷却风扇'
  *   tPage('filament-cooling')            // → '冷却'
  *   tPair('fan_min_threshold')           // → { label, left, right }
+ *   tValue('Spiral Lift')                // → '螺旋'
  *   tUI('loading')                       // → '正在加载...'
  *
  * 切换语言:
@@ -63,6 +64,15 @@ export function tGroup(key: string): string {
 /** 页签标签 — key 为 pageId */
 export function tPage(key: string): string {
   return msgs().pages[key] ?? key;
+}
+
+/**
+ * 枚举值翻译 — 将 JSON 中的英文枚举值翻译为当前语言
+ * 如 tValue('Spiral Lift') → '螺旋'
+ * 未找到翻译则返回原始值
+ */
+export function tValue(value: string): string {
+  return msgs().values[value] ?? value;
 }
 
 /**

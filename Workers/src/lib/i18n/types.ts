@@ -35,6 +35,9 @@ export interface LocaleMessages {
   /** 页签标签 — key 为 pageId */
   pages: Record<string, string>;
 
+  /** 枚举值翻译 — key 为 JSON 中的枚举原始值 */
+  values: Record<string, string>;
+
   /** 通用 UI 文案 */
   ui: Record<string, string>;
 }

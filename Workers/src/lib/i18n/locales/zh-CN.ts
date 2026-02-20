@@ -267,6 +267,22 @@ const zhCN: LocaleMessages = {
     'back_to_value':            '返回数值',
     'page_no_data':             '本页暂无配置数据',
   },
+
+  // ========== 枚举值翻译 ==========
+  // key = JSON 中的原始英文值, value = 中文翻译
+  values: {
+    // filament_z_hop_types (Z抬升类型)
+    'Auto Lift':                '自动',                           // L("Auto")
+    'Normal Lift':              '普通',                           // L("Normal")
+    'Slope Lift':               '梯形',                           // L("Slope")
+    'Spiral Lift':              '螺旋',                           // L("Spiral")
+
+    // filament_retract_lift_enforce (仅表面抬Z)
+    'All Surfaces':             '所有表面',                       // L("All Surfaces")
+    'Top Only':                 '仅顶面',                       // L("Top Only")
+    'Bottom Only':              '仅底面',                       // L("Bottom Only")
+    'Top and Bottom':           '顶面和底面',                     // L("Top and Bottom")
+  },
 };
 
 export default zhCN;

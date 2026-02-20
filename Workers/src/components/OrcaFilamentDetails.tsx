@@ -12,7 +12,7 @@ import {
   FILAMENT_FIELD_MAP,
   FIELD_ORDER,
 } from '@/lib/filamentFieldMap';
-import { tField, tGroup, tPage, tUI } from '@/lib/i18n';
+import { tField, tGroup, tPage, tUI, tValue } from '@/lib/i18n';
 
 interface OrcaFilamentDetailsProps {
   data: Record<string, any>;
@@ -52,9 +52,9 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
   const formatJsonValue = (value: any): string => {
     if (value === undefined || value === null) return '';
     if (Array.isArray(value)) {
-      return value.length > 0 ? String(value[0]) : '';
+      return value.length > 0 ? tValue(String(value[0])) : '';
     }
-    return String(value);
+    return tValue(String(value));
   };
 
   const renderValueBox = (value: string, unit?: string, kind?: string) => {

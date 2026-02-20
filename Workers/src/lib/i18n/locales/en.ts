@@ -263,6 +263,22 @@ const en: LocaleMessages = {
     'back_to_value':            'Back to value',
     'page_no_data':             'No configuration data on this page',
   },
+
+  // ========== Enum value translations ==========
+  // key = raw JSON value, value = English display label
+  values: {
+    // filament_z_hop_types
+    'Auto Lift':                'Auto',
+    'Normal Lift':              'Normal',
+    'Slope Lift':               'Slope',
+    'Spiral Lift':              'Spiral',
+
+    // filament_retract_lift_enforce
+    'All Surfaces':             'All Surfaces',
+    'Top Only':                 'Top Only',
+    'Bottom Only':              'Bottom Only',
+    'Top and Bottom':           'Top and Bottom',
+  },
 };
 
 export default en;
