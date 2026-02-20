@@ -50,7 +50,7 @@ export function FilamentNav(props: { vendor?: string; type?: string; series?: st
             return (
               <StaticLink
                 key={v}
-                href={`/filaments/${toSegment(v)}`}
+                href={`/${toSegment(v)}`}
                 className={[
                   "flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-zinc-800/60",
                   active ? "bg-zinc-800/80 text-zinc-50" : "text-zinc-200"

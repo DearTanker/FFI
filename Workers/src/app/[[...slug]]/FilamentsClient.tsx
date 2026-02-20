@@ -25,8 +25,8 @@ export default function FilamentsClient() {
   const pathname = usePathname();
 
   let slug: string[] = [];
-  if (pathname && pathname.startsWith("/filaments")) {
-    slug = pathname.replace(/^\/filaments\/?/, "").split("/").filter(Boolean);
+  if (pathname) {
+    slug = pathname.replace(/^\//, "").split("/").filter(Boolean);
   }
 
   const vendor = slug[0] ? fromSegment(slug[0]) : undefined;
@@ -93,7 +93,6 @@ export default function FilamentsClient() {
     );
   }
 
-  // 当显示profile详情时
   // 显示品牌页面时（仅有品牌名，无类型、系列）
   if (vendor && !type && !series) {
     const vendorTypes = getTypes(index, vendor);
@@ -212,7 +211,7 @@ export default function FilamentsClient() {
                   {profiles.map(p => (
                     <StaticLink
                       key={p.fileName}
-                      href={`/filaments/${toSegment(vendor)}/${toSegment(selectedType)}/${toSegment(selectedSeries)}/${toSegment(p.displayName)}`}
+                      href={`/${toSegment(vendor)}/${toSegment(selectedType)}/${toSegment(selectedSeries)}/${toSegment(p.displayName)}`}
                       className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors"
                     >
                       <div className="text-sm font-medium text-zinc-50">{p.displayName.replace(/\s*@.*$/, '') || p.displayName}</div>
@@ -405,7 +404,7 @@ export default function FilamentsClient() {
                 {profiles.map(p => (
                   <StaticLink
                     key={p.fileName}
-                    href={`/filaments/${toSegment(selectedVendor)}/${toSegment(selectedType)}/${toSegment(selectedSeries)}/${toSegment(p.displayName)}`}
+                    href={`/${toSegment(selectedVendor)}/${toSegment(selectedType)}/${toSegment(selectedSeries)}/${toSegment(p.displayName)}`}
                     className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors"
                   >
                     <div className="text-sm font-medium text-zinc-50">{p.displayName.replace(/\s*@.*$/, '') || p.displayName}</div>

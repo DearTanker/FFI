@@ -73,7 +73,7 @@ export function ProfileSidebarClient(props: {
       <div className="border-b border-zinc-800 px-4 py-3">
         <div className="text-sm font-semibold text-zinc-50">耗材丝设置</div>
         <div className="mt-1 flex items-center justify-between text-xs text-zinc-400">
-          <StaticLink href={`/filaments/${toSegment(props.vendor)}/${toSegment(props.type)}/${toSegment(props.series)}`} className="text-emerald-400 hover:text-emerald-300">
+          <StaticLink href={`/${toSegment(props.vendor)}/${toSegment(props.type)}/${toSegment(props.series)}`} className="text-emerald-400 hover:text-emerald-300">
             返回列表
           </StaticLink>
           <span>{enrichedProfiles.length} 个配置</span>
@@ -98,7 +98,7 @@ export function ProfileSidebarClient(props: {
 
       <div className="p-2">
         {filtered.map((p) => {
-          const href = `/filaments/${toSegment(props.vendor)}/${toSegment(props.type)}/${toSegment(props.series)}/${toSegment(p.displayName)}`;
+          const href = `/${toSegment(props.vendor)}/${toSegment(props.type)}/${toSegment(props.series)}/${toSegment(p.displayName)}`;
           const active = p.fileName === props.fileName;
           const subtitle = p.compatiblePrinters.length > 0 ? p.compatiblePrinters.join(" · ") : p.fileName;
           const title = p.displayName.replace(/\s*@.*$/, '') || p.displayName;
