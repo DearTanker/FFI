@@ -76,13 +76,20 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
       );
     }
     if (kind === 'multiline') {
+      if (!value) {
+        return (
+          <div className="flex items-center h-8 rounded-md border border-zinc-700 bg-zinc-950/40 px-3 pr-8 overflow-hidden">
+            <span className="text-sm text-zinc-600">—</span>
+          </div>
+        );
+      }
       return (
         <textarea
           readOnly
           value={value}
           rows={1}
           style={{ fieldSizing: 'content' } as React.CSSProperties}
-          className="w-full resize-none rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 font-mono text-[12px] text-zinc-100 focus:outline-none overflow-hidden"
+          className="w-full min-h-[2rem] resize-none rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-8 font-mono text-[12px] text-zinc-100 focus:outline-none overflow-hidden"
         />
       );
     }
