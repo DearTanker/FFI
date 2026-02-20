@@ -173,6 +173,9 @@ export const FILAMENT_FIELD_MAP: Record<string, {
   filament_retraction_length: { pageId: 'filament-overrides', groupId: 'retraction', unit: 'mm' },
   filament_z_hop: { pageId: 'filament-overrides', groupId: 'retraction', unit: 'mm' },
   filament_z_hop_types: { pageId: 'filament-overrides', groupId: 'retraction' },
+  filament_retract_lift_above: { pageId: 'filament-overrides', groupId: 'retraction', unit: 'mm' },
+  filament_retract_lift_below: { pageId: 'filament-overrides', groupId: 'retraction', unit: 'mm' },
+  filament_retract_lift_enforce: { pageId: 'filament-overrides', groupId: 'retraction' },
   filament_retraction_speed: { pageId: 'filament-overrides', groupId: 'retraction', unit: 'mm/s' },
   filament_deretraction_speed: { pageId: 'filament-overrides', groupId: 'retraction', unit: 'mm/s' },
   filament_retract_restart_extra: { pageId: 'filament-overrides', groupId: 'retraction', unit: 'mm' },
@@ -363,6 +366,7 @@ export const FIELD_ORDER: Record<string, string[]> = {
   retraction: [
     'filament_retraction_length',
     'filament_z_hop', 'filament_z_hop_types',
+    'filament_retract_lift_above', 'filament_retract_lift_below', 'filament_retract_lift_enforce',
     'filament_retraction_speed', 'filament_deretraction_speed',
     'filament_retract_restart_extra', 'filament_retraction_minimum_travel',
     'filament_retract_when_changing_layer',
