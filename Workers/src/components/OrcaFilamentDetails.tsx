@@ -49,10 +49,11 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
   };
 
   // OrcaSlicer 中 "nil" 是哨兵值，表示"未覆盖，使用打印机/工艺默认值"
+  // undefined（JSON 中不存在该字段）也视为未覆盖
   const isNilValue = (value: any): boolean => {
-    if (value === undefined || value === null) return false;
+    if (value === undefined || value === null) return true;
     if (Array.isArray(value)) {
-      return value.length > 0 && String(value[0]) === 'nil';
+      return value.length === 0 || String(value[0]) === 'nil';
     }
     return String(value) === 'nil';
   };
