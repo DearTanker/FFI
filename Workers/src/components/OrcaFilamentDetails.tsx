@@ -48,13 +48,51 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
     setExpandedFields(newSet);
   };
 
+  // OrcaSlicer 中 "nil" 是哨兵值，表示"未覆盖，使用打印机/工艺默认值"
+  const isNilValue = (value: any): boolean => {
+    if (value === undefined || value === null) return false;
+    if (Array.isArray(value)) {
+      return value.length > 0 && String(value[0]) === 'nil';
+    }
+    return String(value) === 'nil';
+  };
+
+  // 判断当前页面是否是参数覆盖页（需要显示覆盖复选框）
+  const isOverridePage = activePage === 'filament-overrides';
+
   // OrcaSlicer always takes array index 0 for filament params
   const formatJsonValue = (value: any): string => {
     if (value === undefined || value === null) return '';
     if (Array.isArray(value)) {
-      return value.length > 0 ? tValue(String(value[0])) : '';
+      const v = value.length > 0 ? String(value[0]) : '';
+      if (v === 'nil') return '';
+      return tValue(v);
     }
+    if (String(value) === 'nil') return '';
     return tValue(String(value));
+  };
+
+  // 参数覆盖页的覆盖复选框（模仿 OrcaSlicer 的复选框样式）
+  const renderOverrideCheckbox = (isOverridden: boolean) => {
+    if (!isOverridePage) return null;
+    return (
+      <div className={`flex h-5 w-5 items-center justify-center rounded border shrink-0 mr-2 ${isOverridden ? 'border-emerald-500 bg-emerald-500' : 'border-zinc-600 bg-zinc-800/60'}`}>
+        {isOverridden && (
+          <svg className="h-3.5 w-3.5 text-white" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M2 6l3 3 5-5" />
+          </svg>
+        )}
+      </div>
+    );
+  };
+
+  // nil 值的提示框（OrcaSlicer 中 nil 值显示为灰色禁用状态）
+  const renderNilValueBox = (unit?: string) => {
+    return (
+      <div className="flex items-center h-8 rounded-md border border-zinc-700/50 bg-zinc-950/20 px-3 pr-8 overflow-hidden opacity-50">
+        <span className="text-sm text-zinc-500 italic">{tUI('not_overridden')}</span>
+      </div>
+    );
   };
 
   const renderValueBox = (value: string, unit?: string, kind?: string) => {
@@ -136,6 +174,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
       if (!field) continue;
 
       const meta = getFieldMetadata(fieldKey);
+      const fieldNil = isNilValue(field.value);
       const displayValue = formatJsonValue(field.value);
 
       // Paired fields
@@ -160,6 +199,9 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
         const rightField = Array.isArray(fields[rightKey]) ? fields[rightKey][0] : fields[rightKey];
         if (!leftField || !rightField) continue;
 
+        const leftNil = isNilValue(leftField.value);
+        const rightNil = isNilValue(rightField.value);
+        const pairNil = leftNil && rightNil;
         const leftValue = formatJsonValue(leftField.value);
         const rightValue = formatJsonValue(rightField.value);
         const leftExpanded = expandedFields.has(leftKey);
@@ -170,11 +212,14 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
         elements.push(
           <div key={pairKey} className="py-1.5">
             <div className="grid grid-cols-[200px,auto,1fr,auto,1fr] items-center gap-2">
-              {/* Row label */}
-              <div className="min-w-0">
-                <div className="text-xs text-zinc-200 break-words">{field.paired.pairLabel}</div>
-                <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{leftKey}</div>
-                <div className="font-mono text-[10px] text-zinc-500 break-all">{rightKey}</div>
+              {/* Row label with override checkbox */}
+              <div className="min-w-0 flex items-start">
+                {renderOverrideCheckbox(!pairNil)}
+                <div className="min-w-0">
+                  <div className={`text-xs break-words ${pairNil ? 'text-zinc-500' : 'text-zinc-200'}`}>{field.paired.pairLabel}</div>
+                  <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{leftKey}</div>
+                  <div className="font-mono text-[10px] text-zinc-500 break-all">{rightKey}</div>
+                </div>
               </div>
               {/* Left sub-label */}
               <div className="text-xs text-zinc-500 shrink-0">{field.paired.pairLeftLabel}</div>
@@ -182,6 +227,17 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
               <div className="relative min-w-0">
                 {leftExpanded ? (
                   renderJsonCode(leftKey, leftRawValue, () => toggleFieldExpand(leftKey))
+                ) : leftNil ? (
+                  <>
+                    {renderNilValueBox(leftField.unit)}
+                    <button
+                      onClick={() => toggleFieldExpand(leftKey)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                      title={tUI('view_source')}
+                    >
+                      <CodeIcon />
+                    </button>
+                  </>
                 ) : (
                   <>
                     {renderValueBox(leftValue, leftField.unit, leftField.kind)}
@@ -201,6 +257,17 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
               <div className="relative min-w-0">
                 {rightExpanded ? (
                   renderJsonCode(rightKey, rightRawValue, () => toggleFieldExpand(rightKey))
+                ) : rightNil ? (
+                  <>
+                    {renderNilValueBox(rightField.unit)}
+                    <button
+                      onClick={() => toggleFieldExpand(rightKey)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"
+                      title={tUI('view_source')}
+                    >
+                      <CodeIcon />
+                    </button>
+                  </>
                 ) : (
                   <>
                     {renderValueBox(rightValue, rightField.unit, rightField.kind)}
@@ -228,9 +295,12 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
         <div key={fieldKey} className="py-1.5">
           {isExpanded ? (
             <div className="grid grid-cols-[200px,1fr] items-start gap-4">
-              <div className="min-w-0 pt-1">
-                <div className="text-xs text-zinc-200 break-words">{field.label || meta?.label || fieldKey}</div>
-                <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{fieldKey}</div>
+              <div className="min-w-0 pt-1 flex items-start">
+                {renderOverrideCheckbox(!fieldNil)}
+                <div className="min-w-0">
+                  <div className={`text-xs break-words ${fieldNil ? 'text-zinc-500' : 'text-zinc-200'}`}>{field.label || meta?.label || fieldKey}</div>
+                  <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{fieldKey}</div>
+                </div>
               </div>
               <div className="min-w-0">
                 {renderJsonCode(fieldKey, rawValue, () => toggleFieldExpand(fieldKey))}
@@ -238,14 +308,17 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
             </div>
           ) : (
             <div className="grid grid-cols-[200px,1fr] items-center gap-4">
-              {/* Label */}
-              <div className="min-w-0">
-                <div className="text-xs text-zinc-200 break-words">{field.label || meta?.label || fieldKey}</div>
-                <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{fieldKey}</div>
+              {/* Label with override checkbox */}
+              <div className="min-w-0 flex items-start">
+                {renderOverrideCheckbox(!fieldNil)}
+                <div className="min-w-0">
+                  <div className={`text-xs break-words ${fieldNil ? 'text-zinc-500' : 'text-zinc-200'}`}>{field.label || meta?.label || fieldKey}</div>
+                  <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{fieldKey}</div>
+                </div>
               </div>
               {/* Value with code button */}
               <div className="relative min-w-0">
-                {renderValueBox(displayValue, field.unit, field.kind)}
+                {fieldNil ? renderNilValueBox(field.unit) : renderValueBox(displayValue, field.unit, field.kind)}
                 <button
                   onClick={() => toggleFieldExpand(fieldKey)}
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"

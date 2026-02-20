@@ -262,6 +262,7 @@ const en: LocaleMessages = {
     'view_source':              'View source',
     'back_to_value':            'Back to value',
     'page_no_data':             'No configuration data on this page',
+    'not_overridden':           'Not overridden (using printer default)',
   },
 
   // ========== Enum value translations ==========

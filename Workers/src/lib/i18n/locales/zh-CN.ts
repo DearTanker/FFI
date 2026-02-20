@@ -266,6 +266,7 @@ const zhCN: LocaleMessages = {
     'view_source':              '查看源代码',
     'back_to_value':            '返回数值',
     'page_no_data':             '本页暂无配置数据',
+    'not_overridden':           '未覆盖（使用打印机默认值）',
   },
 
   // ========== 枚举值翻译 ==========
