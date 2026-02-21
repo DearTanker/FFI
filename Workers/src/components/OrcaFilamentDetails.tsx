@@ -335,9 +335,9 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
   };
 
   return (
-    <div className={`space-y-6 ${className}`}>
+    <div className={`rounded-lg border border-zinc-800 bg-zinc-900/40 ${className}`}>
       {/* Page Navigation Tabs */}
-      <div className="flex flex-wrap gap-2 border-b border-zinc-800 pb-4 overflow-x-auto">
+      <div className="flex flex-wrap gap-2 border-b border-zinc-800 px-4 py-3 overflow-x-auto">
         {FILAMENT_PAGE_ORDER.map((pageId) => {
           const meta = PAGE_METADATA[pageId];
           const isActive = pageId === activePage;
@@ -362,7 +362,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
       </div>
 
       {/* Groups and Fields */}
-      <div className="space-y-4">
+      <div className="divide-y divide-zinc-800">
         {groupOrder.length === 0 ? (
           <div className="text-center py-6 text-zinc-400">{tUI('page_no_data')}</div>
         ) : (
@@ -373,9 +373,9 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
             if (Object.keys(fields).length === 0) return null;
 
             return (
-              <div key={groupId} className="rounded-lg border border-zinc-800 bg-zinc-900/40">
+              <div key={groupId}>
                 {/* Group Header */}
-                <div className="border-b border-zinc-800 px-4 py-2.5 bg-zinc-800/30">
+                <div className="px-4 py-2.5 bg-zinc-800/30">
                   <div className="flex items-center gap-3">
                     {groupMeta?.iconName && (
                       <Icon name={groupMeta.iconName as any} size={20} alt={tGroup(groupId)} />
