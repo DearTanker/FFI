@@ -1,13 +1,13 @@
 /**
  * OrcaSlicer 字段 wiki 链接映射
- * wiki 链接对应 https://github.com/OrcaSlicer/OrcaSlicer/wiki/ 下的材料设置页面
+ * wiki 链接对应 https://www.orcaslicer.com/wiki/ 下的材料设置页面
  * tooltip 描述已迁移至 i18n 语言文件 (locales/zh-CN.ts, locales/en.ts)
  *
  * 每个字段的 wiki 锚点来自 OrcaSlicer 源码 src/slic3r/GUI/Tab.cpp → TabFilament::build()
  * 格式: append_single_option_line("param_name", "wiki_page#anchor")
  */
 
-const WIKI_BASE = 'https://github.com/OrcaSlicer/OrcaSlicer/wiki';
+const WIKI_BASE = 'https://www.orcaslicer.com/wiki';
 
 /**
  * 字段 → wiki 页面链接的映射 (per-parameter)
