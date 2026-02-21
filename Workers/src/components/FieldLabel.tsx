@@ -46,7 +46,9 @@ export function FieldLabel({ label, fieldKey, wikiUrl }: FieldLabelProps) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {label}
+      {wikiUrl ? (
+        <a href={wikiUrl} target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 hover:underline transition-colors">{label}</a>
+      ) : label}
       {showTooltip && tooltip && (
         <span
           className="absolute z-50 left-full top-0 ml-2 w-max max-w-sm px-3 py-2.5 rounded-md border border-zinc-700 bg-zinc-800 shadow-xl text-xs leading-relaxed whitespace-normal pointer-events-none"
