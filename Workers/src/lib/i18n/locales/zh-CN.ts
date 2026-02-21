@@ -214,7 +214,7 @@ const zhCN: LocaleMessages = {
 
     // 侧边导航
     'nav_brands_title':         'FDM 3D 打印耗材品牌',
-    'nav_brands_guide':         '耗材 → 耗材类型 → 耗材系列 → 耗材丝设置',
+    'nav_brands_guide':         '耗材品牌 → 耗材类型 → 耗材系列 → 耗材丝设置',
     'nav_section_brand':        '品牌',
     'nav_filament_settings':    '耗材丝设置',
 

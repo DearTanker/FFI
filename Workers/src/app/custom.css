@@ -2,3 +2,8 @@
  * 自定义样式 - 在此文件中添加你的自定义 CSS
  * 此文件在 globals.css 之后加载，可覆盖默认样式
  * ========================================================== */
+@import url('https://fontsapi.zeoseven.com/521/main/result.css');
+body {
+   font-family: "Sarasa Mono SC";
+   font-weight: normal;
+}
