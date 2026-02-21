@@ -219,8 +219,6 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                 {renderOverrideCheckbox(!pairNil)}
                 <div className="min-w-0">
                   <div className="text-xs break-words"><FieldLabel label={field.paired.pairLabel} fieldKey={leftKey} wikiUrl={getFieldWikiUrl(leftKey)} /></div>
-                  <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{leftKey}</div>
-                  <div className="font-mono text-[10px] text-zinc-500 break-all">{rightKey}</div>
                 </div>
               </div>
               {/* Left sub-label */}
@@ -301,7 +299,6 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                 {renderOverrideCheckbox(!fieldNil)}
                 <div className="min-w-0">
                   <div className="text-xs break-words"><FieldLabel label={field.label || meta?.label || fieldKey} fieldKey={fieldKey} wikiUrl={getFieldWikiUrl(fieldKey)} /></div>
-                  <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{fieldKey}</div>
                 </div>
               </div>
               <div className="min-w-0">
@@ -315,7 +312,6 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                 {renderOverrideCheckbox(!fieldNil)}
                 <div className="min-w-0">
                   <div className="text-xs break-words"><FieldLabel label={field.label || meta?.label || fieldKey} fieldKey={fieldKey} wikiUrl={getFieldWikiUrl(fieldKey)} /></div>
-                  <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{fieldKey}</div>
                 </div>
               </div>
               {/* Value with code button */}
