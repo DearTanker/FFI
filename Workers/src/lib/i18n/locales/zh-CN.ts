@@ -258,6 +258,139 @@ const zhCN: LocaleMessages = {
     'not_overridden':           '未覆盖（使用打印机默认值）',
   },
 
+  // ========== 字段 tooltip 描述 ==========
+  // key = JSON 参数名, value = 中文描述（来自 OrcaSlicer PrintConfig.cpp def->tooltip 的 .po 翻译）
+  tooltips: {
+    // ---- 基本信息 ----
+    filament_type: '耗材的材料类型。',
+    filament_vendor: '耗材供应商。仅用于显示。',
+    filament_soluble: '可溶性材料通常用于打印支撑和支撑界面。',
+    filament_is_support: '支撑材料通常用于打印支撑和支撑界面。',
+    filament_change_length: '换料时，建议从当前挤出机中挤出一定长度的耗材。这有助于减少喷嘴渗料。',
+    required_nozzle_HRC: '打印该耗材所需的最低喷嘴硬度（HRC）。设为0表示不检查喷嘴的HRC。',
+    default_filament_colour: '仅用于界面上的颜色显示。',
+    filament_diameter: '耗材直径用于计算G-code中的挤出量，因此必须准确。',
+    filament_density: '耗材密度。仅用于统计。',
+    filament_shrink: '输入耗材冷却后的收缩百分比（如果测量为94mm而不是100mm则输入94%）。零件将在XY方向上按比例放大以补偿收缩。',
+    filament_shrinkage_compensation_z: '输入耗材冷却后的收缩百分比（如果测量为94mm而不是100mm则输入94%）。零件将在Z方向上按比例放大以补偿收缩。',
+    filament_cost: '耗材价格。仅用于统计。',
+    temperature_vitrification: '材料在此温度下会软化，因此当热床温度等于或超过此值时，强烈建议打开前门和/或取下顶盖以避免堵头。',
+    nozzle_temperature_range_low: '该耗材推荐的最低喷嘴温度。',
+    nozzle_temperature_range_high: '该耗材推荐的最高喷嘴温度。',
+
+    // ---- 流量比率与压力提前量 ----
+    filament_flow_ratio: '材料在熔融和结晶状态之间切换可能会产生体积变化。此设置将按比例更改此耗材在G-code中的所有挤出流量。建议值范围在0.95至1.05之间。',
+    enable_pressure_advance: '启用压力提前量，启用后校准结果将被覆盖。',
+    pressure_advance: '压力提前量（Klipper）也叫线性提前量因子（Marlin）。',
+
+    // ---- 腔体温度 ----
+    chamber_temperatures: '加热腔体的目标温度。',
+
+    // ---- 打印温度 ----
+    nozzle_temperature_initial_layer: '使用此耗材打印首层时的喷嘴温度。',
+    nozzle_temperature: '首层之后各层的喷嘴温度。',
+
+    // ---- 热床温度 ----
+    supertack_plate_temp_initial_layer: '首层的热床温度。值为0表示该耗材不支持在 Cool Plate SuperTack 上打印。',
+    supertack_plate_temp: '首层之外各层的热床温度。值为0表示该耗材不支持在 Cool Plate SuperTack 上打印。',
+    cool_plate_temp_initial_layer: '首层的热床温度。值为0表示该耗材不支持在冷板上打印。',
+    cool_plate_temp: '首层之外各层的热床温度。值为0表示该耗材不支持在冷板上打印。',
+    textured_cool_plate_temp_initial_layer: '首层的热床温度。值为0表示该耗材不支持在纹理冷板上打印。',
+    textured_cool_plate_temp: '首层之外各层的热床温度。值为0表示该耗材不支持在纹理冷板上打印。',
+    eng_plate_temp_initial_layer: '首层的热床温度。值为0表示该耗材不支持在工程板上打印。',
+    eng_plate_temp: '首层之外各层的热床温度。值为0表示该耗材不支持在工程板上打印。',
+    hot_plate_temp_initial_layer: '首层的热床温度。值为0表示该耗材不支持在高温板上打印。',
+    hot_plate_temp: '首层之外各层的热床温度。值为0表示该耗材不支持在高温板上打印。',
+    textured_plate_temp_initial_layer: '首层的热床温度。值为0表示该耗材不支持在纹理PEI板上打印。',
+    textured_plate_temp: '首层之外各层的热床温度。值为0表示该耗材不支持在纹理PEI板上打印。',
+
+    // ---- 最大体积速度 ----
+    filament_adaptive_volumetric_speed: '启用后，挤出流量受到拟合值（根据线宽和层高计算）和用户定义的最大流量的较小值的限制。禁用时，仅应用用户定义的最大流量。',
+    filament_max_volumetric_speed: '此设置表示每秒可以熔化和挤出多少体积的耗材。打印速度受最大体积速度限制，以防止设置过高和不合理的速度。不能为零。',
+
+    // ---- 冷却：指定层 ----
+    close_fan_the_first_x_layers: '前几层关闭所有冷却风扇。这可以用来改善打印底板的附着力。',
+    full_fan_speed_layer: '风扇速度将从"close_fan_the_first_x_layers"层的零线性增加到"full_fan_speed_layer"层的最大值。',
+
+    // ---- 冷却：模型冷却风扇 ----
+    fan_min_speed: '模型冷却风扇的最低速度。',
+    fan_cooling_layer_time: '当层的预计打印时间短于此值时，将启用模型冷却风扇。风扇速度根据层打印时间在最小和最大风扇速度之间插值。',
+    fan_max_speed: '模型冷却风扇的最高速度。',
+    slow_down_layer_time: '如果预计层打印时间低于此阈值，打印速度将被降低以将层打印时间延长到该阈值。',
+    reduce_fan_stop_start_freq: '当短距离空驶后紧接着需要开风扇的打印时，不关闭风扇，从而减少风扇启停频率。',
+    slow_down_for_layer_cooling: '启用后，切片将降低打印速度以确保每层有足够的冷却时间。',
+    no_slow_down_for_cooling_on_outwalls: '当需要满足层冷却时间而降速时，不降低外墙的打印速度。',
+    slow_down_min_speed: '降速冷却时的最低打印速度。',
+    enable_overhang_bridge_fan: '强制悬垂和桥接时使用指定的冷却风扇速度。',
+    overhang_fan_threshold: '当悬垂程度超过此值时，风扇速度将增加到"悬垂风扇速度"。',
+    overhang_fan_speed: '悬垂和桥接时强制使用的模型冷却风扇速度。',
+    internal_bridge_fan_speed: '内部桥接时强制使用的模型冷却风扇速度。',
+    support_material_interface_fan_speed: '打印支撑界面时强制使用的风扇速度。',
+    ironing_fan_speed: '熨烫时的风扇速度。',
+
+    // ---- 冷却：辅助风扇 ----
+    additional_cooling_fan_speed: '辅助模型冷却风扇的速度。除了由close_fan_the_first_x_layers定义的前几层外，辅助风扇将以此速度在打印过程中运行。',
+
+    // ---- 冷却：排气风扇 ----
+    activate_air_filtration: '通过在打印期间通过过滤器抽取空气来激活空气过滤系统。',
+    during_print_exhaust_fan_speed: '打印期间排气风扇的速度。',
+    complete_print_exhaust_fan_speed: '打印完成后排气风扇的速度。',
+
+    // ---- 参数覆盖：回抽 ----
+    filament_retraction_length: '在挤出机中回抽一定量的耗材以避免长距离空驶时渗料。设为零则禁用回抽。',
+    filament_z_hop: '每次回抽时，喷嘴都会略微抬起以在喷嘴和打印件之间创建间隙。它可以防止喷嘴在空驶时撞到打印件。',
+    filament_z_hop_types: 'Z抬升类型。自动抬升、普通抬升、斜坡抬升或螺旋抬升。',
+    filament_retract_lift_above: '如果设置为正值，Z抬升仅在当前Z高度高于指定的绝对值时才会生效。',
+    filament_retract_lift_below: '如果设置为正值，Z抬升仅在当前Z高度低于指定的绝对值时才会生效。',
+    filament_retract_lift_enforce: '在特定表面上强制执行Z抬升行为。',
+    filament_retraction_speed: '从喷嘴回抽耗材的速度。',
+    filament_deretraction_speed: '将耗材重新装入喷嘴的速度。零表示使用与回抽相同的速度。',
+    filament_retract_restart_extra: '当空驶后补偿回抽时，挤出机将额外推送此量的耗材。',
+    filament_retraction_minimum_travel: '仅当空驶距离超过此阈值时才触发回抽。',
+    filament_retract_when_changing_layer: '换层时强制执行回抽。',
+    filament_wipe: '此选项将在触发回抽时沿最后一段挤出路径移动喷嘴，以减少产生拉丝的可能性。',
+    filament_wipe_distance: '描述回抽时喷嘴沿最后路径移动的距离。',
+    filament_retract_before_wipe: '擦拭前快速回抽的长度，相对于回抽长度的比例。',
+    filament_long_retractions_when_cut: '使用耗材切割器时增加回抽量。',
+    filament_retraction_distances_when_cut: '使用耗材切割器时的回抽距离。',
+
+    // ---- 参数覆盖：熨烫 ----
+    filament_ironing_flow: '熨烫时挤出的材料量，相对于流量的比率。',
+    filament_ironing_spacing: '熨烫线条之间的间距。',
+    filament_ironing_inset: '从要熨烫区域边缘向内的偏移量。',
+    filament_ironing_speed: '熨烫的打印速度。',
+
+    // ---- 高级 ----
+    filament_start_gcode: '开始打印此耗材时的起始G-code。',
+    filament_end_gcode: '结束打印此耗材时的结束G-code。',
+
+    // ---- 多材料：擦拭塔参数 ----
+    filament_minimal_purge_on_wipe_tower: '换料后，喷嘴内新装载耗材的确切位置可能未知，耗材压力可能尚不稳定。在将打印头排入填充物或牺牲对象之前，Orca Slicer 将始终将此量的材料排到擦拭塔中，以可靠地产生后续的填充或牺牲对象挤出。',
+
+    // ---- 多材料：单挤出机换料 ----
+    filament_loading_speed_start: '装载阶段最初使用的速度。',
+    filament_loading_speed: '在擦拭塔上装载耗材使用的速度。',
+    filament_unloading_speed_start: '碰撞后立即卸载耗材尖端使用的速度。',
+    filament_unloading_speed: '在擦拭塔上卸载耗材使用的速度（不影响碰撞后卸载的初始部分）。',
+    filament_toolchange_delay: '耗材卸载后等待的时间。可能有助于对柔性材料进行可靠的换料，这些材料可能需要更多时间收缩到原始尺寸。',
+    filament_cooling_moves: '耗材通过在冷却管中来回移动来冷却。指定所需的移动次数。',
+    filament_cooling_initial_speed: '冷却移动从此速度开始逐渐加速。',
+    filament_cooling_final_speed: '冷却移动逐渐加速到此速度。',
+    filament_ramming_volumetric_speed: '碰撞阶段的速度。',
+    filament_stamping_distance: '从冷却管中心测量的冲压距离。',
+
+    // ---- 多材料：多挤出机换料 ----
+    filament_multitool_ramming: '为多工具打印机启用碰撞。',
+    filament_multitool_ramming_volume: '换料前要碰撞的体积。',
+    filament_multitool_ramming_flow: '碰撞耗材时使用的流量。',
+
+    // ---- 依赖 ----
+    compatible_printers: '选择此配置兼容的打印机。',
+
+    // ---- 备注 ----
+    filament_notes: '您可以在此处添加有关该耗材的备注。',
+  },
+
   // ========== 枚举值翻译 ==========
   // key = JSON 中的原始英文值, value = 中文翻译
   values: {

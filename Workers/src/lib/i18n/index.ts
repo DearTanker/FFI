@@ -2,7 +2,7 @@
  * i18n — 多语言模块
  *
  * 使用方式:
- *   import { tField, tGroup, tPage, tPair, tUI } from '@/lib/i18n';
+ *   import { tField, tGroup, tPage, tPair, tUI, tTooltip } from '@/lib/i18n';
  *
  *   tField('fan_min_speed')              // → '最小风扇速度阈值（风扇速度）'
  *   tGroup('cooling-part-fan')           // → '部件冷却风扇'
@@ -73,6 +73,14 @@ export function tPage(key: string): string {
  */
 export function tValue(value: string): string {
   return msgs().values[value] ?? value;
+}
+
+/**
+ * 字段 tooltip 描述 — 来自 OrcaSlicer PrintConfig.cpp 的 def->tooltip
+ * 未找到翻译则返回 undefined
+ */
+export function tTooltip(key: string): string | undefined {
+  return msgs().tooltips[key];
 }
 
 /**
