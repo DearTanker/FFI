@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./custom.css";
 import { FilamentProvider } from "@/context/FilamentContext";
 
 export const metadata: Metadata = {
