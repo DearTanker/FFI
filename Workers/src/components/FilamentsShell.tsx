@@ -25,7 +25,7 @@ export function FilamentsShell(props: { vendor?: string; type?: string; series?:
           <a href="https://github.com/OrcaSlicer/OrcaSlicer" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-200 transition-colors">
             OrcaSlicer
           </a>
-          {" · Powered by "}
+          {" | Powered by "}
           <a href="https://github.com/DearTanker/FFI" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-200 transition-colors">
             GitHub
           </a>

@@ -8,73 +8,78 @@
   "CaiGe": {
     "displayName": "CaiGe·彩格",
     "links": [
-      { "label": "官网", "url": "" }
+      { "label": "官网", "url": "https://cgtoner.com" },
+      { "label": "京东", "url": "https://caige.jd.com/" }
     ]
   },
   "CaiLab": {
     "displayName": "CaiLab·彩多屋",
     "links": [
-      { "label": "官网", "url": "" }
+      { "label": "京东", "url": "https://mall.jd.com/index-19066935.html" }
     ]
   },
   "CMYK": {
     "displayName": "CMYK",
-    "links": [
-      { "label": "官网", "url": "" }
-    ]
+    "links": []
   },
   "DoWell": {
     "displayName": "DoWell·点维",
     "links": [
-      { "label": "官网", "url": "" }
+      { "label": "官网", "url": "http://www.dowell3d.com" },
+      { "label": "1688", "url": "https://dowell3d.1688.com" }
     ]
   },
   "Fiberon": {
     "displayName": "Fiberon",
     "links": [
-      { "label": "官网", "url": "" }
+      { "label": "Polymaker官网", "url": "https://polymaker.com.cn" },
+      { "label": "天猫", "url": "https://polymaker.tmall.com" }
     ]
   },
   "FullJoy": {
     "displayName": "FullJoy",
     "links": [
-      { "label": "官网", "url": "" }
+      { "label": "天猫", "url": "https://fulljoy.tmall.com" },
+      { "label": "京东", "url": "https://mall.jd.com/index-1000653898.html" }
     ]
   },
   "Kaaber": {
     "displayName": "Kaaber",
     "links": [
-      { "label": "官网", "url": "" }
+      { "label": "天猫", "url": "https://kaaber.tmall.com" }
     ]
   },
   "Kexcelled": {
     "displayName": "Kexcelled",
     "links": [
-      { "label": "官网", "url": "" }
+      { "label": "英文官网", "url": "https://www.kexcelled3d.com" }
     ]
   },
   "Magforms": {
-    "displayName": "Magforms·大简",
+    "displayName": "Magforms·迈想",
     "links": [
-      { "label": "官网", "url": "" }
+      { "label": "英文官网", "url": "https://www.magforms.com" },
+      { "label": "京东", "url": "https://mall.jd.com/index-13747918.html" }
     ]
   },
   "Polymaker": {
     "displayName": "Polymaker",
     "links": [
-      { "label": "官网", "url": "" }
+      { "label": "官网", "url": "https://polymaker.com.cn" },
+      { "label": "英文官网", "url": "https://polymaker.com" },
+      { "label": "天猫", "url": "https://polymaker.tmall.com" }
     ]
   },
   "R3D": {
     "displayName": "R3D·爱三迪",
     "links": [
-      { "label": "官网", "url": "" }
+      { "label": "英文官网", "url": "https://www.r3dprinter.com" }
     ]
   },
   "YuBros": {
     "displayName": "YuBros·余兄弟",
     "links": [
-      { "label": "官网", "url": "" }
+      { "label": "模型站", "url": "https://yuxiongdi.cn" }
     ]
   }
 }
