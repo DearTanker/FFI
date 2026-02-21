@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { Icon, GroupHeader } from './Icon';
+import { FieldLabel } from './FieldLabel';
 import {
   FILAMENT_PAGE_ORDER,
   PAGE_METADATA,
@@ -13,6 +14,7 @@ import {
   FIELD_ORDER,
 } from '@/lib/filamentFieldMap';
 import { tField, tGroup, tPage, tUI, tValue } from '@/lib/i18n';
+import { getFieldTooltip, getFieldWikiUrl } from '@/lib/fieldTooltips';
 
 interface OrcaFilamentDetailsProps {
   data: Record<string, any>;
@@ -216,7 +218,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
               <div className="min-w-0 flex items-start">
                 {renderOverrideCheckbox(!pairNil)}
                 <div className="min-w-0">
-                  <div className="text-xs text-zinc-200 break-words">{field.paired.pairLabel}</div>
+                  <div className="text-xs break-words"><FieldLabel label={field.paired.pairLabel} fieldKey={leftKey} tooltip={getFieldTooltip(leftKey)} wikiUrl={getFieldWikiUrl(leftKey)} /></div>
                   <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{leftKey}</div>
                   <div className="font-mono text-[10px] text-zinc-500 break-all">{rightKey}</div>
                 </div>
@@ -298,7 +300,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
               <div className="min-w-0 pt-1 flex items-start">
                 {renderOverrideCheckbox(!fieldNil)}
                 <div className="min-w-0">
-                  <div className="text-xs text-zinc-200 break-words">{field.label || meta?.label || fieldKey}</div>
+                  <div className="text-xs break-words"><FieldLabel label={field.label || meta?.label || fieldKey} fieldKey={fieldKey} tooltip={getFieldTooltip(fieldKey)} wikiUrl={getFieldWikiUrl(fieldKey)} /></div>
                   <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{fieldKey}</div>
                 </div>
               </div>
@@ -312,7 +314,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
               <div className="min-w-0 flex items-start">
                 {renderOverrideCheckbox(!fieldNil)}
                 <div className="min-w-0">
-                  <div className="text-xs text-zinc-200 break-words">{field.label || meta?.label || fieldKey}</div>
+                  <div className="text-xs break-words"><FieldLabel label={field.label || meta?.label || fieldKey} fieldKey={fieldKey} tooltip={getFieldTooltip(fieldKey)} wikiUrl={getFieldWikiUrl(fieldKey)} /></div>
                   <div className="mt-0.5 font-mono text-[10px] text-zinc-500 break-all">{fieldKey}</div>
                 </div>
               </div>
