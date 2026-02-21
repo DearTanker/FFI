@@ -21,7 +21,7 @@ export function FilamentsShell(props: { vendor?: string; type?: string; series?:
       </div>
       <footer className="border-t border-zinc-800 bg-zinc-950/80 py-4 px-6 text-xs text-zinc-500 flex items-center justify-between max-w-7xl mx-auto w-full">
         <span>
-          Based on{" "}
+          FFI - FDM Filaments Info Based on{" "}
           <a href="https://github.com/OrcaSlicer/OrcaSlicer" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-200 transition-colors">
             OrcaSlicer
           </a>
