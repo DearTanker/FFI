@@ -7,7 +7,7 @@ import { FilamentsShell } from "@/components/FilamentsShell";
 import { StaticLink } from "@/components/StaticLink";
 import { Icon } from "@/components/Icon";
 import { useFilamentContext } from "@/context/FilamentContext";
-import { getVendors, getTypes, getSeries, getProfiles, fetchProfileContent, getBrandDisplayName } from "@/lib/filaments-client";
+import { getVendors, getTypes, getSeries, getProfiles, fetchProfileContent, getBrandDisplayName, getBrandConfig } from "@/lib/filaments-client";
 import { toSegment, fromSegment } from "@/lib/segments";
 import { FilamentProfileSummary } from "@/lib/filaments";
 import { ProfileSidebarClient } from "@/components/ProfileSidebarClient";
@@ -103,14 +103,34 @@ export default function FilamentsClient() {
     const profiles = vendor && selectedType && selectedSeries 
       ? getProfiles(index, vendor, selectedType, selectedSeries)
       : [];
+    const brandConfig = getBrandConfig(index, vendor);
+    const brandLinks = brandConfig?.links?.filter(l => l.url) ?? [];
 
     return (
       <FilamentsShell vendor={vendor}>
         <Breadcrumb vendor={vendor} vendorDisplayName={getBrandDisplayName(index, vendor)} />
         
-        <div className="mt-8">
-          <h1 className="text-3xl font-bold text-zinc-50">{getBrandDisplayName(index, vendor)}</h1>
-          <p className="mt-2 text-zinc-400">{tUI('brand_instruction')}</p>
+        <div className="mt-8 flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-zinc-50">{getBrandDisplayName(index, vendor)}</h1>
+            <p className="mt-2 text-zinc-400">{tUI('brand_instruction')}</p>
+          </div>
+          {brandLinks.length > 0 && (
+            <div className="flex items-center gap-3 shrink-0 pt-1">
+              {brandLinks.map((link, i) => (
+                <a
+                  key={i}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-800/60 px-3 py-1.5 text-sm text-zinc-300 hover:bg-zinc-700/60 hover:text-zinc-100 transition-colors"
+                >
+                  <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="currentColor"><path d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/><path d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/></svg>
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
         <hr className="mt-6 border-zinc-800" />
 
