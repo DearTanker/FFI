@@ -11,7 +11,7 @@ export function FilamentNav(props: { vendor?: string; type?: string; series?: st
   
   if (error) {
     return (
-      <aside className="w-60 shrink-0 border-r border-zinc-800 bg-zinc-900/40 overflow-auto">
+      <aside className="w-60 shrink-0 border-l border-r border-zinc-800 bg-zinc-900/40 overflow-auto">
          <div className="sticky top-0 border-b border-zinc-800 bg-zinc-950/40 px-4 py-3 backdrop-blur z-10">
            <div className="text-sm font-semibold text-red-400">{tUI('error_load_nav')}</div>
            <div className="mt-1 text-xs text-zinc-500">{tUI('error_retry')}</div>
@@ -25,7 +25,7 @@ export function FilamentNav(props: { vendor?: string; type?: string; series?: st
 
   if (loading || !index) {
       return (
-        <aside className="w-60 shrink-0 border-r border-zinc-800 bg-zinc-900/40 overflow-auto">
+        <aside className="w-60 shrink-0 border-l border-r border-zinc-800 bg-zinc-900/40 overflow-auto">
            <div className="sticky top-0 border-b border-zinc-800 bg-zinc-950/40 px-4 py-3 backdrop-blur z-10">
              <div className="text-sm font-semibold">{tUI('nav_filament_settings')}</div>
              <div className="mt-1 text-[10px] text-zinc-500">{tUI('loading')}</div>
@@ -37,7 +37,7 @@ export function FilamentNav(props: { vendor?: string; type?: string; series?: st
   const vendors = getVendors(index);
 
   return (
-    <aside className="w-60 shrink-0 border-r border-zinc-800 bg-zinc-900/40 overflow-auto">
+    <aside className="w-60 shrink-0 border-l border-r border-zinc-800 bg-zinc-900/40 overflow-auto">
       <div className="sticky top-0 border-b border-zinc-800 bg-zinc-950/40 px-4 py-3 backdrop-blur z-10">
         <div className="text-sm font-semibold">{tUI('nav_brands_title')}</div>
         <div className="mt-1 text-[10px] text-zinc-500">{tUI('nav_brands_guide')}</div>
