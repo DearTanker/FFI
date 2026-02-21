@@ -377,7 +377,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
             if (Object.keys(fields).length === 0) return null;
 
             return (
-              <div key={groupId} className="rounded-lg border border-zinc-800 bg-zinc-900/40 overflow-hidden">
+              <div key={groupId} className="rounded-lg border border-zinc-800 bg-zinc-900/40">
                 {/* Group Header */}
                 <div className="border-b border-zinc-800 px-4 py-2.5 bg-zinc-800/30">
                   <div className="flex items-center gap-3">
