@@ -20,7 +20,6 @@ export function FilamentsShell(props: { vendor?: string; type?: string; series?:
         <main className="flex-1 p-4 sm:p-6 overflow-auto">{props.children}</main>
       </div>
       <footer className="border-t border-zinc-800 bg-zinc-950/80 py-4 px-6 text-xs text-zinc-500 flex items-center justify-between max-w-7xl mx-auto w-full">
-        <span className="text-zinc-600">v{BUILD_VERSION}</span>
         <span>
           Based on{" "}
           <a href="https://github.com/OrcaSlicer/OrcaSlicer" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-200 transition-colors">
@@ -35,6 +34,7 @@ export function FilamentsShell(props: { vendor?: string; type?: string; series?:
             Cloudflare Workers
           </a>
         </span>
+        <span className="text-zinc-600">v{BUILD_VERSION}</span>
       </footer>
     </div>
   );
