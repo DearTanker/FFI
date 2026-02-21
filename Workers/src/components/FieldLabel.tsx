@@ -42,7 +42,7 @@ export function FieldLabel({ label, fieldKey, wikiUrl }: FieldLabelProps) {
 
   return (
     <span
-      className={`relative text-xs break-words ${tooltip ? 'text-zinc-200 cursor-default' : 'text-zinc-200'}`}
+      className={`relative text-sm break-words ${tooltip ? 'text-zinc-200 cursor-default' : 'text-zinc-200'}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

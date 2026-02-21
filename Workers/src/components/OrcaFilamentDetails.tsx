@@ -218,7 +218,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
               <div className="min-w-0 flex items-start">
                 {renderOverrideCheckbox(!pairNil)}
                 <div className="min-w-0">
-                  <div className="text-xs break-words"><FieldLabel label={field.paired.pairLabel} fieldKey={leftKey} wikiUrl={getFieldWikiUrl(leftKey)} /></div>
+                  <div className="text-sm break-words"><FieldLabel label={field.paired.pairLabel} fieldKey={leftKey} wikiUrl={getFieldWikiUrl(leftKey)} /></div>
                 </div>
               </div>
               {/* Left sub-label */}
@@ -298,7 +298,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
               <div className="min-w-0 pt-1 flex items-start">
                 {renderOverrideCheckbox(!fieldNil)}
                 <div className="min-w-0">
-                  <div className="text-xs break-words"><FieldLabel label={field.label || meta?.label || fieldKey} fieldKey={fieldKey} wikiUrl={getFieldWikiUrl(fieldKey)} /></div>
+                  <div className="text-sm break-words"><FieldLabel label={field.label || meta?.label || fieldKey} fieldKey={fieldKey} wikiUrl={getFieldWikiUrl(fieldKey)} /></div>
                 </div>
               </div>
               <div className="min-w-0">
@@ -311,7 +311,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
               <div className="min-w-0 flex items-start">
                 {renderOverrideCheckbox(!fieldNil)}
                 <div className="min-w-0">
-                  <div className="text-xs break-words"><FieldLabel label={field.label || meta?.label || fieldKey} fieldKey={fieldKey} wikiUrl={getFieldWikiUrl(fieldKey)} /></div>
+                  <div className="text-sm break-words"><FieldLabel label={field.label || meta?.label || fieldKey} fieldKey={fieldKey} wikiUrl={getFieldWikiUrl(fieldKey)} /></div>
                 </div>
               </div>
               {/* Value with code button */}
@@ -385,7 +385,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                 </div>
 
                 {/* Fields */}
-                <div className="px-4 py-2 space-y-0">
+                <div className="pl-12 pr-4 py-2 space-y-0">
                   {renderGroupFields(groupId, fields)}
                 </div>
               </div>
