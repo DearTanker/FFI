@@ -214,7 +214,7 @@ const zhCN: LocaleMessages = {
 
     // 侧边导航
     'nav_brands_title':         'FDM 3D 打印耗材品牌',
-    'nav_brands_guide':         '耗材品牌 → 耗材类型 → 耗材系列 → 耗材丝设置',
+    'nav_brands_guide':         '品牌 → 类型 → 系列 → 设置',
     'nav_section_brand':        '品牌',
     'nav_filament_settings':    '耗材丝设置',
 
@@ -239,9 +239,9 @@ const zhCN: LocaleMessages = {
     'select_type_prompt':       '请先选择耗材类型',
     'select_series_prompt':     '请选择耗材系列',
     'select_brand_prompt':      '请先在左侧菜单选择品牌',
-    'select_type_above':        '请在上方选择耗材类型',
-    'select_series_above':      '请在上方选择耗材系列',
-    'brand_instruction':        '选择下方的类型和系列查看耗材配置',
+    'select_type_left':         '请在左侧选择耗材类型',
+    'select_series_left':       '请在左侧选择耗材系列',
+    'brand_instruction':        '选择左侧的类型和系列查看耗材配置',
     'no_profiles':              '暂无该系列的配置',
     'profile_count':            '共 {count} 个配置',
 

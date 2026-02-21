@@ -407,11 +407,11 @@ export default function FilamentsClient() {
             </div>
           ) : !selectedType ? (
             <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-8 text-center">
-              <p className="text-zinc-400">{tUI('select_type_above')}</p>
+              <p className="text-zinc-400">{tUI('select_type_left')}</p>
             </div>
           ) : !selectedSeries ? (
             <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-8 text-center">
-              <p className="text-zinc-400">{tUI('select_series_above')}</p>
+              <p className="text-zinc-400">{tUI('select_series_left')}</p>
             </div>
           ) : profiles.length > 0 ? (
             <>

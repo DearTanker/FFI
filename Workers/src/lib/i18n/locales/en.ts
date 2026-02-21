@@ -235,9 +235,9 @@ const en: LocaleMessages = {
     'select_type_prompt':       'Please select a filament type',
     'select_series_prompt':     'Please select a filament series',
     'select_brand_prompt':      'Please select a brand from the sidebar',
-    'select_type_above':        'Select a filament type above',
-    'select_series_above':      'Select a filament series above',
-    'brand_instruction':        'Select type and series below to view filament presets',
+    'select_type_left':         'Select a filament type on the left',
+    'select_series_left':       'Select a filament series on the left',
+    'brand_instruction':        'Select type and series on the left to view filament presets',
     'no_profiles':              'No presets available for this series',
     'profile_count':            '{count} presets',
 
