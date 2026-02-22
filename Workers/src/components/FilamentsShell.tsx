@@ -38,6 +38,7 @@ export function FilamentsShell(props: { vendor?: string; type?: string; series?:
             Cloudflare Workers
           </a>
         </span>
+        <span className="text-zinc-600">v{BUILD_VERSION}</span>
       </footer>
     </div>
   );
