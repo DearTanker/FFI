@@ -151,6 +151,37 @@ const en: LocaleMessages = {
 
     // ---- Notes ----
     filament_notes:                      'Notes',
+
+    // ---- BambuStudio unique fields ----
+    impact_strength_z:                   'Impact strength (Z)',
+    filament_velocity_adaptation_factor: 'Velocity adaptation factor',
+    filament_cooling_before_tower:       'Cooling before tower',
+    filament_prime_volume:               'Filament prime volume',
+    filament_prime_volume_nc:            'Filament prime volume (non-toolchange)',
+    filament_change_length_nc:           'Filament ramming length (non-toolchange)',
+    filament_ramming_travel_time:        'Travel time after ramming',
+    filament_ramming_travel_time_nc:     'Travel time after ramming (non-toolchange)',
+    filament_pre_cooling_temperature:    'Precooling target temperature',
+    filament_pre_cooling_temperature_nc: 'Precooling target temperature (non-toolchange)',
+    filament_scarf_seam_type:            'Scarf seam type',
+    filament_scarf_height:               'Scarf height',
+    filament_scarf_gap:                  'Scarf gap',
+    filament_scarf_length:               'Scarf length',
+    first_x_layer_fan_speed:             'First layer fan speed',
+    overhang_threshold_participating_cooling: 'Overhang threshold participating cooling',
+    pre_start_fan_time:                  'Pre-start fan time',
+    override_process_overhang_speed:     'Override overhang speed',
+    filament_enable_overhang_speed:      'Enable overhang speed',
+    filament_overhang_1_4_speed:         'Overhang speed (10~25%)',
+    filament_overhang_2_4_speed:         'Overhang speed (25~50%)',
+    filament_overhang_3_4_speed:         'Overhang speed (50~75%)',
+    filament_overhang_4_4_speed:         'Overhang speed (75~100%)',
+    filament_overhang_totally_speed:     'Totally overhang speed',
+    filament_bridge_speed:               'Bridge speed',
+    filament_retract_length_nc:          'Retraction length (non-toolchange)',
+    filament_ramming_volumetric_speed_nc:'Ramming volumetric speed (non-toolchange)',
+    long_retractions_when_ec:            'Long retraction when extruder change',
+    retraction_distances_when_ec:        'Retraction distance when extruder change',
   },
 
   // ========== Paired Field Labels ==========
@@ -165,6 +196,22 @@ const en: LocaleMessages = {
     textured_plate:       { label: 'Textured PEI plate', left: 'Initial layer', right: 'Other layers' },
     fan_min_threshold:    { label: 'Min fan speed threshold', left: 'Fan speed', right: 'Layer time' },
     fan_max_threshold:    { label: 'Max fan speed threshold', left: 'Fan speed', right: 'Layer time' },
+    // BambuStudio pairs
+    bs_prime_volume:      { label: 'Filament prime volume', left: 'Toolchange', right: 'Non-toolchange' },
+    bs_ramming_length:    { label: 'Filament ramming length', left: 'Toolchange', right: 'Non-toolchange' },
+    bs_ramming_travel_time: { label: 'Travel time after ramming', left: 'Toolchange', right: 'Non-toolchange' },
+    bs_pre_cooling_temp:  { label: 'Precooling target temperature', left: 'Toolchange', right: 'Non-toolchange' },
+    bs_nozzle_temp_range: { label: 'Recommended nozzle temperature', left: 'Min', right: 'Max' },
+    bs_supertack_plate:   { label: 'Bambu Cool Plate SuperTack', left: 'Initial layer', right: 'Other layers' },
+    bs_cool_plate:        { label: 'Cool Plate', left: 'Initial layer', right: 'Other layers' },
+    bs_eng_plate:         { label: 'Engineering Plate', left: 'Initial layer', right: 'Other layers' },
+    bs_hot_plate:         { label: 'Smooth PEI Plate / High Temp Plate', left: 'Initial layer', right: 'Other layers' },
+    bs_textured_plate:    { label: 'Textured PEI Plate', left: 'Initial layer', right: 'Other layers' },
+    bs_nozzle_temp:       { label: 'Nozzle', left: 'Initial layer', right: 'Other layers' },
+    bs_fan_min_threshold: { label: 'Min fan speed threshold', left: 'Fan speed', right: 'Layer time' },
+    bs_fan_max_threshold: { label: 'Max fan speed threshold', left: 'Fan speed', right: 'Layer time' },
+    bs_first_layer_cooling: { label: 'Special cooling settings', left: 'No cooling for the first', right: 'First layer fan speed' },
+    bs_ramming_volumetric: { label: 'Ramming volumetric speed', left: 'Toolchange', right: 'Non-toolchange' },
   },
 
   // ========== Group Labels ==========
@@ -188,6 +235,21 @@ const en: LocaleMessages = {
     'toolchange-multi':         'Multi Extruder Toolchange',
     'compatible-printers':      'Compatible Printers',
     'notes':                    'Notes',
+    // BambuStudio groups
+    'bs-information':           'Basic Information',
+    'bs-print-temp':            'Print Temperature',
+    'bs-volumetric-speed':      'Volumetric Speed Limitation',
+    'bs-scarf-seam':            'Filament Scarf Seam Settings',
+    'bs-cooling-specific':      'Cooling for Specific Layer',
+    'bs-cooling-part-fan':      'Part Cooling Fan',
+    'bs-cooling-aux-fan':       'Auxiliary Part Cooling Fan',
+    'bs-cooling-exhaust':       'Exhaust Fan',
+    'bs-retraction':            'Retraction',
+    'bs-speed':                 'Speed',
+    'bs-gcode-start':           'Start G-code',
+    'bs-gcode-end':             'End G-code',
+    'bs-notes-group':           'Notes',
+    'bs-multi-filament-group':  'Multi Filament',
   },
 
   // ========== Page Tab Labels ==========
@@ -199,6 +261,13 @@ const en: LocaleMessages = {
     'filament-multimaterial':   'Multimaterial',
     'filament-dependencies':    'Dependencies',
     'filament-notes':           'Notes',
+    // BambuStudio pages
+    'bs-filament':              'Filament',
+    'bs-cooling':               'Cooling',
+    'bs-overrides':             'Setting Overrides',
+    'bs-advanced':              'Advanced',
+    'bs-notes':                 'Notes',
+    'bs-multi-filament':        'Multi Filament',
   },
 
   // ========== UI Strings ==========
@@ -213,6 +282,8 @@ const en: LocaleMessages = {
     'nav_brands_guide':         'Filament → Type → Series → Filament Settings',
     'nav_section_brand':        'Brands',
     'nav_filament_settings':    'Filament Settings',
+    'view_orca':                'OrcaSlicer View',
+    'view_bambu':               'BambuStudio View',
     'nav_update':               'Update Now',
     'nav_updating':             'Updating...',
 

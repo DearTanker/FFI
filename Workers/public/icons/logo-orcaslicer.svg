@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <circle cx="12" cy="12" r="10" stroke="#00ae42" stroke-width="1.5" fill="none"/>
+  <path d="M12 4C7.58 4 4 7.58 4 12s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14.4c-3.53 0-6.4-2.87-6.4-6.4S8.47 5.6 12 5.6s6.4 2.87 6.4 6.4-2.87 6.4-6.4 6.4z" fill="#00ae42" opacity="0.3"/>
+  <text x="12" y="16" text-anchor="middle" font-size="10" font-weight="bold" font-family="Arial,sans-serif" fill="#00ae42">O</text>
+</svg>

@@ -12,6 +12,8 @@ import { toSegment, fromSegment } from "@/lib/segments";
 import { FilamentProfileSummary } from "@/lib/filaments";
 import { ProfileSidebarClient } from "@/components/ProfileSidebarClient";
 import { OrcaFilamentDetails } from "@/components/OrcaFilamentDetails";
+import { BsFilamentDetails } from "@/components/BsFilamentDetails";
+import { SlicerViewToggle, SlicerView } from "@/components/SlicerViewToggle";
 import { jsonToRecord } from "@/lib/filamentPreset";
 import { tUI } from "@/lib/i18n";
 
@@ -37,6 +39,7 @@ export default function FilamentsClient() {
 
   const [profileData, setProfileData] = useState<Record<string, unknown> | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
+  const [slicerView, setSlicerView] = useState<SlicerView>('orca');
 
   const [navState, setNavState] = useState<NavState>({
     selectedVendor: vendor,
@@ -286,7 +289,14 @@ export default function FilamentsClient() {
             {profileLoading ? (
               <div className="text-zinc-500">Loading profile...</div>
             ) : profileData ? (
-              <OrcaFilamentDetails data={jsonToRecord(profileData)} rawData={profileData} />
+              <div className="space-y-4">
+                <SlicerViewToggle value={slicerView} onChange={setSlicerView} />
+                {slicerView === 'orca' ? (
+                  <OrcaFilamentDetails data={jsonToRecord(profileData)} rawData={profileData} />
+                ) : (
+                  <BsFilamentDetails data={jsonToRecord(profileData)} rawData={profileData} />
+                )}
+              </div>
             ) : (
               <div className="text-zinc-500">Profile not found</div>
             )}

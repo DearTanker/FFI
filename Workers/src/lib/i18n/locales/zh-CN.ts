@@ -155,6 +155,37 @@ const zhCN: LocaleMessages = {
 
     // ---- Notes ----
     filament_notes:                      '备注',                           // L("Notes")
+
+    // ---- BambuStudio 独有字段 ----
+    impact_strength_z:                   'Z方向冲击强度',
+    filament_velocity_adaptation_factor: '速度自适应因子',
+    filament_cooling_before_tower:       '擦拭前冷却',
+    filament_prime_volume:               '耗材灌注体积',
+    filament_prime_volume_nc:            '耗材灌注体积（非换色）',
+    filament_change_length_nc:           '耗材冲击长度（非换色）',
+    filament_ramming_travel_time:        '冲击后空驶时间',
+    filament_ramming_travel_time_nc:     '冲击后空驶时间（非换色）',
+    filament_pre_cooling_temperature:    '预冷目标温度',
+    filament_pre_cooling_temperature_nc: '预冷目标温度（非换色）',
+    filament_scarf_seam_type:            '接缝类型',
+    filament_scarf_height:               '接缝高度',
+    filament_scarf_gap:                  '接缝间隙',
+    filament_scarf_length:               '接缝长度',
+    first_x_layer_fan_speed:             '首层风扇速度',
+    overhang_threshold_participating_cooling: '悬垂参与冷却阈值',
+    pre_start_fan_time:                  '提前启动风扇时间',
+    override_process_overhang_speed:     '覆盖悬垂速度',
+    filament_enable_overhang_speed:      '启用悬垂速度',
+    filament_overhang_1_4_speed:         '悬垂速度 (10~25%)',
+    filament_overhang_2_4_speed:         '悬垂速度 (25~50%)',
+    filament_overhang_3_4_speed:         '悬垂速度 (50~75%)',
+    filament_overhang_4_4_speed:         '悬垂速度 (75~100%)',
+    filament_overhang_totally_speed:     '完全悬垂速度',
+    filament_bridge_speed:               '桥接速度',
+    filament_retract_length_nc:          '非换色回抽长度',
+    filament_ramming_volumetric_speed_nc:'冲击体积速度（非换色）',
+    long_retractions_when_ec:            '挤出机切换时长回抽',
+    retraction_distances_when_ec:        '挤出机切换回抽距离',
   },
 
   // ========== 配对字段标签 ==========
@@ -169,6 +200,22 @@ const zhCN: LocaleMessages = {
     textured_plate:       { label: '纹理PEI热床', left: '首层', right: '其它层' },
     fan_min_threshold:    { label: '最小风扇速度阈值', left: '风扇速度', right: '层时间' },
     fan_max_threshold:    { label: '最大风扇速度阈值', left: '风扇速度', right: '层时间' },
+    // BambuStudio 配对字段
+    bs_prime_volume:      { label: '耗材灌注体积', left: '换色', right: '非换色' },
+    bs_ramming_length:    { label: '耗材冲击长度', left: '换色', right: '非换色' },
+    bs_ramming_travel_time: { label: '冲击后空驶时间', left: '换色', right: '非换色' },
+    bs_pre_cooling_temp:  { label: '预冷目标温度', left: '换色', right: '非换色' },
+    bs_nozzle_temp_range: { label: '建议喷嘴温度', left: '最小', right: '最大' },
+    bs_supertack_plate:   { label: '低温打印板（超强粘附）', left: '首层', right: '其它层' },
+    bs_cool_plate:        { label: '低温打印板', left: '首层', right: '其它层' },
+    bs_eng_plate:         { label: '工程板', left: '首层', right: '其它层' },
+    bs_hot_plate:         { label: '高温打印板 / 平滑PEI板', left: '首层', right: '其它层' },
+    bs_textured_plate:    { label: '纹理PEI热床', left: '首层', right: '其它层' },
+    bs_nozzle_temp:       { label: '喷嘴', left: '首层', right: '其它层' },
+    bs_fan_min_threshold: { label: '最小风扇速度阈值', left: '风扇速度', right: '层时间' },
+    bs_fan_max_threshold: { label: '最大风扇速度阈值', left: '风扇速度', right: '层时间' },
+    bs_first_layer_cooling: { label: '特殊冷却设置', left: '关闭冷却对前', right: '首层风扇速度' },
+    bs_ramming_volumetric: { label: '冲击体积速度', left: '换色', right: '非换色' },
   },
 
   // ========== 分组标签 ==========
@@ -192,6 +239,21 @@ const zhCN: LocaleMessages = {
     'toolchange-multi':         '多挤出机多材料打印机的换色参数',
     'compatible-printers':      '兼容打印机',
     'notes':                    '备注',
+    // BambuStudio 分组
+    'bs-information':           '基础信息',
+    'bs-print-temp':            '打印温度',
+    'bs-volumetric-speed':      '体积速度限制',
+    'bs-scarf-seam':            '耗材丝接缝设置',
+    'bs-cooling-specific':      '特定层冷却',
+    'bs-cooling-part-fan':      '部件冷却风扇',
+    'bs-cooling-aux-fan':       '辅助部件冷却风扇',
+    'bs-cooling-exhaust':       '排气风扇',
+    'bs-retraction':            '回抽',
+    'bs-speed':                 '速度',
+    'bs-gcode-start':           '耗材丝起始G-code',
+    'bs-gcode-end':             '耗材丝结束G-code',
+    'bs-notes-group':           '备注',
+    'bs-multi-filament-group':  '多色耗材',
   },
 
   // ========== 页签标签 ==========
@@ -203,6 +265,13 @@ const zhCN: LocaleMessages = {
     'filament-multimaterial':   '材料',
     'filament-dependencies':    '依赖',
     'filament-notes':           '注释',
+    // BambuStudio 页签
+    'bs-filament':              '耗材丝',
+    'bs-cooling':               '冷却',
+    'bs-overrides':             '参数覆盖',
+    'bs-advanced':              '高级',
+    'bs-notes':                 '注释',
+    'bs-multi-filament':        '多色耗材',
   },
 
   // ========== UI 通用文案 ==========
@@ -217,6 +286,8 @@ const zhCN: LocaleMessages = {
     'nav_brands_guide':         '品牌 → 类型 → 系列 → 设置',
     'nav_section_brand':        '品牌',
     'nav_filament_settings':    '耗材丝设置',
+    'view_orca':                'OrcaSlicer 视图',
+    'view_bambu':               'BambuStudio 视图',
     'nav_update':               '立即更新数据',
     'nav_updating':             '正在更新...',
 
