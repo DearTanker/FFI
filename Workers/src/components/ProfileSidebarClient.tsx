@@ -72,12 +72,9 @@ export function ProfileSidebarClient(props: {
   return (
     <div className="sticky top-4 rounded-lg border border-zinc-800 bg-zinc-900/40">
       <div className="border-b border-zinc-800 px-4 py-3">
-        <div className="text-sm font-semibold text-zinc-50">{tUI('nav_filament_settings')}</div>
-        <div className="mt-1 flex items-center justify-between text-xs text-zinc-400">
-          <StaticLink href={`/${toSegment(props.vendor)}/${toSegment(props.type)}/${toSegment(props.series)}`} className="text-emerald-400 hover:text-emerald-300">
-            {tUI('back_to_list')}
-          </StaticLink>
-          <span>{tUI('n_profiles', { count: enrichedProfiles.length })}</span>
+        <div className="flex items-center justify-between">
+          <div className="text-sm font-semibold text-zinc-50">{tUI('nav_filament_settings')}</div>
+          <span className="text-xs text-zinc-400">{tUI('n_profiles', { count: enrichedProfiles.length })}</span>
         </div>
 
         <div className="mt-3 flex items-center gap-2">
