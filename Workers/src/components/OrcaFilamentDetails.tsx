@@ -368,7 +368,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
                 flex items-center gap-2 px-3 py-2 rounded-lg transition-colors
                 ${
                   isActive
-                    ? 'bg-blue-600/20 border border-blue-500/50 text-blue-300'
+                    ? 'bg-[#009789]/15 border border-[#009789]/50 shadow-sm text-[#00c4b3]'
                     : 'hover:bg-zinc-800/50 text-zinc-400'
                 }
               `}
