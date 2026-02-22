@@ -54,7 +54,7 @@ export function FilamentNav(props: { vendor?: string; type?: string; series?: st
                 href={`/${toSegment(v)}`}
                 className={[
                   "flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-zinc-800/60",
-                  active ? "bg-zinc-800/80 text-zinc-50" : "text-zinc-200"
+                  active ? "bg-zinc-800/80" : "text-zinc-200"
                 ].join(" ")}
               >
                 <span className="truncate">{getBrandDisplayName(index, v)}</span>

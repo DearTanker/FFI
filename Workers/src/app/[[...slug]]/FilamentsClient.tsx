@@ -162,7 +162,7 @@ export default function FilamentsClient() {
                       }}
                       className={`flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-zinc-800/60 w-full text-left ${
                         t === selectedType
-                          ? 'bg-zinc-800/80 text-zinc-50'
+                            ? 'bg-zinc-800/80'
                           : 'text-zinc-200'
                       }`}
                     >
@@ -196,7 +196,7 @@ export default function FilamentsClient() {
                         }}
                         className={`flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-zinc-800/60 w-full text-left ${
                           s === selectedSeries
-                            ? 'bg-zinc-800/80 text-zinc-50'
+                              ? 'bg-zinc-800/80'
                             : 'text-zinc-200'
                         }`}
                       >
@@ -355,7 +355,7 @@ export default function FilamentsClient() {
                       }}
                       className={`flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-zinc-800/60 w-full text-left ${
                         t === selectedType
-                          ? 'bg-zinc-800/80 text-zinc-50'
+                            ? 'bg-zinc-800/80'
                           : 'text-zinc-200'
                       }`}
                     >
@@ -392,7 +392,7 @@ export default function FilamentsClient() {
                       }}
                       className={`flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-zinc-800/60 w-full text-left ${
                         s === selectedSeries
-                          ? 'bg-zinc-800/80 text-zinc-50'
+                            ? 'bg-zinc-800/80'
                           : 'text-zinc-200'
                       }`}
                     >
