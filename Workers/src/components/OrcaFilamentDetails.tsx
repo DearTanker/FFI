@@ -75,6 +75,25 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
     return tValue(String(value));
   };
 
+  // 列表类型字段（如 compatible_printers）—— 显示数组全部元素，每行一个
+  const renderListValueBox = (value: any) => {
+    const items = Array.isArray(value) ? value.filter((v: any) => v && String(v) !== 'nil') : [];
+    if (items.length === 0) {
+      return (
+        <div className="flex items-center h-8 rounded-md border border-zinc-700 bg-zinc-950/40 px-3 pr-8 overflow-hidden">
+          <span className="text-sm text-zinc-600">—</span>
+        </div>
+      );
+    }
+    return (
+      <div className="rounded-md border border-zinc-700 bg-zinc-950/40 px-3 py-2 pr-8 space-y-1">
+        {items.map((item: any, i: number) => (
+          <div key={i} className="text-sm text-zinc-100">{String(item)}</div>
+        ))}
+      </div>
+    );
+  };
+
   // 参数覆盖页的覆盖复选框（模仿 OrcaSlicer 的复选框样式）
   const renderOverrideCheckbox = (isOverridden: boolean) => {
     if (!isOverridePage) return null;
@@ -316,7 +335,7 @@ export function OrcaFilamentDetails({ data, rawData, className = '' }: OrcaFilam
               </div>
               {/* Value with code button */}
               <div className="relative min-w-0">
-                {fieldNil ? renderNilValueBox(field.unit) : renderValueBox(displayValue, field.unit, field.kind)}
+                {fieldNil ? renderNilValueBox(field.unit) : field.kind === 'list' ? renderListValueBox(field.value) : renderValueBox(displayValue, field.unit, field.kind)}
                 <button
                   onClick={() => toggleFieldExpand(fieldKey)}
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded hover:bg-zinc-800/30"

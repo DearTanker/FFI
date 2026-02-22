@@ -101,7 +101,6 @@ export function ProfileSidebarClient(props: {
         {filtered.map((p) => {
           const href = `/${toSegment(props.vendor)}/${toSegment(props.type)}/${toSegment(props.series)}/${toSegment(p.displayName)}`;
           const active = p.fileName === props.fileName;
-          const subtitle = p.compatiblePrinters.length > 0 ? p.compatiblePrinters.join(" · ") : p.fileName;
           const title = p.displayName.replace(/\s*@.*$/, '') || p.displayName;
           return (
             <StaticLink
@@ -110,7 +109,15 @@ export function ProfileSidebarClient(props: {
               className={["block rounded-md px-2 py-2 hover:bg-zinc-800/60", active ? "bg-zinc-800/80" : ""].join(" ")}
             >
               <div className="truncate text-sm font-medium text-zinc-50">{title}</div>
-              <div className="mt-0.5 text-xs text-zinc-400 break-words">{subtitle}</div>
+              {p.compatiblePrinters.length > 0 ? (
+                <div className="mt-0.5 text-xs text-zinc-400 space-y-0.5">
+                  {p.compatiblePrinters.map((printer, i) => (
+                    <div key={i}>· {printer}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-0.5 text-xs text-zinc-400 break-words">{p.fileName}</div>
+              )}
             </StaticLink>
           );
         })}

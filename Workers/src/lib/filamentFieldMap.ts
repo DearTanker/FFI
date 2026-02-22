@@ -231,7 +231,7 @@ export const FILAMENT_FIELD_MAP: Record<string, {
   // ============ DEPENDENCIES PAGE ============
 
   // 兼容打印机 Group
-  compatible_printers: { pageId: 'filament-dependencies', groupId: 'compatible-printers' },
+  compatible_printers: { pageId: 'filament-dependencies', groupId: 'compatible-printers', kind: 'list' },
 
   // ============ NOTES PAGE ============
 
