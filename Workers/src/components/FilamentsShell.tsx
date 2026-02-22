@@ -20,8 +20,12 @@ export function FilamentsShell(props: { vendor?: string; type?: string; series?:
         <main className="flex-1 p-4 sm:p-6 overflow-auto border-r border-zinc-800">{props.children}</main>
       </div>
       <footer className="border-t border-zinc-800 bg-zinc-950/80 py-4 px-6 text-xs text-zinc-500 flex items-center justify-between max-w-7xl mx-auto w-full">
+        <div className="flex flex-col gap-1">
+          <span className="text-zinc-300">FFI - FDM Filaments Info</span>
+          <span className="text-zinc-500">FDM 3D 打印耗材丝耗材预设参考</span>
+        </div>
         <span>
-          FFI - FDM Filaments Info Based on{" "}
+          Based on{" "}
           <a href="https://github.com/OrcaSlicer/OrcaSlicer" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-200 transition-colors">
             OrcaSlicer
           </a>
@@ -34,7 +38,6 @@ export function FilamentsShell(props: { vendor?: string; type?: string; series?:
             Cloudflare Workers
           </a>
         </span>
-        <span className="text-zinc-600">v{BUILD_VERSION}</span>
       </footer>
     </div>
   );
