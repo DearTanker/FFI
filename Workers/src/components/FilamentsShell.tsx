@@ -1,16 +1,5 @@
 import { FilamentNav } from "@/components/FilamentNav";
-
-/** 构建时生成北京时间版本号 (UTC+8) */
-const BUILD_VERSION = (() => {
-  const now = new Date();
-  const beijing = new Date(now.getTime() + 8 * 60 * 60 * 1000);
-  const Y = beijing.getUTCFullYear();
-  const M = String(beijing.getUTCMonth() + 1).padStart(2, "0");
-  const D = String(beijing.getUTCDate()).padStart(2, "0");
-  const h = String(beijing.getUTCHours()).padStart(2, "0");
-  const m = String(beijing.getUTCMinutes()).padStart(2, "0");
-  return `${Y}.${M}.${D}.${h}${m}`;
-})();
+import { BUILD_VERSION } from "@/lib/buildInfo";
 
 export function FilamentsShell(props: { vendor?: string; type?: string; series?: string; children: React.ReactNode }) {
   return (
