@@ -22,7 +22,7 @@ export function SlicerViewToggle({ value, onChange }: SlicerViewToggleProps) {
         className={`
           flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200
           ${value === 'orca'
-            ? 'bg-emerald-600/20 border border-emerald-500/50 text-emerald-300 shadow-sm'
+            ? 'bg-[#009789]/15 border border-[#009789]/50 text-[#00c4b3] shadow-sm'
             : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 border border-transparent'
           }
         `}
@@ -41,7 +41,7 @@ export function SlicerViewToggle({ value, onChange }: SlicerViewToggleProps) {
         className={`
           flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200
           ${value === 'bambu'
-            ? 'bg-sky-600/20 border border-sky-500/50 text-sky-300 shadow-sm'
+            ? 'bg-[#00AE42]/15 border border-[#00AE42]/50 text-[#00d44f] shadow-sm'
             : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 border border-transparent'
           }
         `}

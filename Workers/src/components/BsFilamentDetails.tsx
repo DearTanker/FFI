@@ -328,7 +328,7 @@ export function BsFilamentDetails({ data, rawData, className = '' }: BsFilamentD
                 flex items-center gap-2 px-3 py-2 rounded-lg transition-colors
                 ${
                   isActive
-                    ? 'bg-sky-600/20 border border-sky-500/50 text-sky-300'
+                    ? 'bg-[#00AE42]/15 border border-[#00AE42]/50 text-[#00d44f]'
                     : 'hover:bg-zinc-800/50 text-zinc-400'
                 }
               `}
