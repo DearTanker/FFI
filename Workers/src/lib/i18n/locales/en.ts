@@ -213,6 +213,8 @@ const en: LocaleMessages = {
     'nav_brands_guide':         'Filament → Type → Series → Filament Settings',
     'nav_section_brand':        'Brands',
     'nav_filament_settings':    'Filament Settings',
+    'nav_update':               'Update Now',
+    'nav_updating':             'Updating...',
 
     // Breadcrumb
     'breadcrumb_root':          'Filaments',

@@ -217,6 +217,8 @@ const zhCN: LocaleMessages = {
     'nav_brands_guide':         '品牌 → 类型 → 系列 → 设置',
     'nav_section_brand':        '品牌',
     'nav_filament_settings':    '耗材丝设置',
+    'nav_update':               '立即更新数据',
+    'nav_updating':             '正在更新...',
 
     // 面包屑
     'breadcrumb_root':          '耗材',

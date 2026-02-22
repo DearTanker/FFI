@@ -22,7 +22,7 @@ export function FilamentsShell(props: { vendor?: string; type?: string; series?:
       <footer className="border-t border-zinc-800 bg-zinc-950/80 py-4 px-6 text-xs text-zinc-500 flex items-center justify-between max-w-7xl mx-auto w-full">
         <div className="flex flex-col gap-1">
           <span className="text-zinc-300">FFI - FDM Filaments Info</span>
-          <span className="text-zinc-500">FDM 3D 打印耗材丝耗材预设参考</span>
+          <span className="text-zinc-500">FDM 3D 打印耗材预设参考</span>
         </div>
         <span>
           Based on{" "}

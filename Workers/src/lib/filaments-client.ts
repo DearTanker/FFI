@@ -22,6 +22,11 @@ export type ClientIndex = {
 
 let indexCache: ClientIndex | null = null;
 
+/** 清除客户端索引缓存，下次 fetchFilamentIndex 将重新请求 */
+export function clearIndexCache(): void {
+  indexCache = null;
+}
+
 type GitHubTreeNode = {
   path: string;
   mode: string;
@@ -41,8 +46,8 @@ type GitHubTreeResponse = {
 export async function fetchFilamentIndex(): Promise<ClientIndex> {
   if (indexCache) return indexCache;
 
-  // Fetch from our API proxy
-  const res = await fetch("/api/github/tree");
+  // Fetch from our API proxy (bust=timestamp bypasses Cloudflare edge cache)
+  const res = await fetch(`/api/github/tree?bust=${Date.now()}`);
   if (!res.ok) {
       console.error("Failed to fetch tree:", res.status, res.statusText);
       const errBody = await res.json().catch(() => ({}));
