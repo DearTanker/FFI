@@ -116,7 +116,6 @@ export default function FilamentsClient() {
         <div className="mt-8 flex items-start justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold text-zinc-50">{getBrandDisplayName(index, vendor)}</h1>
-            <p className="mt-2 text-zinc-400">{tUI('brand_instruction')}</p>
           </div>
           {brandLinks.length > 0 && (
             <div className="flex items-center gap-3 shrink-0 pt-1">
@@ -324,7 +323,6 @@ export default function FilamentsClient() {
         <>
           <div className="mt-8">
             <h1 className="text-3xl font-bold text-zinc-50">{getBrandDisplayName(index, vendor)}</h1>
-            <p className="mt-2 text-zinc-400">{tUI('brand_instruction')}</p>
           </div>
           <hr className="mt-6 border-zinc-800" />
         </>
