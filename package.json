@@ -1,0 +1,8 @@
+{
+  "name": "ffi",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "deploy:workers": "npm --prefix Workers run deploy"
+  }
+}
